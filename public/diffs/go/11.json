@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "Tracker publishes user events onto a channel consumed by an analytics writer. TrackAsync, TrackBatch, and Flush are new convenience methods called from HTTP handlers on every request.",
+  "explanation": "Every call spawns a new goroutine that blocks on `t.sink <- event` with no context, no timeout, and no guarantee a consumer is still reading. If the downstream writer stalls or the channel is unbuffered and slow, goroutines pile up indefinitely and are never cancelled or drained, leaking memory until the process is killed. Fix: pass a context with a deadline into the goroutine and select on `ctx.Done()` alongside the channel send, or bound concurrency with a worker pool that can be shut down.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 3
+}

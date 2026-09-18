@@ -1,0 +1,25 @@
+diff --git a/.github/workflows/integration-tests.yml b/.github/workflows/integration-tests.yml
+index b00839b..9234d00 100644
+--- a/.github/workflows/integration-tests.yml
++++ b/.github/workflows/integration-tests.yml
+@@ -15,6 +15,19 @@ jobs:
+         run: ./scripts/wait-for-healthy.sh
+       - name: Run integration tests
+         run: npm run test:integration
+-      - name: Tear down test environment
++      - name: Run smoke tests
++        run: npm run test:smoke
++      - name: Collect service logs
+         if: always()
++        run: docker compose -f docker-compose.test.yml logs > service-logs.txt
++      - name: Upload logs
++        if: always()
++        uses: actions/upload-artifact@v4
++        with:
++          name: service-logs
++          path: service-logs.txt
++      - name: Stop containers
++        if: always()
++        run: docker compose -f docker-compose.test.yml stop
++      - name: Remove test volumes
+         run: docker compose -f docker-compose.test.yml down -v

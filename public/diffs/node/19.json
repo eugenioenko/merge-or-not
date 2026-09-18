@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "Switches the batch notification sender from Promise.allSettled to Promise.all for 'simpler' code.",
+  "explanation": "Promise.all rejects and returns as soon as the first sendNotification call fails, so a single bad push token now aborts the whole batch: every other user in the list silently never gets notified, and the caller sees a thrown error instead of a per-user success/failure breakdown. It also drops the logging of individual failures. Fix: keep Promise.allSettled (or catch per-item) so one failure doesn't cancel unrelated sends, and keep reporting which ones failed.",
+  "category": "error-handling",
+  "difficulty": 3,
+  "language": "node"
+}

@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "reject",
+  "context": "useNotificationSettings loads a user's notification preferences and now adds an includeRead filter and a markAsRead action.",
+  "explanation": "The effect's dependency array was changed from [userId] to [filters], but filters is a plain object literal recreated on every render. Since the effect calls setSettings, every fetch response triggers a re-render, which creates a new filters object, which re-triggers the effect \u2014 an infinite fetch loop. Fix: depend on the primitive values (filters.userId, filters.includeRead) or memoize filters with useMemo.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 3
+}

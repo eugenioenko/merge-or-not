@@ -103,5 +103,10 @@ git diff --no-index before.ext after.ext > {n}.diff
 | `csharp`  | C#      | csharp            |
 | `graphql` | GraphQL | graphql           |
 | `ci`      | CI/CD   | yaml              |
+| `javascript` | JavaScript | javascript   |
+| `typescript` | TypeScript | typescript   |
+| `rust`    | Rust    | rust              |
+| `sql`     | SQL     | sql               |
+| `ruby`    | Ruby    | ruby              |
 
 To add a new language: create the folder, add cards, and register the refractor language in `DiffCard.jsx` + add the label in `src/cards.js`.

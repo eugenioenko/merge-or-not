@@ -1,0 +1,22 @@
+diff --git a/src/services/imageResizer.js b/src/services/imageResizer.js
+index 0668f37..4607a81 100644
+--- a/src/services/imageResizer.js
++++ b/src/services/imageResizer.js
+@@ -1,10 +1,13 @@
+ const fs = require('fs');
++const { pipeline } = require('stream/promises');
+ const sharp = require('sharp');
+ 
+-function resizeImage(inputPath, outputPath, width) {
+-  fs.createReadStream(inputPath)
+-    .pipe(sharp().resize(width))
+-    .pipe(fs.createWriteStream(outputPath));
++async function resizeImage(inputPath, outputPath, width) {
++  await pipeline(
++    fs.createReadStream(inputPath),
++    sharp().resize(width),
++    fs.createWriteStream(outputPath)
++  );
+ }
+ 
+ module.exports = { resizeImage };

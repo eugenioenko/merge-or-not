@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "merge",
+  "context": "Enables response caching for the catalog listing endpoint, which is read frequently and varies by currency and locale.",
+  "explanation": "Safe to merge. AddResponseCaching/UseResponseCaching correctly registers and enables the middleware, and the endpoint is marked cacheable with VaryByQueryKeys for the currency query parameter and VaryByHeader for Accept-Language, so cached entries are partitioned per currency and locale instead of a single cached response being served to every client regardless of what they requested.",
+  "language": "csharp",
+  "category": "performance",
+  "difficulty": 3
+}

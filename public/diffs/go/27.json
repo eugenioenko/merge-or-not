@@ -1,0 +1,9 @@
+{
+  "id": 27,
+  "answer": "reject",
+  "context": "ExtractTenant and ExtractRoles pull fields out of decoded JWT claims (a map[string]interface{}) after the existing ExtractUserID, which uses the safe comma-ok form.",
+  "explanation": "Both new functions use bare type assertions instead of the comma-ok form. If tenant_id is missing (older tokens, service-to-service tokens) or roles is absent or comes back as a different JSON type, claims[\"tenant_id\"].(string) and claims[\"roles\"].([]interface{}) panic instead of returning an error, taking down the request goroutine (and the whole process if not recovered). The inner r.(string) has the same problem for a non-string role entry. Fix: use the two-value form (v, ok := claims[key].(T)) and return an error or zero value when ok is false, matching the pattern already used in ExtractUserID.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 3
+}

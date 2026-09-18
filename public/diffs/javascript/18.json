@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "merge",
+  "context": "Switches notifyAll from Promise.all to Promise.allSettled so one failed subscriber can't sink the whole notification batch, and returns a delivery/failure summary.",
+  "explanation": "Promise.all rejects as soon as any single promise rejects, which meant one broken subscriber (a dead webhook, a closed socket) would abort delivery to every other subscriber and throw away all the other results. Promise.allSettled waits for every promise to settle and reports each outcome individually, so notifyAll can now tell the caller exactly how many messages were delivered and which subscribers failed, without one bad actor blocking everyone else. Correct fix for a fan-out notification use case.",
+  "language": "javascript",
+  "category": "concurrency",
+  "difficulty": 3
+}

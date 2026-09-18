@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "Adds ConfigureAwait(false) to a service call inside an MVC controller action that runs on the classic ASP.NET (System.Web) synchronization context and reads HttpContext after the await.",
+  "explanation": "ConfigureAwait(false) tells the continuation not to resume on the captured synchronization context. On classic ASP.NET (System.Web), that context is what carries HttpContext.Current; resuming on a thread-pool thread instead means the code after the await can find HttpContext.Current null or, under concurrent requests, referring to the wrong request entirely. Fix: do not use ConfigureAwait(false) in request-handling code that touches HttpContext after an await \u2014 let it resume on the captured context.",
+  "language": "csharp",
+  "category": "concurrency",
+  "difficulty": 3
+}

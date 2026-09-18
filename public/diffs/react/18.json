@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "reject",
+  "context": "VideoPlayer updates the document title with the video's duration once its metadata has loaded.",
+  "explanation": "duration was moved from state into a ref, and the second effect lists durationRef.current in its dependency array. React compares the ref object's identity across renders, not the value inside .current, and mutating a ref never triggers a re-render in the first place \u2014 so the title-updating effect never runs again after the initial render. Fix: keep duration in state so updates both trigger a re-render and are visible in the dependency array.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 3
+}

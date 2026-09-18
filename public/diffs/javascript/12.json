@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "merge",
+  "context": "Rewrites createGrid and createIds to build their arrays with Array.from instead of manual push loops.",
+  "explanation": "Array.from({ length: n }, mapFn) creates a properly-sized array in one pass and initializes every slot through the map function, avoiding the classic new Array(n).fill(0) trap of sharing references for non-primitive values, while being more concise than manual loops with push. Both replacements produce identical output to the originals, just more directly. Good simplification.",
+  "language": "javascript",
+  "category": "style",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "reject",
+  "context": "Adds an audit_ledger method that cross-references the ledger against account balances.",
+  "explanation": "transfer and reconcile always lock accounts before ledger. audit_ledger locks ledger first, then accounts - the reverse order. If audit_ledger runs on one thread while transfer or reconcile runs concurrently on another, one can hold accounts while waiting on ledger and the other can hold ledger while waiting on accounts: a classic lock-order-inversion deadlock. All code paths that take both locks must acquire them in the same order.",
+  "language": "rust",
+  "category": "concurrency",
+  "difficulty": 4
+}

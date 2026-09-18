@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "reject",
+  "context": "Adding foreign keys from order_items and payments to orders to enforce referential integrity.",
+  "explanation": "ON DELETE CASCADE means deleting a single order silently deletes every one of its line items and payment records with no application-level record, audit trail, or chance to intervene. On a high-traffic orders table this turns any accidental or malicious bulk delete into instant, unrecoverable loss of order_items and payments data. A RESTRICT or explicit soft-delete pattern is safer here. Should be rejected.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 3
+}

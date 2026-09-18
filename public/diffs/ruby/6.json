@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "reject",
+  "context": "Adds a void action to the invoices API alongside the existing update/destroy actions.",
+  "explanation": "authorize_invoice! used to run before show, update, and destroy, checking that the invoice belongs to the caller's account. The new before_action list only runs it for show and update — destroy already lacked it in spirit but now void is added without authorization either. Any authenticated API user can void or delete an invoice belonging to a different account simply by guessing/enumerating its id. Fix: include :destroy and :void in the authorize_invoice! before_action list.",
+  "language": "ruby",
+  "category": "security",
+  "difficulty": 3
+}

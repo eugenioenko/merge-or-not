@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "Letting account admins customize the body of their notification emails from the settings page. custom_body is the raw text they typed in.",
+  "explanation": "env.from_string() compiles whatever text is in custom_body as a Jinja2 template, and that text comes straight from user input. A malicious or compromised admin account can submit something like {{ config.__class__.__init__.__globals__ }} to walk the object graph back to the Python runtime and execute arbitrary code - a server-side template injection. Fix: never compile user-supplied text with from_string; treat custom_body as data substituted into a fixed, trusted template (e.g. str.format with a whitelist of placeholders), or render it through jinja2.sandbox.SandboxedEnvironment with restricted globals.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 4
+}

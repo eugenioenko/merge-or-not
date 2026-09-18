@@ -1,0 +1,25 @@
+diff --git a/app/controllers/likes_controller.rb b/app/controllers/likes_controller.rb
+index 7f07c3c..c3874f4 100644
+--- a/app/controllers/likes_controller.rb
++++ b/app/controllers/likes_controller.rb
+@@ -1,17 +1,17 @@
+ class LikesController < ApplicationController
+   before_action :authenticate_user!
+-  before_action :set_article
++  before_action :set_article, only: [:create, :destroy]
+ 
+   def create
+     Like.create!(user: current_user, article: @article)
+-    @article.increment!(:likes_count)
++    @article.update_column(:likes_count, @article.likes_count + 1)
+     head :no_content
+   end
+ 
+   def destroy
+     like = @article.likes.find_by!(user: current_user)
+     like.destroy!
+-    @article.update!(likes_count: @article.likes.count)
++    @article.update_column(:likes_count, @article.likes_count - 1)
+     head :no_content
+   end
+ 

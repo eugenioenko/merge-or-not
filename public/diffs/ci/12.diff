@@ -1,0 +1,20 @@
+diff --git a/.github/workflows/issue-triage.yml b/.github/workflows/issue-triage.yml
+index 9c52e4e..efba810 100644
+--- a/.github/workflows/issue-triage.yml
++++ b/.github/workflows/issue-triage.yml
+@@ -9,6 +9,9 @@ jobs:
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
++      - name: Extract component
++        run: |
++          echo "COMPONENT=${{ github.event.issue.body }}" >> "$GITHUB_ENV"
+       - name: Label issue
+         uses: actions/github-script@v7
+         with:
+@@ -22,3 +25,5 @@ jobs:
+                 labels: ['bug']
+               });
+             }
++      - name: Notify component owner
++        run: ./scripts/notify-owner.sh "$COMPONENT"

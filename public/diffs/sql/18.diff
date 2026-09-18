@@ -1,0 +1,28 @@
+diff --git a/migrations/0200_add_discount_code_column.sql b/migrations/0200_add_discount_code_column.sql
+new file mode 100644
+--- /dev/null
++++ b/migrations/0200_add_discount_code_column.sql
+@@ -0,0 +1,23 @@
++ALTER TABLE orders
++    ADD COLUMN discount_code text;
++
++UPDATE orders
++SET discount_code = 'NONE'
++WHERE discount_code IS NULL;
++
++ALTER TABLE orders
++    ALTER COLUMN discount_code SET NOT NULL;
++
++ALTER TABLE orders
++    ADD CONSTRAINT fk_orders_discount_code
++    FOREIGN KEY (discount_code) REFERENCES discount_codes (code);
++
++ALTER TABLE orders
++    ADD COLUMN discount_applied_cents integer;
++
++UPDATE orders
++SET discount_applied_cents = 0
++WHERE discount_applied_cents IS NULL;
++
++ALTER TABLE orders
++    ALTER COLUMN discount_applied_cents SET NOT NULL;

@@ -1,0 +1,34 @@
+diff --git a/queries/monthly_revenue_report.sql b/queries/monthly_revenue_report.sql
+--- a/queries/monthly_revenue_report.sql
++++ b/queries/monthly_revenue_report.sql
+@@ -1,18 +1,14 @@
++WITH monthly_orders AS (
++    SELECT
++        date_trunc('month', created_at) AS month,
++        total_cents
++    FROM orders
++    WHERE status = 'completed'
++)
+ SELECT
+-    date_trunc('month', o.created_at) AS month,
+-    (
+-        SELECT SUM(o2.total_cents)
+-        FROM orders o2
+-        WHERE o2.status = 'completed'
+-          AND date_trunc('month', o2.created_at) = date_trunc('month', o.created_at)
+-    ) AS revenue_cents,
+-    (
+-        SELECT COUNT(*)
+-        FROM orders o3
+-        WHERE o3.status = 'completed'
+-          AND date_trunc('month', o3.created_at) = date_trunc('month', o.created_at)
+-    ) AS order_count
+-FROM orders o
+-WHERE o.status = 'completed'
+-GROUP BY date_trunc('month', o.created_at)
++    month,
++    SUM(total_cents) AS revenue_cents,
++    COUNT(*) AS order_count
++FROM monthly_orders
++GROUP BY month
+ ORDER BY month;

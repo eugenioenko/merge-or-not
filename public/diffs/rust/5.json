@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "Changes Token to own its text instead of borrowing it from the input.",
+  "explanation": "tokenize previously borrowed each word directly from the source string (Token<'a> { text: &'a str }) with zero allocations. Switching to an owned String and calling word.to_string() per token heap-allocates and copies for every single token produced. On large inputs this turns a zero-copy tokenizer into one that allocates proportionally to token count, adding real allocator pressure in a hot parsing loop for no functional benefit.",
+  "language": "rust",
+  "category": "performance",
+  "difficulty": 2
+}

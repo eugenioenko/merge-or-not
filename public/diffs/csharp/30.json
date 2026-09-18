@@ -1,0 +1,9 @@
+{
+  "id": 30,
+  "answer": "merge",
+  "context": "Updates the queue-draining BackgroundService to thread the host's stoppingToken through the dequeue/process calls and exit cleanly on shutdown.",
+  "explanation": "Safe to merge. The loop now exits on stoppingToken.IsCancellationRequested instead of looping while (true) forever, and the token is passed into DequeueAsync and ProcessAsync so a shutdown actually interrupts an in-progress wait rather than leaving the worker blocked. The resulting OperationCanceledException during shutdown is caught and logged as an expected, graceful stop instead of surfacing as an unhandled exception.",
+  "language": "csharp",
+  "category": "reliability",
+  "difficulty": 3
+}

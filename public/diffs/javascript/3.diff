@@ -1,0 +1,21 @@
+diff --git a/src/utils/currency.js b/src/utils/currency.js
+index 7b4e9a1..2f6c8d3 100644
+--- a/src/utils/currency.js
++++ b/src/utils/currency.js
+@@ -9,3 +9,16 @@ export function sumAmounts(amounts) {
+ export function sumAmounts(amounts) {
+   return amounts.reduce((total, amount) => total + amount, 0)
+ }
++
++export function hasReachedTarget(amounts, target) {
++  return sumAmounts(amounts) === target
++}
++
++export function remainingToTarget(amounts, target) {
++  const remaining = target - sumAmounts(amounts)
++  return remaining > 0 ? remaining : 0
++}
++
++export function formatTotal(amounts) {
++  return `$${sumAmounts(amounts).toFixed(2)}`
++}

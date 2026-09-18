@@ -1,0 +1,9 @@
+{
+  "id": 26,
+  "answer": "merge",
+  "context": "Changes order placement to write the OrderPlacedEvent into an OutboxMessages table in the same SaveChangesAsync call instead of publishing it directly afterward.",
+  "explanation": "Safe to merge. Publishing directly after SaveChangesAsync has a dual-write problem: the DB commit can succeed while the publish call fails (or the process crashes between the two), silently losing the event, or the reverse can duplicate it. Writing the event as an OutboxMessage row inside the same DbContext transaction as the order guarantees the event is durably recorded if and only if the order itself commits; a separate outbox dispatcher can then publish it with retry and at-least-once delivery.",
+  "language": "csharp",
+  "category": "reliability",
+  "difficulty": 4
+}

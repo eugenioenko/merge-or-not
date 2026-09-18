@@ -1,0 +1,22 @@
+diff --git a/src/components/ProductFilterList.jsx b/src/components/ProductFilterList.jsx
+index a6891f9..c8c7cd0 100644
+--- a/src/components/ProductFilterList.jsx
++++ b/src/components/ProductFilterList.jsx
+@@ -1,11 +1,13 @@
+-import { useState } from 'react'
++import { useMemo, useState } from 'react'
+ 
+ export function ProductFilterList({ products, query, sortBy }) {
+   const [theme, setTheme] = useState('light')
+ 
+-  const filtered = products
+-    .filter((p) => p.name.toLowerCase().includes(query.toLowerCase()))
+-    .sort((a, b) => (sortBy === 'price' ? a.price - b.price : a.name.localeCompare(b.name)))
++  const filtered = useMemo(() => {
++    return products
++      .filter((p) => p.name.toLowerCase().includes(query.toLowerCase()))
++      .sort((a, b) => (sortBy === 'price' ? a.price - b.price : a.name.localeCompare(b.name)))
++  }, [products, query, sortBy])
+ 
+   return (
+     <div className={`product-list product-list--${theme}`}>

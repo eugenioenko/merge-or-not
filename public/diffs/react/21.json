@@ -1,0 +1,9 @@
+{
+  "id": 21,
+  "answer": "reject",
+  "context": "ProductTable renders a ProductRow (wrapped in React.memo) for each product and tracks which row is selected.",
+  "explanation": "handleSelect was replaced with an inline arrow function created fresh on every render of ProductTable. Since ProductRow is wrapped in React.memo, it relies on prop identity to skip re-renders \u2014 a new onSelect function reference on every render defeats that memoization entirely, so every row re-renders whenever any row is selected, even in tables with hundreds of products. Fix: keep the callback stabilized with useCallback.",
+  "language": "react",
+  "category": "performance",
+  "difficulty": 3
+}

@@ -1,0 +1,45 @@
+diff --git a/src/components/MessageList.jsx b/src/components/MessageList.jsx
+index 6a2e19c..22ba845 100644
+--- a/src/components/MessageList.jsx
++++ b/src/components/MessageList.jsx
+@@ -1,11 +1,34 @@
++import { useState } from 'react'
++
++const ROW_HEIGHT = 48
++const VIEWPORT_HEIGHT = 480
++const OVERSCAN = 5
++
+ export function MessageList({ messages }) {
++  const [scrollTop, setScrollTop] = useState(0)
++
++  const visibleCount = Math.ceil(VIEWPORT_HEIGHT / ROW_HEIGHT)
++  const startIndex = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - OVERSCAN)
++  const endIndex = Math.min(messages.length, startIndex + visibleCount + OVERSCAN * 2)
++  const visibleMessages = messages.slice(startIndex, endIndex)
++
+   return (
+-    <div className="message-list" style={{ height: 480, overflowY: 'auto' }}>
+-      {messages.map((message) => (
+-        <div key={message.id} className="message-row" style={{ height: 48 }}>
+-          <strong>{message.author}</strong>: {message.text}
+-        </div>
+-      ))}
++    <div
++      className="message-list"
++      style={{ height: VIEWPORT_HEIGHT, overflowY: 'auto', position: 'relative' }}
++      onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
++    >
++      <div style={{ height: messages.length * ROW_HEIGHT, position: 'relative' }}>
++        {visibleMessages.map((message, i) => (
++          <div
++            key={message.id}
++            className="message-row"
++            style={{ position: 'absolute', top: (startIndex + i) * ROW_HEIGHT, height: ROW_HEIGHT, width: '100%' }}
++          >
++            <strong>{message.author}</strong>: {message.text}
++          </div>
++        ))}
++      </div>
+     </div>
+   )
+ }

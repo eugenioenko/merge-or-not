@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "Clean up the session manager by removing the repeated null checks.",
+  "explanation": "getUserId used to throw a clear \"No active session\" error when called before login. The ! assertion removes that guard entirely - calling it (or the new getSessionExpiry) with no session now throws a generic \"Cannot read properties of null\" deep inside the module, with no indication of what went wrong.",
+  "language": "typescript",
+  "category": "correctness",
+  "difficulty": 3
+}

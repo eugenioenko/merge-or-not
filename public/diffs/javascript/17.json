@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "Adds loadUserProfile (and batch/cached variants) that combine a user and permissions fetch into a single promise.",
+  "explanation": "The executor passed to `new Promise` is an async function, but the Promise constructor never looks at what that function returns or awaits it, it only cares about resolve/reject being called. If fetchUser or fetchPermissions rejects, the await throws inside the executor, the async function returns a rejected promise that nothing is attached to, and that becomes a silent unhandled promise rejection. Meanwhile resolve() and reject() are never called, so the outer promise returned by loadUserProfile hangs forever, its .then/.catch never firing. Wrap the body in try/catch and call reject(error), or better, drop the Promise constructor entirely and just make loadUserProfile itself an async function.",
+  "language": "javascript",
+  "category": "concurrency",
+  "difficulty": 4
+}

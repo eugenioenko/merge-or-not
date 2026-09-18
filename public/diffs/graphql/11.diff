@@ -1,0 +1,22 @@
+diff --git a/src/graphql/resolvers/auth.js b/src/graphql/resolvers/auth.js
+index 720c313..19bee85 100644
+--- a/src/graphql/resolvers/auth.js
++++ b/src/graphql/resolvers/auth.js
+@@ -10,7 +10,7 @@
+     return { token: signToken(user), user };
+   }),
+ 
+-  requestPasswordReset: rateLimiter({ window: '1h', max: 3 })(async (_parent, { email }, { db, mailer }) => {
++  requestPasswordReset: async (_parent, { email }, { db, mailer }) => {
+     const user = await db.user.findUnique({ where: { email } });
+     if (!user) {
+       return { success: true };
+@@ -21,7 +21,7 @@
+     });
+     await mailer.sendPasswordReset(user.email, token);
+     return { success: true };
+-  }),
++  },
+ 
+   resendVerificationEmail: rateLimiter({ window: '1h', max: 3 })(async (_parent, _args, { db, mailer, currentUser }) => {
+     if (!currentUser) {

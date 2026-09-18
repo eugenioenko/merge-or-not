@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "reject",
+  "context": "Adding indexes to speed up filtering active users and subscribed newsletter recipients.",
+  "explanation": "is_active and newsletter_subscribed each only have two possible values, and the table is overwhelmingly one of them, so the planner will almost always prefer a sequential scan over these indexes anyway. They just add write overhead and storage for a query pattern they will not actually be used for; a partial index scoped to the rare value would help, a plain index on a boolean does not. Should be rejected.",
+  "language": "sql",
+  "category": "performance",
+  "difficulty": 2
+}

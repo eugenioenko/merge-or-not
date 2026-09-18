@@ -1,0 +1,31 @@
+diff --git a/src/state/registry.rs b/src/state/registry.rs
+index 0000000..1111111 100644
+--- a/src/state/registry.rs
++++ b/src/state/registry.rs
+@@ -1,21 +1,21 @@
+ use std::collections::HashMap;
+-use std::sync::{Arc, Mutex};
++use std::sync::{Arc, RwLock};
+ 
+ #[derive(Clone)]
+ pub struct ServiceRegistry {
+-    inner: Arc<Mutex<HashMap<String, String>>>,
++    inner: Arc<RwLock<HashMap<String, String>>>,
+ }
+ 
+ impl ServiceRegistry {
+     pub fn new() -> Self {
+-        Self { inner: Arc::new(Mutex::new(HashMap::new())) }
++        Self { inner: Arc::new(RwLock::new(HashMap::new())) }
+     }
+ 
+     pub fn register(&self, name: String, addr: String) {
+-        self.inner.lock().unwrap().insert(name, addr);
++        self.inner.write().unwrap().insert(name, addr);
+     }
+ 
+     pub fn lookup(&self, name: &str) -> Option<String> {
+-        self.inner.lock().unwrap().get(name).cloned()
++        self.inner.read().unwrap().get(name).cloned()
+     }
+ }

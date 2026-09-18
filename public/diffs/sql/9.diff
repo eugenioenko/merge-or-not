@@ -1,0 +1,25 @@
+diff --git a/migrations/0180_add_email_verified_column.sql b/migrations/0180_add_email_verified_column.sql
+new file mode 100644
+--- /dev/null
++++ b/migrations/0180_add_email_verified_column.sql
+@@ -0,0 +1,20 @@
++ALTER TABLE users
++    ADD COLUMN email_verified boolean NOT NULL DEFAULT false;
++
++ALTER TABLE users
++    ADD COLUMN phone_verified boolean NOT NULL DEFAULT false;
++
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_users_email_verified_false
++    ON users (id)
++    WHERE email_verified = false;
++
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_users_phone_verified_false
++    ON users (id)
++    WHERE phone_verified = false;
++
++ALTER TABLE users
++    ADD COLUMN two_factor_enabled boolean NOT NULL DEFAULT false;
++
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_users_two_factor_enabled_false
++    ON users (id)
++    WHERE two_factor_enabled = false;

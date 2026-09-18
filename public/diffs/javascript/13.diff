@@ -1,0 +1,20 @@
+diff --git a/src/state/history.js b/src/state/history.js
+index 9b2f4a7..e1c6d83 100644
+--- a/src/state/history.js
++++ b/src/state/history.js
+@@ -1,4 +1,2 @@
+-import { cloneDeep } from 'lodash-es'
+-
+ export function pushSnapshot(history, state) {
+-  const snapshot = cloneDeep(state)
++  const snapshot = JSON.parse(JSON.stringify(state))
+@@ -12,3 +10,3 @@ export function undo(history, current) {
+   const previous = history.past.pop()
+-  history.future.push(cloneDeep(current))
++  history.future.push(JSON.parse(JSON.stringify(current)))
+   return previous
+@@ -19,3 +17,3 @@ export function redo(history, current) {
+   const next = history.future.pop()
+-  history.past.push(cloneDeep(current))
++  history.past.push(JSON.parse(JSON.stringify(current)))
+   return next

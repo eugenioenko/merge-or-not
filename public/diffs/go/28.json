@@ -1,0 +1,9 @@
+{
+  "id": 28,
+  "answer": "merge",
+  "context": "Pool.Submit previously spawned an unbounded goroutine per task with no way to cap concurrency, back-pressure the caller, or know when all submitted work had finished.",
+  "explanation": "Safe to merge. sem is a buffered channel acting as a concurrency limiter, acquired via select alongside ctx.Done() so a cancelled caller doesn't block waiting for a slot; the deferred receive from sem always releases it, and wg lets callers block on Wait() until every submitted task has actually completed. This bounds concurrency, respects cancellation, and gives the pool a clean shutdown signal — the three things the original fire-and-forget version was missing.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 3
+}

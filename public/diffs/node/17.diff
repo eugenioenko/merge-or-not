@@ -1,0 +1,37 @@
+diff --git a/src/services/archiveExtractor.js b/src/services/archiveExtractor.js
+index 6c25610..86076a5 100644
+--- a/src/services/archiveExtractor.js
++++ b/src/services/archiveExtractor.js
+@@ -1,32 +1,28 @@
+ const fs = require('fs');
+ const path = require('path');
+ const unzipper = require('unzipper');
+ 
+ const MAX_ENTRIES = 2000;
+ 
+ async function extractArchive(zipPath, destDir) {
+   const directory = await unzipper.Open.file(zipPath);
+   if (directory.files.length > MAX_ENTRIES) {
+     throw new Error('Archive has too many entries');
+   }
+   for (const entry of directory.files) {
+     const targetPath = path.join(destDir, entry.path);
+-    const relative = path.relative(destDir, targetPath);
+-    if (relative.startsWith('..') || path.isAbsolute(relative)) {
+-      throw new Error(`Unsafe archive entry: ${entry.path}`);
+-    }
+     if (entry.type === 'Directory') {
+       await fs.promises.mkdir(targetPath, { recursive: true });
+       continue;
+     }
+     await fs.promises.mkdir(path.dirname(targetPath), { recursive: true });
+     await new Promise((resolve, reject) => {
+       entry.stream()
+         .pipe(fs.createWriteStream(targetPath))
+         .on('finish', resolve)
+         .on('error', reject);
+     });
+   }
+ }
+ 
+ module.exports = { extractArchive };

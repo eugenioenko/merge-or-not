@@ -1,0 +1,26 @@
+diff --git a/Services/CsvExporter.cs b/Services/CsvExporter.cs
+index 5c6b656..43938f4 100644
+--- a/Services/CsvExporter.cs
++++ b/Services/CsvExporter.cs
+@@ -4,16 +4,17 @@
+ {
+     public string Export(IReadOnlyList<OrderRow> rows)
+     {
+-        var sb = new StringBuilder(rows.Count * 64);
+-        sb.AppendLine("OrderId,Customer,Total,PlacedAt");
++        var csv = "OrderId,Customer,Total,PlacedAt\n";
+         foreach (var row in rows)
+         {
++            var sb = new StringBuilder();
+             sb.Append(row.OrderId).Append(',')
+               .Append(row.Customer).Append(',')
+               .Append(row.Total).Append(',')
+-              .AppendLine(row.PlacedAt.ToString("O"));
++              .Append(row.PlacedAt.ToString("O"));
++            csv += sb.ToString() + "\n";
+         }
+ 
+-        return sb.ToString();
++        return csv;
+     }
+ }

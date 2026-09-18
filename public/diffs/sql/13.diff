@@ -1,0 +1,25 @@
+diff --git a/migrations/0190_add_phone_verified_column.sql b/migrations/0190_add_phone_verified_column.sql
+new file mode 100644
+--- /dev/null
++++ b/migrations/0190_add_phone_verified_column.sql
+@@ -0,0 +1,20 @@
++ALTER TABLE users
++    ADD COLUMN phone_verified boolean NOT NULL;
++
++ALTER TABLE users
++    ADD COLUMN phone_verified_at timestamptz;
++
++ALTER TABLE users
++    ADD COLUMN phone_verified_by text;
++
++ALTER TABLE users
++    ADD COLUMN phone_verification_method text;
++
++CREATE INDEX idx_users_phone_verified
++    ON users (phone_verified);
++
++CREATE INDEX idx_users_phone_verified_at
++    ON users (phone_verified_at);
++
++CREATE INDEX idx_users_phone_verification_method
++    ON users (phone_verification_method);

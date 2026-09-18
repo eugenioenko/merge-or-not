@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "reject",
+  "context": "Adds an 'advanced' search mode that lets power users type raw regex patterns into the product search box.",
+  "explanation": "When advanced=true the raw, unescaped, unbounded user string is passed straight to MongoDB's $regex. A client can submit a pathological pattern (e.g. nested quantifiers like (a+)+$) that takes catastrophic time to evaluate, tying up the event loop or the database's regex engine (ReDoS). It also drops the previous length cap on the input. Fix: keep escaping/length-limiting user input, or if raw patterns are truly needed, validate them against a safe regex library (e.g. re2) with a time budget.",
+  "category": "security",
+  "difficulty": 3,
+  "language": "node"
+}

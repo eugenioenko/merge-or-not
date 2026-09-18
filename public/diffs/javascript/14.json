@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "merge",
+  "context": "Adds a Range class implementing the iterator protocol so ranges work with for...of, spread, and destructuring.",
+  "explanation": "The iterator object returned from [Symbol.iterator]() correctly implements next() returning {value, done}, handles both positive and negative steps by choosing the right comparison direction, and is itself iterable (returns `this` from its own Symbol.iterator), so it plays nicely with anything expecting an Iterable or an Iterator. State (current) is captured per-iterator via closure, so multiple concurrent iterations of the same Range don't interfere with each other. Correct, idiomatic implementation.",
+  "language": "javascript",
+  "category": "api-design",
+  "difficulty": 4
+}

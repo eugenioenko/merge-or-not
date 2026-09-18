@@ -1,0 +1,30 @@
+diff --git a/src/graphql/resolvers/product.js b/src/graphql/resolvers/product.js
+index 1ed2e22..53d37fa 100644
+--- a/src/graphql/resolvers/product.js
++++ b/src/graphql/resolvers/product.js
+@@ -1,23 +1,9 @@
+-const { UserInputError } = require('../errors');
+-
+ const Query = {
+-  product: async (_parent, { id }, { db }) => {
+-    const productId = parseInt(id, 10);
+-    if (Number.isNaN(productId)) {
+-      throw new UserInputError('Invalid product id');
+-    }
+-    return db.product.findUnique({ where: { id: productId } });
+-  },
++  product: (_parent, { id }, { db }) => db.product.findUnique({ where: { id } }),
+ };
+ 
+ const Mutation = {
+-  updateProductPrice: async (_parent, { id, price }, { db }) => {
+-    const productId = parseInt(id, 10);
+-    if (Number.isNaN(productId)) {
+-      throw new UserInputError('Invalid product id');
+-    }
+-    return db.product.update({ where: { id: productId }, data: { price } });
+-  },
++  updateProductPrice: (_parent, { id, price }, { db }) => db.product.update({ where: { id }, data: { price } }),
+ };
+ 
+ module.exports = { Query, Mutation };

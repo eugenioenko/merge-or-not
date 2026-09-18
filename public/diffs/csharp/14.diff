@@ -1,0 +1,25 @@
+diff --git a/Program.cs b/Program.cs
+index 8f8c91a..f12a637 100644
+--- a/Program.cs
++++ b/Program.cs
+@@ -4,7 +4,20 @@
+ builder.Services.AddDbContext<AppDbContext>(options =>
+     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+ 
++builder.Services.AddHealthChecks()
++    .AddDbContextCheck<AppDbContext>("database", tags: new[] { "ready" })
++    .AddCheck<RedisHealthCheck>("redis", tags: new[] { "ready" });
++
+ var app = builder.Build();
+ 
+ app.MapControllers();
++app.MapHealthChecks("/health/live", new HealthCheckOptions
++{
++    Predicate = _ => false
++});
++app.MapHealthChecks("/health/ready", new HealthCheckOptions
++{
++    Predicate = check => check.Tags.Contains("ready")
++});
++
+ app.Run();

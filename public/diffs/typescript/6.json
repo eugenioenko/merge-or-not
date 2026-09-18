@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "merge",
+  "context": "Give the `pick` utility proper generic constraints instead of `any` so callers keep type safety.",
+  "explanation": "pick<T, K extends keyof T> now returns Pick<T, K>, so the result is properly typed based on the keys passed in, and passing a key that doesn't exist on T is now a compile error instead of silently returning undefined.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 3
+}

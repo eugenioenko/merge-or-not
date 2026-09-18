@@ -1,0 +1,32 @@
+diff --git a/Services/OrderService.cs b/Services/OrderService.cs
+index 86f62b7..43446c8 100644
+--- a/Services/OrderService.cs
++++ b/Services/OrderService.cs
+@@ -3,19 +3,23 @@
+ public class OrderService
+ {
+     private readonly AppDbContext _db;
+-    private readonly IEventPublisher _eventPublisher;
+ 
+-    public OrderService(AppDbContext db, IEventPublisher eventPublisher)
++    public OrderService(AppDbContext db)
+     {
+         _db = db;
+-        _eventPublisher = eventPublisher;
+     }
+ 
+     public async Task<int> PlaceOrderAsync(Order order)
+     {
+         _db.Orders.Add(order);
++        _db.OutboxMessages.Add(new OutboxMessage
++        {
++            Type = nameof(OrderPlacedEvent),
++            Payload = JsonSerializer.Serialize(new OrderPlacedEvent(order.Id)),
++            OccurredAt = DateTimeOffset.UtcNow
++        });
++
+         await _db.SaveChangesAsync();
+-        await _eventPublisher.PublishAsync(new OrderPlacedEvent(order.Id));
+         return order.Id;
+     }
+ }

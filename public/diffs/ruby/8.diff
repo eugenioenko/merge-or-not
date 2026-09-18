@@ -1,0 +1,22 @@
+diff --git a/app/services/csv_export_service.rb b/app/services/csv_export_service.rb
+index a254621..8eac303 100644
+--- a/app/services/csv_export_service.rb
++++ b/app/services/csv_export_service.rb
+@@ -4,11 +4,13 @@ class CsvExportService
+   end
+ 
+   def call(path)
+-    CSV.open(path, "wb") do |csv|
+-      csv << header
+-      @records.each { |record| csv << row_for(record) }
+-    end
++    csv = CSV.open(path, "wb")
++    csv << header
++    @records.each { |record| csv << row_for(record) }
+     path
++  rescue StandardError => e
++    Rails.logger.error("CSV export failed: #{e.message}")
++    raise
+   end
+ 
+   private

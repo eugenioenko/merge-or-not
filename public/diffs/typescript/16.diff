@@ -1,0 +1,23 @@
+diff --git a/src/utils/merge.ts b/src/utils/merge.ts
+index 4b5c6d7..8e9f0a1 100644
+--- a/src/utils/merge.ts
++++ b/src/utils/merge.ts
+@@ -1,14 +1,14 @@
+-export function mergeConfigs<T extends Record<string, unknown>>(
++export function mergeConfigs<T extends object>(
+   base: T,
+-  override: Partial<T>
++  override: object
+ ): T {
+-  return { ...base, ...override };
++  return { ...base, ...override } as T;
+ }
+ 
+ interface AppConfig {
+   timeoutMs: number;
+   retries: number;
+ }
+ 
+ const defaults: AppConfig = { timeoutMs: 3000, retries: 3 };
+-const merged = mergeConfigs(defaults, { retries: 5 });
++const merged = mergeConfigs(defaults, { retryCount: 5 });

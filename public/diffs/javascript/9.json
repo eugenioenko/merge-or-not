@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "reject",
+  "context": "Adds click and form-submit tracking helpers to the plain (non-module) analytics script loaded on every page via a script tag.",
+  "explanation": "trackClick assigns to `count` inside its for loop without declaring it with let/const/var. This file is a classic script (not a module), so sloppy-mode rules apply: the undeclared assignment silently creates window.count, a global shared by every script on the page. Two elements with class lists clicked in quick succession (or any other script that happens to use a variable named count) will stomp on each other's loop counter. Declare it with `let count = 0`.",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 2
+}

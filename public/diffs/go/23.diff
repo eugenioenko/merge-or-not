@@ -1,0 +1,29 @@
+diff --git a/internal/report/writer.go b/internal/report/writer.go
+index f0a3c82..b6e9d17 100644
+--- a/internal/report/writer.go
++++ b/internal/report/writer.go
+@@ -6,3 +6,24 @@ func EnsureDir(dir string) error {
+ func EnsureDir(dir string) error {
+ 	return os.MkdirAll(dir, 0o755)
+ }
++
++func WriteReport(path string, data []byte) error {
++	f, err := os.Create(path)
++	if err != nil {
++		return err
++	}
++
++	w := bufio.NewWriter(f)
++	if _, err := w.Write(data); err != nil {
++		f.Close()
++		return err
++	}
++
++	if err := w.Flush(); err != nil {
++		f.Close()
++		return err
++	}
++
++	f.Close()
++	return nil
++}

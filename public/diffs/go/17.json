@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "New handler updates a user's profile. UpdateProfileRequest has an Email field; the store's UpdateProfile persists the change and returns the updated user.",
+  "explanation": "Neither of the first two http.Error calls is followed by return, so after writing a 400 response the handler keeps executing anyway — it calls h.store.UpdateProfile with an empty or invalid req, and then writes a second response body on top of the first, triggering \"http: superfluous response.WriteHeader call\" and sending malformed output to the client. Fix: add return immediately after each http.Error call.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 29,
+  "answer": "merge",
+  "context": "Replacing offset-based pagination in list_orders with keyset (cursor) pagination based on the last-seen order id.",
+  "explanation": "This fixes the classic offset-pagination problem: with OFFSET, a row inserted or deleted between two page fetches shifts later pages, so rows get skipped or duplicated. Keyset pagination (WHERE id > after_id ORDER BY id LIMIT n) is stable regardless of concurrent writes. It also fetches page_size + 1 rows to determine has_more in the same query instead of a separate COUNT(*), and clamps page_size to MAX_PAGE_SIZE so a caller can't request an unbounded page. The returned items/next_cursor shape is a standard, self-describing cursor response.",
+  "language": "python",
+  "category": "performance",
+  "difficulty": 3
+}

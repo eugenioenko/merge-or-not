@@ -1,0 +1,26 @@
+diff --git a/src/utils/stats.js b/src/utils/stats.js
+index 4d2e8a1..9f3b6c7 100644
+--- a/src/utils/stats.js
++++ b/src/utils/stats.js
+@@ -1,7 +1,7 @@
+ export function sum(list) {
+   let total = 0
+-  for (let i = 0; i < list.length; i++) {
+-    total += list[i]
++  for (const index in list) {
++    total += list[index]
+   }
+   return total
+ }
+@@ -9,3 +9,11 @@ export function average(list) {
+ export function average(list) {
+   return list.length ? sum(list) / list.length : 0
+ }
++
++export function describe(list) {
++  return {
++    count: list.length,
++    total: sum(list),
++    average: average(list),
++  }
++}

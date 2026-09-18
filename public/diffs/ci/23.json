@@ -1,0 +1,9 @@
+{
+  "id": 23,
+  "answer": "merge",
+  "context": "Compliance asked for a software bill of materials attached to every tagged container release.",
+  "explanation": "Safe to merge. Adds an SBOM generation step with `anchore/sbom-action` against the exact image just pushed, in SPDX JSON format, and uploads it as a build artifact with an explicit `retention-days: 90` (appropriate for a compliance artifact tied to a release). This gives downstream consumers a verifiable manifest of what's in the image with no change to the build/push behavior itself.",
+  "language": "ci",
+  "category": "supply-chain",
+  "difficulty": 2
+}

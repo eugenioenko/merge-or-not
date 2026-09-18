@@ -1,0 +1,38 @@
+diff --git a/src/models/config.rs b/src/models/config.rs
+index 0000000..1111111 100644
+--- a/src/models/config.rs
++++ b/src/models/config.rs
+@@ -1,21 +1,21 @@
+ use std::env;
++use thiserror::Error;
++
++#[derive(Debug, Error)]
++pub enum ConfigError {
++    #[error("missing environment variable: {0}")]
++    Missing(#[from] env::VarError),
++    #[error("invalid port number: {0}")]
++    InvalidPort(#[from] std::num::ParseIntError),
++}
+ 
+ pub struct Config {
+     pub port: u16,
+     pub database_url: String,
+ }
+ 
+-pub fn load_config() -> Result<Config, String> {
+-    let port = match env::var("APP_PORT") {
+-        Ok(val) => match val.parse::<u16>() {
+-            Ok(p) => p,
+-            Err(e) => return Err(format!("invalid APP_PORT: {e}")),
+-        },
+-        Err(_) => return Err("APP_PORT not set".to_string()),
+-    };
+-    let database_url = match env::var("DATABASE_URL") {
+-        Ok(val) => val,
+-        Err(_) => return Err("DATABASE_URL not set".to_string()),
+-    };
++pub fn load_config() -> Result<Config, ConfigError> {
++    let port: u16 = env::var("APP_PORT")?.parse()?;
++    let database_url = env::var("DATABASE_URL")?;
+     Ok(Config { port, database_url })
+ }

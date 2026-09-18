@@ -1,0 +1,22 @@
+diff --git a/src/codec/encoder.rs b/src/codec/encoder.rs
+index 0000000..1111111 100644
+--- a/src/codec/encoder.rs
++++ b/src/codec/encoder.rs
+@@ -3,8 +3,15 @@
+     pub payload_len: u16,
+ }
+ 
+-pub fn parse_frame_header(buf: &[u8]) -> FrameHeader {
++#[derive(Debug, thiserror::Error)]
++#[error("frame header too short: need 3 bytes, got {0}")]
++pub struct FrameTooShort(usize);
++
++pub fn parse_frame_header(buf: &[u8]) -> Result<FrameHeader, FrameTooShort> {
++    if buf.len() < 3 {
++        return Err(FrameTooShort(buf.len()));
++    }
+     let opcode = buf[0];
+     let payload_len = u16::from_be_bytes([buf[1], buf[2]]);
+-    FrameHeader { opcode, payload_len }
++    Ok(FrameHeader { opcode, payload_len })
+ }

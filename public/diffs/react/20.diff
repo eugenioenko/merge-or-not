@@ -1,0 +1,44 @@
+diff --git a/src/components/NewsletterForm.jsx b/src/components/NewsletterForm.jsx
+index 3ee5aa6..43c88e8 100644
+--- a/src/components/NewsletterForm.jsx
++++ b/src/components/NewsletterForm.jsx
+@@ -2,10 +2,14 @@
+ 
+ export function NewsletterForm() {
+   const [email, setEmail] = useState('')
++  const [consent, setConsent] = useState(false)
+   const [status, setStatus] = useState('idle')
+ 
+-  async function handleSubmit(e) {
+-    e.preventDefault()
++  async function handleSubmit() {
++    if (!consent) {
++      setStatus('error')
++      return
++    }
+     setStatus('submitting')
+     try {
+       await fetch('/api/newsletter', {
+@@ -15,6 +19,7 @@
+       })
+       setStatus('success')
+       setEmail('')
++      setConsent(false)
+     } catch {
+       setStatus('error')
+     }
+@@ -29,6 +34,14 @@
+         placeholder="you@example.com"
+         required
+       />
++      <label>
++        <input
++          type="checkbox"
++          checked={consent}
++          onChange={(e) => setConsent(e.target.checked)}
++        />
++        I agree to receive emails
++      </label>
+       <button type="submit" disabled={status === 'submitting'}>
+         Subscribe
+       </button>

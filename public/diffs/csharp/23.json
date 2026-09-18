@@ -1,0 +1,9 @@
+{
+  "id": 23,
+  "answer": "reject",
+  "context": "Makes ReportExporter implement IDisposable and dispose the injected PdfEngine. PdfEngine is registered as a singleton and ReportExporter is created per request.",
+  "explanation": "PdfEngine is registered once as a singleton and shared by every request. Disposing it from ReportExporter.Dispose(), which runs at the end of a single scoped/transient request, tears down that shared engine for the entire application the moment any one request finishes and its ReportExporter is released \u2014 every other in-flight and future request then hits ObjectDisposedException. Fix: do not dispose services you do not own; only the code that registered/created a singleton should ever dispose it.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 4
+}

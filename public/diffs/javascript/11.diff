@@ -1,0 +1,29 @@
+diff --git a/src/components/ResizeWatcher.js b/src/components/ResizeWatcher.js
+new file mode 100644
+index 0000000..9a3f7c1
+--- /dev/null
++++ b/src/components/ResizeWatcher.js
+@@ -0,0 +1,23 @@
++export class ResizeWatcher {
++  constructor(element, onResize) {
++    this.element = element
++    this.onResize = onResize
++    this.handleResize = this.handleResize.bind(this)
++    window.addEventListener('resize', this.handleResize)
++    this.open = true
++  }
++
++  handleResize() {
++    if (!this.open) return
++    const rect = this.element.getBoundingClientRect()
++    this.onResize(rect)
++  }
++
++  close() {
++    this.open = false
++  }
++}
++
++export function watchAllPanels(panels, onResize) {
++  return panels.map((panel) => new ResizeWatcher(panel, onResize))
++}

@@ -1,0 +1,48 @@
+diff --git a/app/controllers/refunds_controller.rb b/app/controllers/refunds_controller.rb
+index 796357e..14ecb96 100644
+--- a/app/controllers/refunds_controller.rb
++++ b/app/controllers/refunds_controller.rb
+@@ -3,12 +3,13 @@ class RefundsController < ApplicationController
+   before_action :set_order
+ 
+   def create
+-    charge = @order.charge
+-    refund = PaymentGateway.refund(charge.provider_id, amount: params[:amount])
+-    @order.update!(status: "refunded", refunded_at: Time.current)
+-    render json: { refund_id: refund.id }, status: :created
+-  rescue PaymentGateway::Error => e
+-    render json: { error: e.message }, status: :unprocessable_entity
++    result = RefundService.new(order: @order, amount: params[:amount]).call
++
++    if result.success?
++      render json: { refund_id: result.refund_id }, status: :created
++    else
++      render json: { error: result.error }, status: :unprocessable_entity
++    end
+   end
+ 
+   private
+diff --git a/app/services/refund_service.rb b/app/services/refund_service.rb
+new file mode 100644
+index 0000000..f52cbbc
+--- /dev/null
++++ b/app/services/refund_service.rb
+@@ -0,0 +1,18 @@
++class RefundService
++  Result = Struct.new(:success?, :refund_id, :error, keyword_init: true)
++
++  def initialize(order:, amount:)
++    @order = order
++    @amount = amount
++  end
++
++  def call
++    charge = @order.charge
++    refund = PaymentGateway.refund(charge.provider_id, amount: @amount)
++    @order.update!(status: "refunded", refunded_at: Time.current)
++    Result.new(success?: true, refund_id: refund.id)
++  rescue PaymentGateway::Error => e
++    Rails.logger.warn("Refund failed for order #{@order.id}: #{e.message}")
++    Result.new(success?: false, error: e.message)
++  end
++end

@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "reject",
+  "context": "Issue triage workflow. A teammate added a step to route new issues to a component owner based on the issue body.",
+  "explanation": "`${{ github.event.issue.body }}` is fully attacker-controlled and gets written straight into a shell command that appends to `$GITHUB_ENV`. Since issue bodies can contain newlines, an attacker can submit a body like `Component: x\\nMALICIOUS_VAR=evil\\nPATH=/tmp/evil:$PATH` — each extra line becomes its own environment variable definition for every later step in the job (this is the classic GITHUB_ENV/GITHUB_PATH injection). It's also a plain script-injection into `run:` on top of that. Fix: pass the body through `env:` and read it from a shell variable, and never derive `GITHUB_ENV`/`GITHUB_PATH` entries from unsanitized user input.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 4
+}

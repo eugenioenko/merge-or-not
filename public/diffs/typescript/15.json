@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "Simplify the cart item-count check using optional chaining.",
+  "explanation": "getItemCount used to throw when the cart failed to load, surfacing the bug immediately. Now cart?.items?.length ?? 0 quietly treats a missing cart the same as an empty one, so a broken cart-loading path looks like \"nothing in cart\" instead of raising an error - and checkout proceeds as if $0 is correct.",
+  "language": "typescript",
+  "category": "correctness",
+  "difficulty": 4
+}

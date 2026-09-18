@@ -1,0 +1,24 @@
+diff --git a/app/controllers/orders_controller.rb b/app/controllers/orders_controller.rb
+index 55f0495..26478b8 100644
+--- a/app/controllers/orders_controller.rb
++++ b/app/controllers/orders_controller.rb
+@@ -3,13 +3,17 @@ class OrdersController < ApplicationController
+ 
+   def index
+     @orders = current_user.orders
+-                           .includes(:line_items, :shipping_address)
+                            .order(created_at: :desc)
+                            .page(params[:page])
+   end
+ 
+   def show
+-    @order = current_user.orders.includes(:line_items, :shipping_address).find(params[:id])
++    @order = current_user.orders.find(params[:id])
++  end
++
++  def export
++    @orders = current_user.orders.order(created_at: :desc)
++    render json: @orders.map { |order| order_summary(order) }
+   end
+ 
+   private

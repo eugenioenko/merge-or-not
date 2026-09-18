@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "reject",
+  "context": "Docker build workflow. A teammate wired up an NPM token so the build can fetch private packages, plus registry-based layer caching.",
+  "explanation": "`build-args` values get baked into the image's build history — `docker history` (or simply pulling and inspecting the pushed image, which is public-readable on many registries) reveals `NPM_TOKEN` in plaintext to anyone. `cache-to: ...,mode=max` makes it worse by also exporting those same layers into the separate cache image. Fix: use a BuildKit secret mount (`--secret id=npm_token,...` in the Dockerfile with `RUN --mount=type=secret`) instead of `build-args` for anything sensitive — secrets mounted this way never persist in a layer.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 4
+}

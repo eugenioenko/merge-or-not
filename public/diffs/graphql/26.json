@@ -1,0 +1,9 @@
+{
+  "id": 26,
+  "answer": "merge",
+  "context": "`Query.comments` currently returns every comment on a post in one unbounded list, ordered by creation time.",
+  "explanation": "Safe to merge. Switching to cursor-based pagination with a capped page size (Math.min(first, 100)) and a proper edges/pageInfo connection shape prevents a post with thousands of comments from being fetched in a single unbounded query, while keeping the same chronological ordering clients already expect.",
+  "language": "graphql",
+  "category": "performance",
+  "difficulty": 2
+}

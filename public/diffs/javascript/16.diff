@@ -1,0 +1,22 @@
+diff --git a/src/events/emitter.js b/src/events/emitter.js
+index 5e3a8c1..a4f9d27 100644
+--- a/src/events/emitter.js
++++ b/src/events/emitter.js
+@@ -20,2 +20,17 @@ export class EventEmitter {
+   }
++
++  emitAsync(event, payload) {
++    const handlers = this.listeners.get(event)
++    if (!handlers) return
++    const snapshot = [...handlers]
++    queueMicrotask(() => {
++      for (const handler of snapshot) {
++        handler(payload)
++      }
++    })
++  }
++
++  listenerCount(event) {
++    return this.listeners.get(event)?.size ?? 0
++  }
+ }

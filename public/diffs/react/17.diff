@@ -1,0 +1,25 @@
+diff --git a/src/components/CartSummary.jsx b/src/components/CartSummary.jsx
+index 5c47f2a..18a9132 100644
+--- a/src/components/CartSummary.jsx
++++ b/src/components/CartSummary.jsx
+@@ -1,11 +1,18 @@
++import { useEffect, useState } from 'react'
++
+ export function CartSummary({ items }) {
+-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
++  const [total, setTotal] = useState(0)
++  const [itemCount, setItemCount] = useState(0)
++
++  useEffect(() => {
++    setTotal(items.reduce((sum, item) => sum + item.price * item.quantity, 0))
++    setItemCount(items.reduce((sum, item) => sum + item.quantity, 0))
++  }, [items])
+ 
+   return (
+     <div className="cart-summary">
+       <p>{itemCount} items</p>
+       <p>Total: ${total.toFixed(2)}</p>
+     </div>
+   )
+ }

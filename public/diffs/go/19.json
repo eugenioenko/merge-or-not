@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "A single LatencyStats instance is shared across all HTTP middleware goroutines. Record is called on every request to update running totals; Average is polled periodically by a metrics endpoint.",
+  "explanation": "count, total, and max are read and modified with plain ++ and += from many concurrent request goroutines with no synchronization. This is a data race: under `go test -race` or in production under load, updates can be lost (two goroutines reading the same count before either writes back) and the max comparison can read a torn or stale value. Fix: guard the fields with a sync.Mutex (or use atomic.Int64 / atomic.Int64 for count and total, with care around the max comparison-and-swap).",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 3
+}

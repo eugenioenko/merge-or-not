@@ -1,0 +1,30 @@
+diff --git a/app/services/notification_batch.rb b/app/services/notification_batch.rb
+index 6334d9b..97d3880 100644
+--- a/app/services/notification_batch.rb
++++ b/app/services/notification_batch.rb
+@@ -1,13 +1,23 @@
+ class NotificationBatch
+-  def initialize(recipients:, tags: nil)
++  DEFAULT_TAGS = []
++
++  def initialize(recipients:, tags: DEFAULT_TAGS)
+     @recipients = recipients
+-    @tags = tags || []
++    @tags = tags
+   end
+ 
+   def add_tag(tag)
+     @tags << tag
+   end
+ 
++  def merge_tags(other_tags)
++    @tags.concat(other_tags)
++  end
++
++  def recipient_count
++    @recipients.size
++  end
++
+   def tags
+     @tags
+   end

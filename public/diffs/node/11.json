@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "Adds deep-merge support so nested settings objects merge instead of being overwritten wholesale.",
+  "explanation": "mergeConfig recurses into any key whose value is a plain object, including keys named __proto__ that come from JSON.parse(req.body) (JSON.parse makes __proto__ an own, enumerable property, unlike a literal object). A request body like {\"__proto__\":{\"isAdmin\":true}} walks into the else branch's isObject check, then assigns onto the shared Object.prototype, polluting every object in the process. Fix: block __proto__, constructor and prototype keys before recursing, or use Object.create(null) / a Map for the merge target.",
+  "category": "security",
+  "difficulty": 3,
+  "language": "node"
+}

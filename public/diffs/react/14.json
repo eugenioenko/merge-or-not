@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "reject",
+  "context": "PriceCalculator shows a running total after applying a discount and tax rate, with a reset button added in this change.",
+  "explanation": "setTotal is called directly in the render body (guarded only by a value comparison), not inside an event handler or effect. Calling setState during render forces React to immediately re-render before committing, and since withTax is recomputed identically on the next pass while total lags behind, this pattern can cascade into repeated synchronous re-renders on every prop change. Fix: compute total with useMemo instead of syncing it into state.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 3
+}

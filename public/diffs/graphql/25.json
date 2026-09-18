@@ -1,0 +1,9 @@
+{
+  "id": 25,
+  "answer": "merge",
+  "context": "Per-request context builder currently only exposes `db` and `currentUser` to resolvers, so any resolver needing a User or Product by id queries the database directly.",
+  "explanation": "Safe to merge. Adding request-scoped `userLoader` and `productLoader` DataLoader instances lets resolvers batch and dedupe lookups within a single request instead of firing one query per object — the standard fix for N+1 queries when many fields resolve the same entity type across a response.",
+  "language": "graphql",
+  "category": "performance",
+  "difficulty": 2
+}

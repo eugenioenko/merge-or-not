@@ -1,0 +1,34 @@
+diff --git a/internal/repository/user_repo.go b/internal/repository/user_repo.go
+index 8b2c4e1..f4a9d03 100644
+--- a/internal/repository/user_repo.go
++++ b/internal/repository/user_repo.go
+@@ -1,8 +1,9 @@
+ package repository
+ 
+ import (
+ 	"context"
+ 	"database/sql"
++	"fmt"
+ 
+ 	"myapp/internal/models"
+ )
+@@ -15,17 +16,17 @@ func (r *UserRepository) FindByID(ctx context.Context, id string) (*User, erro
+ func (r *UserRepository) FindByID(ctx context.Context, id string) (*User, error) {
+ 	row := r.db.QueryRowContext(ctx, "SELECT id, email, name FROM users WHERE id = $1", id)
+ 
+ 	var u User
+ 	if err := row.Scan(&u.ID, &u.Email, &u.Name); err != nil {
+-		return nil, err
++		return nil, fmt.Errorf("find user by id %s: %w", id, err)
+ 	}
+ 	return &u, nil
+ }
+ 
+ func (r *UserRepository) Update(ctx context.Context, u *User) error {
+ 	_, err := r.db.ExecContext(ctx, "UPDATE users SET email = $1, name = $2 WHERE id = $3", u.Email, u.Name, u.ID)
+ 	if err != nil {
+-		return err
++		return fmt.Errorf("update user %s: %w", u.ID, err)
+ 	}
+ 	return nil
+ }

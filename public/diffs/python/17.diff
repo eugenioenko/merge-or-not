@@ -1,0 +1,26 @@
+diff --git a/app/workers/queue_worker.py b/app/workers/queue_worker.py
+index ad1abb9..6d0818b 100644
+--- a/app/workers/queue_worker.py
++++ b/app/workers/queue_worker.py
+@@ -1,6 +1,6 @@
+ import logging
+ 
+-from app.metrics import JOBS_PROCESSED
++from app.metrics import JOBS_FAILED, JOBS_PROCESSED
+ from app.queue import poll_next_job, mark_failed
+ 
+ logger = logging.getLogger(__name__)
+@@ -15,10 +15,11 @@ def run_worker():
+                 continue
+             try:
+                 job.execute()
+-            except Exception:
++            except (Exception, KeyboardInterrupt):
+                 logger.exception("job %s failed", job.id)
+                 mark_failed(job)
++                JOBS_FAILED.labels(queue="default").inc()
+             else:
+-                JOBS_PROCESSED.inc()
++                JOBS_PROCESSED.labels(queue="default").inc()
+     except KeyboardInterrupt:
+         logger.info("worker shutting down cleanly")

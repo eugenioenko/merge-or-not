@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "Refactors the cache lookup to also populate the cache on a miss, avoiding a second lock acquisition.",
+  "explanation": "The MutexGuard returned by entries.lock().await is now held across the pool.fetch_value(key).await call, which is a full database round trip. Every other task that needs the cache (hits or misses, on any key) blocks for the entire duration of that fetch, serializing all cache access behind one slow request and destroying the concurrency the cache was meant to provide. The guard should be dropped before the await and re-acquired briefly to insert the fetched value.",
+  "language": "rust",
+  "category": "concurrency",
+  "difficulty": 3
+}

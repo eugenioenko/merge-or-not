@@ -1,0 +1,40 @@
+diff --git a/src/hooks/useNotificationSettings.js b/src/hooks/useNotificationSettings.js
+index 3de133e..9d6b718 100644
+--- a/src/hooks/useNotificationSettings.js
++++ b/src/hooks/useNotificationSettings.js
+@@ -1,13 +1,16 @@
+-import { useEffect, useState } from 'react'
++import { useEffect, useState, useCallback } from 'react'
+ 
+ export function useNotificationSettings(userId) {
++  const [includeRead, setIncludeRead] = useState(false)
+   const [settings, setSettings] = useState(null)
+   const [loading, setLoading] = useState(true)
++
++  const filters = { userId, includeRead }
+ 
+   useEffect(() => {
+     let active = true
+     setLoading(true)
+-    fetch(`/api/notifications/settings?userId=${userId}`)
++    fetch(`/api/notifications/settings?userId=${filters.userId}&includeRead=${filters.includeRead}`)
+       .then((res) => res.json())
+       .then((data) => {
+         if (active) {
+@@ -18,7 +21,14 @@
+     return () => {
+       active = false
+     }
+-  }, [userId])
++  }, [filters])
+ 
+-  return { settings, loading }
++  const markAsRead = useCallback((id) => {
++    setSettings((prev) => ({
++      ...prev,
++      items: prev.items.map((item) => (item.id === id ? { ...item, read: true } : item)),
++    }))
++  }, [])
++
++  return { settings, loading, includeRead, setIncludeRead, markAsRead }
+ }

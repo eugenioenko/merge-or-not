@@ -1,0 +1,48 @@
+diff --git a/src/utils/retry.js b/src/utils/retry.js
+new file mode 100644
+index 0000000..049dfe0 100644
+--- /dev/null
++++ b/src/utils/retry.js
+@@ -0,0 +1,26 @@
++function isRetryable(err) {
++  return (
++    err.code === 'ECONNRESET' ||
++    err.code === 'ETIMEDOUT' ||
++    (err.response && err.response.status >= 500)
++  );
++}
++
++async function retryWithBackoff(fn, { retries = 3, baseDelayMs = 200, maxDelayMs = 5000 } = {}) {
++  let attempt = 0;
++  while (true) {
++    try {
++      return await fn();
++    } catch (err) {
++      attempt += 1;
++      if (attempt > retries || !isRetryable(err)) {
++        throw err;
++      }
++      const delay = Math.min(maxDelayMs, baseDelayMs * 2 ** (attempt - 1));
++      const jitter = Math.random() * delay * 0.5;
++      await new Promise((resolve) => setTimeout(resolve, delay + jitter));
++    }
++  }
++}
++
++module.exports = { retryWithBackoff };
+diff --git a/src/services/inventoryClient.js b/src/services/inventoryClient.js
+index ae8a6d1..14b80f3 100644
+--- a/src/services/inventoryClient.js
++++ b/src/services/inventoryClient.js
+@@ -1,7 +1,10 @@
+ const axios = require('axios');
++const { retryWithBackoff } = require('../utils/retry');
+ 
+ async function fetchStockLevel(sku) {
+-  const response = await axios.get(`https://inventory.example.com/v1/stock/${sku}`);
++  const response = await retryWithBackoff(() =>
++    axios.get(`https://inventory.example.com/v1/stock/${sku}`)
++  );
+   return response.data.quantity;
+ }
+ 

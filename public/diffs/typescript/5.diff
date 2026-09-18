@@ -1,0 +1,24 @@
+diff --git a/src/types/events.ts b/src/types/events.ts
+index 3c4d5e6..7a8b9c0 100644
+--- a/src/types/events.ts
++++ b/src/types/events.ts
+@@ -1,8 +1,11 @@
+-export type EventName = string;
+-
+-export function onEvent(name: EventName, handler: () => void): void {
+-  document.addEventListener(name, handler);
+-}
+-
+-onEvent("user-click", () => {});
+-onEvent("userClick", () => {});
++type EventDomain = "user" | "payment" | "session";
++type EventAction = "click" | "submit" | "expire";
++
++export type EventName = `${EventDomain}:${EventAction}`;
++
++export function onEvent(name: EventName, handler: () => void): void {
++  document.addEventListener(name, handler);
++}
++
++onEvent("user:click", () => {});
++onEvent("session:expire", () => {});

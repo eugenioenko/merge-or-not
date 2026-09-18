@@ -1,0 +1,9 @@
+{
+  "id": 24,
+  "answer": "merge",
+  "context": "`formatError` currently passes every GraphQL error straight through to the client, including whatever message the underlying resolver or database driver threw.",
+  "explanation": "Safe to merge. Errors with a known, safe extensions.code (BAD_USER_INPUT, UNAUTHENTICATED, FORBIDDEN) still pass through with their real message so clients can act on them, but anything else is logged server-side with full detail and replaced with a generic \"Internal server error\" before it reaches the client — preventing stack traces, table names, or driver internals from leaking.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 2
+}

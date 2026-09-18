@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "reject",
+  "context": "`orderStatusUpdated` subscription streams order status changes to the client that placed the order.",
+  "explanation": "Both the authentication check and the per-user `withFilter` predicate are deleted. The subscribe function now hands back the raw pubsub iterator to anyone, authenticated or not, and every client receives every user's order status events instead of just their own. Fix: keep the auth check on subscribe and the withFilter predicate that scopes events to `payload.orderStatusUpdated.userId === currentUser.id`.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 2
+}

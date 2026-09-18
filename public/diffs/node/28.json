@@ -1,0 +1,9 @@
+{
+  "id": 28,
+  "answer": "merge",
+  "context": "Replaces a bare .pipe() chain in the image resizer with stream/promises' pipeline for error handling.",
+  "explanation": "This fixes a real gap: chained .pipe() calls don't forward errors between streams, so a decode failure or a full disk on the write side previously left dangling, unhandled errors and file descriptors. pipeline() propagates errors from any stream in the chain, destroys every stream on failure, and resolves/rejects a single promise the caller can await, making resizeImage properly awaitable and its failures catchable.",
+  "category": "error-handling",
+  "difficulty": 2,
+  "language": "node"
+}

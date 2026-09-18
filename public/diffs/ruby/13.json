@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "merge",
+  "context": "Adds a NOT NULL and unique constraint at the database level for users.email, matching the model's existing validations.",
+  "explanation": "The migration is reversible, disables the DDL transaction so the unique index can be built CONCURRENTLY without locking the users table for writes, and change_column_null enforces at the database level what the model previously only enforced in Ruby. Relying solely on ActiveRecord validations leaves a window for NULL or duplicate emails to slip in via raw SQL, console access, or a race between two validations passing simultaneously — this migration closes that gap safely.",
+  "language": "ruby",
+  "category": "reliability",
+  "difficulty": 3
+}

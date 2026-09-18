@@ -1,0 +1,9 @@
+{
+  "id": 29,
+  "answer": "reject",
+  "context": "Simplifies GetDisplayNameAsync by removing the explicit null check on the repository result, described in the PR as reducing boilerplate.",
+  "explanation": "FindByIdAsync returns User? and genuinely returns null when userId does not match any user. The null-forgiving operator (user!) only silences the nullable-reference-type compiler warning; it does not change runtime behavior. On an unknown id this now throws an unhandled NullReferenceException instead of the meaningful UserNotFoundException the previous code raised, and the warning that would have flagged this misuse is gone. Fix: keep the explicit null check (or a pattern match) and throw or return a meaningful result instead of forgiving the warning away.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 2
+}

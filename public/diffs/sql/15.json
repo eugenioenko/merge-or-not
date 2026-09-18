@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "Refactoring the order shipment summary query for readability, used by the operations dashboard.",
+  "explanation": "Orders that have not shipped yet have no matching row in shipments. Switching the LEFT JOIN to an INNER JOIN silently drops every unshipped order from the report instead of showing it with a null shipped_at, which breaks the operations dashboard's pending-orders count. Should be rejected.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 3
+}

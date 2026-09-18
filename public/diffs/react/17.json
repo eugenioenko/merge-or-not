@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "CartSummary displays the item count and total price for the shopping cart, derived from the items prop.",
+  "explanation": "total and itemCount are now stored in state and synced from items via an effect instead of being computed directly during render. This adds an extra render every time items changes (render with stale values, then re-render after the effect runs) and introduces a source of drift if any code path updates one without the other. Fix: compute total and itemCount as plain values during render \u2014 no state or effect needed.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 2
+}

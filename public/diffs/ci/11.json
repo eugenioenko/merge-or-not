@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "PR preview workflow. A teammate wired it up to actually build and deploy the PR's code so reviewers can click a live link.",
+  "explanation": "This combines two dangerous things: `pull_request_target` runs with the base repo's secrets and a token with write access, and the new `ref:` on checkout pulls in the PR head — i.e. the fork author's own code. The workflow then runs `npm ci`/`npm run build` (executing that untrusted code) and hands it a real deploy token via env. Any external contributor can open a PR that exfiltrates `PREVIEW_DEPLOY_TOKEN` or does anything else the token can do. Fix: either stay on `pull_request` (no secrets, no elevated token) or, if `pull_request_target` is required, never check out the PR head and never build/execute PR-controlled code in that context.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 4
+}

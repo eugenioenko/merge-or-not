@@ -1,0 +1,24 @@
+diff --git a/migrations/0185_add_order_items_fk.sql b/migrations/0185_add_order_items_fk.sql
+new file mode 100644
+--- /dev/null
++++ b/migrations/0185_add_order_items_fk.sql
+@@ -0,0 +1,19 @@
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_order_items_order_id
++    ON order_items (order_id);
++
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_order_items_product_id
++    ON order_items (product_id);
++
++ALTER TABLE order_items
++    ADD CONSTRAINT fk_order_items_order_id
++    FOREIGN KEY (order_id) REFERENCES orders (id) NOT VALID;
++
++ALTER TABLE order_items
++    ADD CONSTRAINT fk_order_items_product_id
++    FOREIGN KEY (product_id) REFERENCES products (id) NOT VALID;
++
++ALTER TABLE order_items
++    VALIDATE CONSTRAINT fk_order_items_order_id;
++
++ALTER TABLE order_items
++    VALIDATE CONSTRAINT fk_order_items_product_id;

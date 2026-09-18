@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "merge",
+  "context": "Derive the Role type from the ROLES array with `as const` instead of maintaining a separate `string` alias.",
+  "explanation": "as const makes ROLES a readonly tuple of literals, and Role is derived from it with (typeof ROLES)[number], so the two can never drift out of sync. Passing an invalid role like \"superadmin\" is now a compile-time error instead of a silently accepted string, which is why that bad call had to be deleted.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 2
+}

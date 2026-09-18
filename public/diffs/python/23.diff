@@ -1,0 +1,40 @@
+diff --git a/app/schemas/user.py b/app/schemas/user.py
+index 0d43014..f8eeee3 100644
+--- a/app/schemas/user.py
++++ b/app/schemas/user.py
+@@ -1,16 +1,20 @@
++from typing import Optional
++
++from pydantic import BaseModel, EmailStr, Field, field_validator
++
++
++class UserPayload(BaseModel):
++    email: EmailStr
++    display_name: str = Field(min_length=1)
++    age: Optional[int] = None
++
++    @field_validator("age")
++    @classmethod
++    def check_age(cls, value):
++        if value is not None and value < 13:
++            raise ValueError("must be an integer >= 13")
++        return value
++
++
+ def validate_user_payload(data):
+-    errors = {}
+-    if not data.get("email") or "@" not in data["email"]:
+-        errors["email"] = "invalid email"
+-    if not data.get("display_name"):
+-        errors["display_name"] = "required"
+-    age = data.get("age")
+-    if age is not None and (not isinstance(age, int) or age < 13):
+-        errors["age"] = "must be an integer >= 13"
+-    if errors:
+-        raise ValueError(errors)
+-    return {
+-        "email": data["email"],
+-        "display_name": data["display_name"],
+-        "age": data.get("age"),
+-    }
++    return UserPayload.model_validate(data).model_dump()

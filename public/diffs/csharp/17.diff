@@ -1,0 +1,20 @@
+diff --git a/Services/WeatherClient.cs b/Services/WeatherClient.cs
+index 439cb28..3394fe2 100644
+--- a/Services/WeatherClient.cs
++++ b/Services/WeatherClient.cs
+@@ -2,12 +2,10 @@
+ 
+ public class WeatherClient
+ {
+-    private readonly HttpClient _httpClient;
+-
+-    public WeatherClient(IHttpClientFactory httpClientFactory)
++    private static readonly HttpClient _httpClient = new HttpClient
+     {
+-        _httpClient = httpClientFactory.CreateClient("weather");
+-    }
++        BaseAddress = new Uri("https://api.weather.example.com")
++    };
+ 
+     public async Task<WeatherReport> GetCurrentAsync(string city)
+     {

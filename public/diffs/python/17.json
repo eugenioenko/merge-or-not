@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "Hardening the per-job try/except in run_worker so an interrupt during job.execute() doesn't take down the whole process, and adding a per-queue label to the processed-jobs counter.",
+  "explanation": "Adding KeyboardInterrupt to the inner per-job except means Ctrl+C raised while a job is executing now gets caught, logged as a \"failed job\", and the loop just moves on to poll the next job - the outer except KeyboardInterrupt that logs \"shutting down cleanly\" and lets the process exit is never reached. The operator's interrupt is silently absorbed and the worker keeps running, which is exactly wrong during a deploy or restart that relies on a clean, prompt shutdown. Fix: keep KeyboardInterrupt out of the inner except (or catch and re-raise it) so it still propagates to the outer handler.",
+  "language": "python",
+  "category": "correctness",
+  "difficulty": 3
+}

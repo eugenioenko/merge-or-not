@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Refactors process_all to extract the per-record work into a method so it can update running stats.",
+  "explanation": "Calling self.apply_transform(record) while iterating &self.records hits a borrow-checker conflict (immutable borrow of records vs. mutable borrow of self). Instead of restructuring the loop (e.g. an index-based loop, or splitting stats out of self), the fix clones the entire records Vec<Record> - including every payload: Vec<u8> - on every call to process_all. That is an O(n) deep clone of potentially large buffers in what is clearly a hot processing path.",
+  "language": "rust",
+  "category": "performance",
+  "difficulty": 3
+}

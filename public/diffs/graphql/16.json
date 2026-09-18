@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "reject",
+  "context": "`bulkUpdateInventory` mutation applies a batch of quantity updates from a single client request.",
+  "explanation": "The batch is pulled out of `db.$transaction` and each update now runs in its own try/catch that logs and silently continues on failure. A batch of 100 updates where item 47 fails leaves the first 46 applied, skips 47, and applies the rest — with the mutation returning a 200-style success response and no indication to the caller which items actually failed. Fix: keep the transaction so the batch is atomic, or explicitly report per-item failures instead of swallowing them.",
+  "language": "graphql",
+  "category": "correctness",
+  "difficulty": 3
+}

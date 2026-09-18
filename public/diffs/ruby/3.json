@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Reworks ImportService to log how many items were imported; the PR notes it also 'cleaned up the YAML parsing call'.",
+  "explanation": "parse_payload switched from YAML.safe_load(..., permitted_classes: ...) to a bare YAML.load call on @raw_payload, which is raw user-supplied file content. Without safe_load's class allowlist, a malicious payload can instantiate arbitrary Ruby objects during deserialization, which is a well-known vector for remote code execution in Ruby/Rails apps. Fix: keep YAML.safe_load with an explicit permitted_classes list (and aliases: true only if genuinely needed).",
+  "language": "ruby",
+  "category": "security",
+  "difficulty": 4
+}

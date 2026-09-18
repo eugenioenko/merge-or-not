@@ -1,0 +1,50 @@
+diff --git a/src/http/client.rs b/src/http/client.rs
+index 0000000..1111111 100644
+--- a/src/http/client.rs
++++ b/src/http/client.rs
+@@ -5,8 +5,42 @@
+     pub user_agent: String,
+ }
+ 
+-impl HttpClient {
+-    pub fn new(base_url: String, timeout_ms: u64, retries: u32, user_agent: String) -> Self {
+-        Self { base_url, timeout_ms, retries, user_agent }
++pub struct HttpClientBuilder {
++    base_url: String,
++    timeout_ms: u64,
++    retries: u32,
++    user_agent: String,
++}
++
++impl HttpClientBuilder {
++    pub fn new(base_url: impl Into<String>) -> Self {
++        Self {
++            base_url: base_url.into(),
++            timeout_ms: 5_000,
++            retries: 2,
++            user_agent: "merge-or-not/1.0".to_string(),
++        }
++    }
++
++    pub fn timeout_ms(mut self, timeout_ms: u64) -> Self {
++        self.timeout_ms = timeout_ms;
++        self
++    }
++    pub fn retries(mut self, retries: u32) -> Self {
++        self.retries = retries;
++        self
++    }
++
++    pub fn user_agent(mut self, user_agent: impl Into<String>) -> Self {
++        self.user_agent = user_agent.into();
++        self
++    }
++    pub fn build(self) -> HttpClient {
++        HttpClient {
++            base_url: self.base_url,
++            timeout_ms: self.timeout_ms,
++            retries: self.retries,
++            user_agent: self.user_agent,
++        }
+     }
+ }

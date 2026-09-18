@@ -1,0 +1,26 @@
+diff --git a/src/routes/search.js b/src/routes/search.js
+index 89ca7a7..85fd9b6 100644
+--- a/src/routes/search.js
++++ b/src/routes/search.js
+@@ -2,18 +2,14 @@
+ const router = express.Router();
+ const Product = require('../models/product');
+ 
+-function escapeRegExp(str) {
+-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+-}
+-
+ router.get('/search', async (req, res) => {
+-  const { q, limit } = req.query;
++  const { q, limit, advanced } = req.query;
+   if (!q || typeof q !== 'string') {
+     return res.json([]);
+   }
+-  const safe = escapeRegExp(q.slice(0, 100));
++  const pattern = advanced === 'true' ? q : q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+   const pageSize = Math.min(Number(limit) || 20, 100);
+-  const products = await Product.find({ name: { $regex: safe, $options: 'i' } })
++  const products = await Product.find({ name: { $regex: pattern, $options: 'i' } })
+     .limit(pageSize)
+     .lean();
+   res.json(products);

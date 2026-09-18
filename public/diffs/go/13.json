@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "Settings is an in-memory key/value store. NewSettings() constructs it with a zero-value struct; Get and Has already work today since reading from a nil map is legal in Go.",
+  "explanation": "NewSettings() never initializes the values field, so it stays a nil map. Get and Has happen to work because reading from a nil map returns the zero value, but the new Set method writes to it with s.values[key] = value, which panics with \"assignment to entry in nil map\" the first time it runs. Fix: initialize the map in NewSettings, e.g. return &Settings{values: make(map[string]string)}.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

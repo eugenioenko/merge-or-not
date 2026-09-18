@@ -1,0 +1,37 @@
+diff --git a/queries/customer_lifetime_value.sql b/queries/customer_lifetime_value.sql
+--- a/queries/customer_lifetime_value.sql
++++ b/queries/customer_lifetime_value.sql
+@@ -1,26 +1,15 @@
+ SELECT
+     c.id,
+     c.email,
+     c.created_at,
+     c.loyalty_tier,
+-    (
+-        SELECT COUNT(*)
+-        FROM orders o
+-        WHERE o.customer_id = c.id
+-          AND o.status = 'completed'
+-    ) AS completed_orders,
+-    (
+-        SELECT COALESCE(SUM(o.total_cents), 0)
+-        FROM orders o
+-        WHERE o.customer_id = c.id
+-          AND o.status = 'completed'
+-    ) AS lifetime_value_cents,
+-    (
+-        SELECT MAX(o.created_at)
+-        FROM orders o
+-        WHERE o.customer_id = c.id
+-          AND o.status = 'completed'
+-    ) AS last_order_at
++    COUNT(o.id) AS completed_orders,
++    COALESCE(SUM(o.total_cents), 0) AS lifetime_value_cents,
++    MAX(o.created_at) AS last_order_at
+ FROM customers c
++LEFT JOIN orders o
++    ON o.customer_id = c.id
++    AND o.status = 'completed'
+ WHERE c.deleted_at IS NULL
++GROUP BY c.id, c.email, c.created_at, c.loyalty_tier
+ ORDER BY c.created_at DESC;

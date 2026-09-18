@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "reject",
+  "context": "Removes the eviction logic from the in-memory response cache since 'it was rarely hitting the limit anyway'.",
+  "explanation": "Without MAX_ENTRIES and the eviction check, cache is a Map that only ever grows for the lifetime of the process. Every distinct key (e.g. per query string, per user) adds an entry that's never removed, which is a textbook unbounded-growth memory leak that will eventually exhaust the process's memory under real traffic. Fix: keep a bounded eviction policy (LRU/size cap) or move the cache to something with built-in TTL/size limits (e.g. lru-cache, Redis).",
+  "category": "performance",
+  "difficulty": 2,
+  "language": "node"
+}

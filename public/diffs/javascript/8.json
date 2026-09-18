@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "merge",
+  "context": "Gives fetchWithTimeout a real timeout via AbortController and updates useSearchResults to cancel stale requests and ignore results after unmount.",
+  "explanation": "The AbortController is created per call, its signal passed through to fetch, and the timer is always cleared in a finally block so it doesn't leak regardless of success or failure. The hook now also guards against setting state after unmount or after a newer query has superseded an in-flight one, avoiding the classic 'setState on unmounted component' warning and race condition. Solid, defensive change.",
+  "language": "javascript",
+  "category": "reliability",
+  "difficulty": 3
+}

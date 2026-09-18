@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "Fixing a bug where the recent orders query returned no rows for certain customer ids passed in from the new mobile client.",
+  "explanation": "customer_id is an integer with an index on it. Casting it to text to compare against the incoming string parameter forces Postgres to cast every row's value before comparing, which the planner cannot use the integer index for, turning an index scan into a sequential scan. Casting the parameter to integer instead would have fixed the bug without breaking index usage. Should be rejected.",
+  "language": "sql",
+  "category": "performance",
+  "difficulty": 4
+}

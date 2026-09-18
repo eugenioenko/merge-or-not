@@ -1,0 +1,9 @@
+{
+  "id": 30,
+  "answer": "merge",
+  "context": "Pushing several commits to a PR in quick succession used to queue up a full CI run for each one, wasting minutes on outdated commits.",
+  "explanation": "Safe to merge. Adds a `concurrency` group scoped per-PR (falling back to `github.ref` for non-PR runs) with `cancel-in-progress: true`, so only the latest push's run continues and superseded runs are cancelled automatically. The accompanying `node-version` matrix and `cache: 'npm'` are independent, low-risk efficiency wins bundled into the same cleanup pass — nothing here changes what the job actually tests.",
+  "language": "ci",
+  "category": "efficiency",
+  "difficulty": 1
+}

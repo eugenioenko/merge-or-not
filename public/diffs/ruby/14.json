@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "merge",
+  "context": "Extracts the inline refund logic from RefundsController into a dedicated RefundService.",
+  "explanation": "The controller action is now a thin wrapper that delegates to RefundService and renders based on a typed Result struct, instead of mixing payment-gateway calls, order updates, and rendering in one action. RefundService itself rescues PaymentGateway::Error specifically, logs it, and returns a structured failure rather than letting an unhandled exception surface as a 500. This is a clean separation of concerns that makes the refund flow easier to test and reuse outside the controller.",
+  "language": "ruby",
+  "category": "maintainability",
+  "difficulty": 2
+}

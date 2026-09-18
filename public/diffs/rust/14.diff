@@ -1,0 +1,24 @@
+diff --git a/src/handlers/order.rs b/src/handlers/order.rs
+index 0000000..1111111 100644
+--- a/src/handlers/order.rs
++++ b/src/handlers/order.rs
+@@ -1,14 +1,19 @@
+ use crate::{db::Pool, error::AppError, models::Order};
++use tracing::instrument;
+ 
++#[instrument(skip(pool, items), fields(customer_id, item_count = items.len()))]
+ pub async fn create_order(pool: &Pool, customer_id: i64, items: Vec<i64>) -> Result<Order, AppError> {
+     let order = pool.insert_order(customer_id, &items).await?;
+     for item_id in &items {
+         pool.reserve_stock(*item_id).await?;
+     }
++    tracing::info!(order_id = order.id, "order created");
+     Ok(order)
+ }
+ 
++#[instrument(skip(pool))]
+ pub async fn cancel_order(pool: &Pool, order_id: i64) -> Result<(), AppError> {
+     pool.update_order_status(order_id, "cancelled").await?;
++    tracing::info!(order_id, "order cancelled");
+     Ok(())
+ }

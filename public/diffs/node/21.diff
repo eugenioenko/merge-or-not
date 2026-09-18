@@ -1,0 +1,28 @@
+diff --git a/src/services/geocodeClient.js b/src/services/geocodeClient.js
+index 6e4b409..50fe8ae 100644
+--- a/src/services/geocodeClient.js
++++ b/src/services/geocodeClient.js
+@@ -1,9 +1,18 @@
+-async function geocodeAddress(address) {
+-  const response = await fetch(`https://geocode.example.com/v1/lookup?q=${encodeURIComponent(address)}`);
+-  if (!response.ok) {
+-    throw new Error(`Geocode request failed: ${response.status}`);
++async function geocodeAddress(address, timeoutMs = 5000) {
++  const controller = new AbortController();
++  const timer = setTimeout(() => controller.abort(), timeoutMs);
++  try {
++    const response = await fetch(
++      `https://geocode.example.com/v1/lookup?q=${encodeURIComponent(address)}`,
++      { signal: controller.signal }
++    );
++    if (!response.ok) {
++      throw new Error(`Geocode request failed: ${response.status}`);
++    }
++    return await response.json();
++  } finally {
++    clearTimeout(timer);
+   }
+-  return response.json();
+ }
+ 
+ module.exports = { geocodeAddress };

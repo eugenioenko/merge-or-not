@@ -1,0 +1,35 @@
+diff --git a/src/engine/processor.rs b/src/engine/processor.rs
+index 0000000..1111111 100644
+--- a/src/engine/processor.rs
++++ b/src/engine/processor.rs
+@@ -3,7 +3,7 @@
+     pub stats: Stats,
+ }
+ 
+-#[derive(Debug)]
++#[derive(Debug, Clone)]
+ pub struct Record {
+     pub id: u64,
+     pub payload: Vec<u8>,
+@@ -16,13 +16,14 @@
+ 
+ impl Processor {
+     pub fn process_all(&mut self) {
+-        for i in 0..self.records.len() {
+-            let processed = {
+-                let record = &self.records[i];
+-                record.payload.len()
+-            };
+-            self.stats.processed += 1;
+-            let _ = processed;
++        let records = self.records.clone();
++        for record in &records {
++            self.apply_transform(record);
+         }
+     }
++
++    fn apply_transform(&mut self, record: &Record) {
++        self.stats.processed += 1;
++        let _ = record.payload.len();
++    }
+ }

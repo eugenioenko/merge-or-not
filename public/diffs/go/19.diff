@@ -1,0 +1,23 @@
+diff --git a/internal/metrics/latency.go b/internal/metrics/latency.go
+index a1c5f30..2e9b6d4 100644
+--- a/internal/metrics/latency.go
++++ b/internal/metrics/latency.go
+@@ -6,3 +6,18 @@ func NewLatencyStats() *LatencyStats {
+ func NewLatencyStats() *LatencyStats {
+ 	return &LatencyStats{}
+ }
++
++func (s *LatencyStats) Record(d time.Duration) {
++	s.count++
++	s.total += d
++	if d > s.max {
++		s.max = d
++	}
++}
++
++func (s *LatencyStats) Average() time.Duration {
++	if s.count == 0 {
++		return 0
++	}
++	return s.total / time.Duration(s.count)
++}

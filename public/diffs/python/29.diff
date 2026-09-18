@@ -1,0 +1,23 @@
+diff --git a/app/repositories/orders.py b/app/repositories/orders.py
+index 7708fda..a73f5c8 100644
+--- a/app/repositories/orders.py
++++ b/app/repositories/orders.py
+@@ -1,7 +1,15 @@
+ from app.models import Order
+ 
++MAX_PAGE_SIZE = 100
+ 
+-def list_orders(customer_id, page=1, page_size=20):
++
++def list_orders(customer_id, after_id=None, page_size=20):
++    page_size = min(page_size, MAX_PAGE_SIZE)
+     query = Order.query.filter_by(customer_id=customer_id).order_by(Order.id)
+-    offset = (page - 1) * page_size
+-    return query.offset(offset).limit(page_size).all()
++    if after_id is not None:
++        query = query.filter(Order.id > after_id)
++    rows = query.limit(page_size + 1).all()
++    has_more = len(rows) > page_size
++    rows = rows[:page_size]
++    next_cursor = rows[-1].id if rows and has_more else None
++    return {"items": rows, "next_cursor": next_cursor}

@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "reject",
+  "context": "Adds a refund flow and softens the shipped-order flow so a failed audit log doesn't block the response.",
+  "explanation": "Both mark_shipped and refund now call their follow-up log_event/email calls through `if let Ok(...) = ... { }`, which silently discards any error. If the audit-log insert or the email send fails (constraint violation, dropped connection), the function still returns Ok(()) as though everything succeeded - orders get marked shipped or refunded with no audit trail and no way for callers to detect or retry the failure. Errors that matter should propagate with `?` or at minimum be logged as errors, not swallowed.",
+  "language": "rust",
+  "category": "correctness",
+  "difficulty": 3
+}

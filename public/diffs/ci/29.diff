@@ -1,0 +1,31 @@
+diff --git a/.github/dependabot.yml b/.github/dependabot.yml
+new file mode 100644
+index 0000000..1807a24
+--- /dev/null
++++ b/.github/dependabot.yml
+@@ -0,0 +1,10 @@
++version: 2
++updates:
++  - package-ecosystem: github-actions
++    directory: /
++    schedule:
++      interval: weekly
++    groups:
++      actions:
++        patterns:
++          - '*'
+diff --git a/.github/workflows/ci-pin.yml b/.github/workflows/ci-pin.yml
+index 6016156..10ffd6f 100644
+--- a/.github/workflows/ci-pin.yml
++++ b/.github/workflows/ci-pin.yml
+@@ -8,8 +8,8 @@ jobs:
+   test:
+     runs-on: ubuntu-latest
+     steps:
+-      - uses: actions/checkout@v4
+-      - uses: actions/setup-node@v4
++      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
++      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
+         with:
+           node-version: '20'
+       - run: npm ci

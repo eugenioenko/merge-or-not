@@ -1,0 +1,34 @@
+diff --git a/src/models/order-status.ts b/src/models/order-status.ts
+index 1e2f3a4..5b6c7d8 100644
+--- a/src/models/order-status.ts
++++ b/src/models/order-status.ts
+@@ -1,9 +1,20 @@
+-export type OrderStatus = "placed" | "shipped" | "delivered" | "cancelled";
+-
+-export function serializeStatus(status: OrderStatus): string {
+-  return status;
+-}
+-
+-export function parseStatus(value: string): OrderStatus {
+-  return value as OrderStatus;
+-}
++export enum OrderStatus {
++  Placed,
++  Shipped,
++  Delivered,
++  Cancelled,
++}
++
++export function serializeStatus(status: OrderStatus): number {
++  return status;
++}
++
++export function parseStatus(value: number): OrderStatus {
++  return value as OrderStatus;
++}
++
++export function saveToDatabase(orderId: string, status: OrderStatus): void {
++  db.query("UPDATE orders SET status = ? WHERE id = ?", [status, orderId]);
++}
++
++declare const db: { query(sql: string, params: unknown[]): void };

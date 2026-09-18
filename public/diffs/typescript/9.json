@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "merge",
+  "context": "Replace non-null assertions in the profile service with real guards and sensible fallbacks.",
+  "explanation": "getAvatarUrl and greet used ! to assume profile (and avatarUrl) were always present, which would throw a raw TypeError for a logged-out or still-loading user. The guards now return a sane default instead of crashing.",
+  "language": "typescript",
+  "category": "correctness",
+  "difficulty": 3
+}

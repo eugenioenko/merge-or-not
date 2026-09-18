@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "merge",
+  "context": "Swaps the Mutex-guarded service registry for Arc<RwLock<...>>.",
+  "explanation": "register (the rare write) now takes a write() lock while lookup (the frequent operation) takes a read() lock, allowing unlimited concurrent readers instead of serializing every lookup behind a single Mutex. ServiceRegistry is read-heavy and write-light by nature, exactly the workload RwLock is designed for, and the change is an API-compatible drop-in swap with no other call sites affected.",
+  "language": "rust",
+  "category": "concurrency",
+  "difficulty": 2
+}

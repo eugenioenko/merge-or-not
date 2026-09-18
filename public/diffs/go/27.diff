@@ -1,0 +1,22 @@
+diff --git a/internal/middleware/auth_context.go b/internal/middleware/auth_context.go
+index d9b3e71..4a6f8c2 100644
+--- a/internal/middleware/auth_context.go
++++ b/internal/middleware/auth_context.go
+@@ -6,4 +6,17 @@ func ExtractUserID(claims map[string]interface{}) (string, bool) {
+ func ExtractUserID(claims map[string]interface{}) (string, bool) {
+ 	id, ok := claims["sub"].(string)
+ 	return id, ok
+ }
++
++func ExtractTenant(claims map[string]interface{}) string {
++	return claims["tenant_id"].(string)
++}
++
++func ExtractRoles(claims map[string]interface{}) []string {
++	raw := claims["roles"].([]interface{})
++	roles := make([]string, len(raw))
++	for i, r := range raw {
++		roles[i] = r.(string)
++	}
++	return roles
++}

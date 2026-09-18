@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "Trims the upload handler down to just the streaming pipe, removing what looked like dead error handlers.",
+  "explanation": "Both 'error' listeners were dropped. A write failure (disk full, permission denied) or a client aborting mid-upload now emits an 'error' event with no listener attached, which Node re-throws as an uncaught exception and crashes the whole process, not just the one request. Fix: keep error handlers on both the request and the write stream (or use stream.pipeline, which forwards errors and cleans up automatically).",
+  "category": "error-handling",
+  "difficulty": 3,
+  "language": "node"
+}

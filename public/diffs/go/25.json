@@ -1,0 +1,9 @@
+{
+  "id": 25,
+  "answer": "reject",
+  "context": "Watch loops on incoming events and logs a warning if none arrive within 30 seconds. w.ch can receive many events per second under normal load.",
+  "explanation": "time.After(30 * time.Second) allocates a brand new timer on every iteration of the select loop. When the evt case fires (the common path under load), the loop goes right back to select and creates another timer without ever stopping the previous one — the old timer stays allocated in memory until its 30 seconds elapse. Under high event throughput this creates a large number of live, never-cancelled timers piling up at once. Fix: create a single time.Timer outside the loop and Stop()/Reset() it inside the select, or restructure with time.NewTicker for a case that recurs.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 4
+}

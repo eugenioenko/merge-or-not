@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "Switches the like counter to update_column instead of increment!/recount, described as avoiding an extra query per like.",
+  "explanation": "increment! issues an atomic SQL UPDATE (likes_count = likes_count + 1) at the database level, which is safe under concurrent requests. update_column(:likes_count, @article.likes_count + 1) instead reads the counter into Ruby, adds one, and writes it back — a classic read-modify-write race. Under concurrent likes/unlikes on the same article, updates can be lost and the counter drifts from the real total. Fix: use increment!/decrement! (or a DB-level UPDATE ... SET count = count + 1) instead of computing the new value in Ruby.",
+  "language": "ruby",
+  "category": "concurrency",
+  "difficulty": 3
+}

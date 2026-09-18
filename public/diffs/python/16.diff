@@ -1,0 +1,20 @@
+diff --git a/app/services/uploads.py b/app/services/uploads.py
+index b597dc9..3c7cb38 100644
+--- a/app/services/uploads.py
++++ b/app/services/uploads.py
+@@ -8,11 +8,9 @@ UPLOAD_DIR = "/var/data/uploads"
+ 
+ def save_upload(tmp_path, filename):
+     dest_path = os.path.join(UPLOAD_DIR, filename)
+-    fd = os.open(dest_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o640)
+-    try:
+-        with os.fdopen(fd, "wb") as dest:
+-            with open(tmp_path, "rb") as src:
+-                shutil.copyfileobj(src, dest)
+-    except FileExistsError:
++    if os.path.exists(dest_path):
+         raise UploadError(f"{filename} already exists")
++    with open(dest_path, "wb") as dest:
++        with open(tmp_path, "rb") as src:
++            shutil.copyfileobj(src, dest)
+     return dest_path

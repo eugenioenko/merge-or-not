@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "Public repository's PR build was feeling slow, so a teammate moved it to a self-hosted runner and added a linter step.",
+  "explanation": "This workflow triggers on `pull_request` from a public repository, which means anyone can open a PR and have their workflow-defined steps execute directly on your self-hosted runner — a persistent machine, often with network access to internal systems and a warm build cache from other jobs. This is explicitly called out by GitHub as unsafe: self-hosted runners should never be used for workflows triggered by PRs on public repos. Fix: keep `ubuntu-latest` (or another ephemeral GitHub-hosted runner) for anything triggered by public PRs; reserve self-hosted runners for trusted, non-fork triggers.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 3
+}

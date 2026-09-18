@@ -1,0 +1,9 @@
+{
+  "id": 21,
+  "answer": "reject",
+  "context": "FetchAll fetches a list of URLs sequentially and collects their bodies. urls can contain hundreds or thousands of entries in bulk-import jobs.",
+  "explanation": "defer resp.Body.Close() inside the for loop does not run until FetchAll itself returns, not at the end of each iteration. Every response body from every URL in the batch stays open simultaneously, holding open TCP connections and pooled transport resources until the whole batch finishes, which can exhaust the HTTP client's connection pool or the OS file descriptor limit on a large batch. Fix: close the body explicitly at the end of each iteration (as the original code did) or extract the per-URL work into a helper function so the defer scopes to one iteration.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 3
+}

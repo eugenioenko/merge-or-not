@@ -1,0 +1,9 @@
+{
+  "id": 25,
+  "answer": "merge",
+  "context": "The team wants continuous visibility into the repo's supply-chain security posture, following OpenSSF recommendations.",
+  "explanation": "Safe to merge. Standard OpenSSF Scorecard setup: top-level `permissions: read-all` with a tightly scoped per-job override for only what's needed (`security-events: write` to upload SARIF, `id-token: write` for signing, `contents: read`), `persist-credentials: false` on checkout so the default token isn't left around for later steps, and results published to the repo's Security tab via `codeql-action/upload-sarif`. This is the exact configuration OpenSSF's own docs recommend.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 2
+}

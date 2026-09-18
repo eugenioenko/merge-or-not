@@ -1,0 +1,20 @@
+diff --git a/queries/list_transactions.sql b/queries/list_transactions.sql
+--- a/queries/list_transactions.sql
++++ b/queries/list_transactions.sql
+@@ -1,14 +1,15 @@
+ SELECT
+     t.id,
+     t.account_id,
+     t.amount_cents,
+     t.type,
+     t.description,
+     t.currency,
+     t.balance_after_cents,
+     t.reference_id,
+     t.created_at
+ FROM transactions t
+ WHERE t.account_id = $1
+ ORDER BY t.created_at DESC
+-LIMIT $2;
++LIMIT $2
++OFFSET $3;

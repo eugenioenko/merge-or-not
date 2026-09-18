@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "reject",
+  "context": "Adding fuzzy search support and a category filter to the product search stored procedure.",
+  "explanation": "The search term and category are concatenated directly into the dynamic SQL string instead of being passed as bound parameters to EXECUTE ... USING. Any caller can inject arbitrary SQL through p_term or p_category, for example closing the quote and appending a second statement. Should be rejected.",
+  "language": "sql",
+  "category": "security",
+  "difficulty": 4
+}

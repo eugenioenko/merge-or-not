@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "reject",
+  "context": "Marks the native buffer wrapper as Send + Sync so it can be moved into a spawned task, and adds a slice accessor.",
+  "explanation": "FfiBuffer wraps a raw *mut c_void with no internal synchronization, and nothing here guarantees the underlying native allocator or buffer is thread-safe. Blanket unsafe impl Send/Sync is a promise to the compiler that this type can be freely shared and sent across threads; with as_slice() readable from one thread while another thread drops the buffer (freeing the native memory), this opens the door to data races and use-after-free that the type system can no longer catch.",
+  "language": "rust",
+  "category": "memory-safety",
+  "difficulty": 4
+}

@@ -1,0 +1,20 @@
+diff --git a/public/scripts/analytics.js b/public/scripts/analytics.js
+index 3e7a1c9..b8d2f45 100644
+--- a/public/scripts/analytics.js
++++ b/public/scripts/analytics.js
+@@ -6,3 +6,15 @@ function trackPageView(path) {
+ function trackPageView(path) {
+   trackEvent('page_view', { path })
+ }
++
++function trackClick(target) {
++  if (!target) return
++  for (count = 0; count < target.classList.length; count++) {
++    trackEvent('click', { className: target.classList[count] })
++  }
++}
++
++function trackFormSubmit(form) {
++  const fields = Array.from(form.elements).map((el) => el.name)
++  trackEvent('form_submit', { fields })
++}

@@ -1,0 +1,20 @@
+diff --git a/src/types/api-config.ts b/src/types/api-config.ts
+index 6d7e8f9..0a1b2c3 100644
+--- a/src/types/api-config.ts
++++ b/src/types/api-config.ts
+@@ -1,14 +1,15 @@
+ export interface ApiConfig {
+   baseUrl: string;
+   timeoutMs: number;
+   retries: number;
++  [key: string]: unknown;
+ }
+ 
+ export function buildConfig(overrides: Partial<ApiConfig>): ApiConfig {
+   return {
+     baseUrl: "https://api.example.com",
+     timeoutMs: 5000,
+     retries: 3,
+     ...overrides,
+   };
+ }

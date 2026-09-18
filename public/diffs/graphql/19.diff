@@ -1,0 +1,20 @@
+diff --git a/src/graphql/server.js b/src/graphql/server.js
+index 0fa5ceb..8702818 100644
+--- a/src/graphql/server.js
++++ b/src/graphql/server.js
+@@ -1,13 +1,11 @@
+ const { ApolloServer } = require('apollo-server-express');
+ const { formatError } = require('./formatError');
+ 
+-const isProduction = process.env.NODE_ENV === 'production';
+-
+ const server = new ApolloServer({
+   typeDefs,
+   resolvers,
+-  introspection: !isProduction,
+-  playground: !isProduction,
++  introspection: true,
++  playground: true,
+   formatError,
+   context: buildContext,
+ });

@@ -1,0 +1,27 @@
+diff --git a/app/controllers/admin/users_controller.rb b/app/controllers/admin/users_controller.rb
+index c48a276..3d5700f 100644
+--- a/app/controllers/admin/users_controller.rb
++++ b/app/controllers/admin/users_controller.rb
+@@ -20,6 +20,13 @@ module Admin
+       end
+     end
+ 
++    def bulk_update
++      User.where(id: params[:user_ids]).find_each do |user|
++        user.update(user_params)
++      end
++      redirect_to admin_users_path, notice: "Users updated."
++    end
++
+     def destroy
+       @user.destroy
+       redirect_to admin_users_path, notice: "User removed."
+@@ -32,7 +39,7 @@ module Admin
+     end
+ 
+     def user_params
+-      params.require(:user).permit(:name, :email, :phone_number, :timezone)
++      params.require(:user).permit(:name, :email, :phone_number, :timezone, :role, :admin)
+     end
+   end
+ end

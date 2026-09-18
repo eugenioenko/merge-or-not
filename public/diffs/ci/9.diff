@@ -11,7 +11,7 @@ index 4b5c6d7..e8f9a0b 100644
 +        run: npm test
 +        env:
 +          DATABASE_URL: postgres://ci:ci@localhost:5432/testdb
-+          STRIPE_SECRET_KEY: sk_test_EXAMPLE_KEY_DO_NOT_USE
++          STRIPE_SECRET_KEY: sk-test-7fA9xK2mP4qR8sT1vW3yZ5bD
 +          JWT_SECRET: super-secret-jwt-key-for-ci
 +          REDIS_URL: redis://localhost:6379
        - name: Debug info

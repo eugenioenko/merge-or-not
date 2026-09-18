@@ -1,0 +1,44 @@
+diff --git a/src/components/SignupForm.jsx b/src/components/SignupForm.jsx
+index 1d75c61..c5383bf 100644
+--- a/src/components/SignupForm.jsx
++++ b/src/components/SignupForm.jsx
+@@ -1,18 +1,32 @@
+-import { useRef } from 'react'
++import { useState } from 'react'
+ 
+ export function SignupForm({ onSubmit }) {
+-  const emailRef = useRef(null)
+-  const passwordRef = useRef(null)
++  const [email, setEmail] = useState('')
++  const [password, setPassword] = useState('')
++  const [errors, setErrors] = useState({})
++
++  function validate() {
++    const next = {}
++    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = 'Enter a valid email'
++    if (password.length < 8) next.password = 'Password must be at least 8 characters'
++    return next
++  }
+ 
+   function handleSubmit(e) {
+     e.preventDefault()
+-    onSubmit({ email: emailRef.current.value, password: passwordRef.current.value })
++    const validationErrors = validate()
++    setErrors(validationErrors)
++    if (Object.keys(validationErrors).length === 0) {
++      onSubmit({ email, password })
++    }
+   }
+ 
+   return (
+-    <form onSubmit={handleSubmit}>
+-      <input ref={emailRef} type="email" placeholder="Email" />
+-      <input ref={passwordRef} type="password" placeholder="Password" />
++    <form onSubmit={handleSubmit} noValidate>
++      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
++      {errors.email && <p className="field-error">{errors.email}</p>}
++      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
++      {errors.password && <p className="field-error">{errors.password}</p>}
+       <button type="submit">Sign up</button>
+     </form>
+   )

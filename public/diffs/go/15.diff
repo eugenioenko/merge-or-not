@@ -1,0 +1,27 @@
+diff --git a/internal/util/pagination.go b/internal/util/pagination.go
+index 9c4d1e0..a3e8f27 100644
+--- a/internal/util/pagination.go
++++ b/internal/util/pagination.go
+@@ -1,20 +1,21 @@
+ package util
+ 
+ type Item struct {
+ 	ID       string
+ 	Category string
+ }
+ 
+ func GroupByCategory(items []Item, categories []string) map[string][]Item {
+ 	result := make(map[string][]Item)
++	buf := make([]Item, 0, len(items))
+ 	for _, cat := range categories {
+-		var group []Item
++		group := buf[:0]
+ 		for _, it := range items {
+ 			if it.Category == cat {
+ 				group = append(group, it)
+ 			}
+ 		}
+ 		result[cat] = group
+ 	}
+ 	return result
+ }

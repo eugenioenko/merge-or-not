@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "reject",
+  "context": "Letting callers pass extra ImageMagick filters (e.g. \"-blur 5x2\") when generating a thumbnail.",
+  "explanation": "Building the command as an interpolated string and running it with shell=True lets anything that ends up in source_path or filters break out of the intended arguments using shell metacharacters (;, &&, $(), backticks). filters in particular is caller-supplied text with no validation. The old code passed a fixed argument list with shell=False (the default), which never invokes a shell and so can't be hijacked this way. Fix: keep args as a list, append validated filter tokens to that list individually, and never pass shell=True with interpolated input.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 3
+}

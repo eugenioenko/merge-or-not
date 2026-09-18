@@ -1,0 +1,27 @@
+diff --git a/app/controllers/api/invoices_controller.rb b/app/controllers/api/invoices_controller.rb
+index 6fb86ec..5feec0b 100644
+--- a/app/controllers/api/invoices_controller.rb
++++ b/app/controllers/api/invoices_controller.rb
+@@ -1,8 +1,8 @@
+ module Api
+   class InvoicesController < Api::BaseController
+     before_action :authenticate_api_user!
+-    before_action :set_invoice, only: [:show, :update, :destroy]
+-    before_action :authorize_invoice!, only: [:show, :update, :destroy]
++    before_action :set_invoice, only: [:show, :update, :destroy, :void]
++    before_action :authorize_invoice!, only: [:show, :update]
+ 
+     def show
+       render json: @invoice
+@@ -16,6 +16,11 @@ module Api
+       end
+     end
+ 
++    def void
++      @invoice.update!(status: "void")
++      render json: @invoice
++    end
++
+     def destroy
+       @invoice.destroy
+       head :no_content

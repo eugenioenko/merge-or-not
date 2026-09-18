@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "reject",
+  "context": "NewsletterForm posts an email to the newsletter API and shows a success or error message. This change also adds a required consent checkbox. handleSubmit was simplified to no longer take the event parameter.",
+  "explanation": "e.preventDefault() was removed along with the event parameter, so the browser's native form submission fires on every submit \u2014 the page navigates/reloads before the fetch call can resolve, wiping component state and aborting the request. Fix: keep the (e) parameter and call e.preventDefault() at the top of handleSubmit.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 1
+}

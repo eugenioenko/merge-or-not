@@ -1,0 +1,9 @@
+{
+  "id": 24,
+  "answer": "merge",
+  "context": "The team wants release binaries to carry verifiable proof of how and where they were built.",
+  "explanation": "Safe to merge. Adds `actions/attest-build-provenance`, GitHub's official Sigstore-backed attestation action, along with the exact permissions it needs (`id-token: write` for the OIDC signing flow, `attestations: write` to publish the attestation) — nothing broader. The attestation is generated for the same `dist/app` binary before it's attached to the release, giving consumers a way to verify the artifact's build provenance via `gh attestation verify`.",
+  "language": "ci",
+  "category": "supply-chain",
+  "difficulty": 3
+}

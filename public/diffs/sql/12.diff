@@ -1,0 +1,22 @@
+diff --git a/scripts/cleanup_expired_sessions.sql b/scripts/cleanup_expired_sessions.sql
+--- a/scripts/cleanup_expired_sessions.sql
++++ b/scripts/cleanup_expired_sessions.sql
+@@ -1,17 +1,15 @@
+ UPDATE sessions
+ SET revoked = true,
+-    revoked_at = now()
+-WHERE expires_at < now()
+-  AND revoked = false;
++    revoked_at = now();
+ 
+ DELETE FROM password_reset_tokens
+ WHERE expires_at < now();
+ 
+ DELETE FROM email_verification_tokens
+ WHERE expires_at < now();
+ 
+ UPDATE api_keys
+ SET revoked = true,
+     revoked_at = now()
+ WHERE expires_at < now()
+   AND revoked = false;

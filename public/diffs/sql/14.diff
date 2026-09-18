@@ -1,0 +1,21 @@
+diff --git a/procedures/search_products.sql b/procedures/search_products.sql
+--- a/procedures/search_products.sql
++++ b/procedures/search_products.sql
+@@ -5,13 +5,12 @@
+     p_max_price integer
+ )
+ RETURNS SETOF products AS $$
+ BEGIN
+     RETURN QUERY EXECUTE
+         'SELECT * FROM products
+-         WHERE name ILIKE $1
+-           AND category = $2
+-           AND price_cents >= $3
+-           AND price_cents <= $4'
+-    USING '%' || p_term || '%', p_category, p_min_price, p_max_price;
++         WHERE name ILIKE ''%' || p_term || '%''' ||
++        ' AND category = ''' || p_category || '''' ||
++        ' AND price_cents >= ' || p_min_price ||
++        ' AND price_cents <= ' || p_max_price;
+ END;
+ $$ LANGUAGE plpgsql;

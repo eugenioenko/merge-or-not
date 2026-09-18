@@ -1,0 +1,22 @@
+diff --git a/src/config/routes.ts b/src/config/routes.ts
+index 2b3c4d5..6e7f8a9 100644
+--- a/src/config/routes.ts
++++ b/src/config/routes.ts
+@@ -1,14 +1,14 @@
+ interface RouteConfig {
+   path: string;
+   requiresAuth: boolean;
+ }
+ 
+-export const routes: Record<string, RouteConfig> = {
++export const routes = {
+   home: { path: "/", requiresAuth: false },
+   dashboard: { path: "/dashboard", requiresAuth: true },
+   settings: { path: "/settings", requiresAuth: true },
+-};
++} satisfies Record<string, RouteConfig>;
+ 
+-export function getRoutePath(key: string): string {
++export function getRoutePath(key: keyof typeof routes): string {
+   return routes[key].path;
+ }

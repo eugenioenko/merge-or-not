@@ -1,0 +1,31 @@
+diff --git a/src/collections/ring_buffer.rs b/src/collections/ring_buffer.rs
+index 0000000..1111111 100644
+--- a/src/collections/ring_buffer.rs
++++ b/src/collections/ring_buffer.rs
+@@ -20,4 +20,26 @@
+             self.head = (self.head + 1) % self.data.len();
+         }
+     }
++
++    pub fn iter(&self) -> RingBufferIter<'_, T> {
++        RingBufferIter { buffer: self, pos: 0 }
++    }
++}
++
++pub struct RingBufferIter<'a, T> {
++    buffer: &'a RingBuffer<T>,
++    pos: usize,
++}
++
++impl<'a, T> Iterator for RingBufferIter<'a, T> {
++    type Item = &'a T;
++
++    fn next(&mut self) -> Option<Self::Item> {
++        if self.pos >= self.buffer.len {
++            return None;
++        }
++        let idx = (self.buffer.head + self.pos) % self.buffer.data.len();
++        self.pos += 1;
++        self.buffer.data[idx].as_ref()
++    }
+ }

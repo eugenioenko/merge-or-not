@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "merge",
+  "context": "Use `satisfies` instead of a type annotation so the route config keeps its literal keys while still being checked against RouteConfig.",
+  "explanation": "Typing routes as Record<string, RouteConfig> widened every key to string, so getRoutePath had to accept any string. satisfies checks the shape without widening, so routes keeps its literal key types and getRoutePath can safely narrow its parameter to keyof typeof routes.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 3
+}

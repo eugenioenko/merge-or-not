@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "`Query.posts` paginates with an opaque `after` cursor. The cursor is normally base64-encoded and decoded server-side before use.",
+  "explanation": "The decode-and-validate step is removed; the raw `after` string is now passed straight into Prisma's `cursor: { id: after }`. A malformed or forged cursor no longer gets a clean `UserInputError` — it either throws an unhandled ORM error or, worse, lets a client probe raw internal ids directly instead of going through the encoded cursor format. Fix: keep decoding and validating the cursor before using it, and reject anything that doesn't parse.",
+  "language": "graphql",
+  "category": "correctness",
+  "difficulty": 3
+}

@@ -1,0 +1,35 @@
+diff --git a/src/utils/weakCache.js b/src/utils/weakCache.js
+new file mode 100644
+index 0000000..6f1d8ac
+--- /dev/null
++++ b/src/utils/weakCache.js
+@@ -0,0 +1,29 @@
++const registry = new FinalizationRegistry((key) => {
++  cache.delete(key)
++})
++
++const cache = new Map()
++
++export function memoizeWeak(compute) {
++  return function memoized(key, ...args) {
++    const entry = cache.get(key)
++    const cached = entry?.ref.deref()
++
++    if (cached !== undefined) {
++      return cached
++    }
++
++    const value = compute(key, ...args)
++    cache.set(key, { ref: new WeakRef(value) })
++    registry.register(value, key)
++    return value
++  }
++}
++
++export function clearWeakCache() {
++  cache.clear()
++}
++
++export function weakCacheSize() {
++  return cache.size
++}

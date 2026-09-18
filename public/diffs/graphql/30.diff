@@ -1,0 +1,38 @@
+diff --git a/src/graphql/scalars/dateTime.js b/src/graphql/scalars/dateTime.js
+index a9a1b63..a66c925 100644
+--- a/src/graphql/scalars/dateTime.js
++++ b/src/graphql/scalars/dateTime.js
+@@ -1,10 +1,29 @@
+-const { GraphQLScalarType } = require('graphql');
++const { GraphQLScalarType, Kind, GraphQLError } = require('graphql');
++
++const parseDate = (value) => {
++  const date = new Date(value);
++  if (Number.isNaN(date.getTime())) {
++    throw new GraphQLError(`Invalid DateTime value: ${value}`);
++  }
++  return date;
++};
+ 
+ const DateTime = new GraphQLScalarType({
+   name: 'DateTime',
+-  serialize: (value) => new Date(value).toString(),
+-  parseValue: (value) => new Date(value),
+-  parseLiteral: (ast) => new Date(ast.value),
++  serialize: (value) => {
++    const date = value instanceof Date ? value : new Date(value);
++    if (Number.isNaN(date.getTime())) {
++      throw new GraphQLError(`Cannot serialize invalid DateTime: ${value}`);
++    }
++    return date.toISOString();
++  },
++  parseValue: (value) => parseDate(value),
++  parseLiteral: (ast) => {
++    if (ast.kind !== Kind.STRING) {
++      throw new GraphQLError('DateTime must be a string');
++    }
++    return parseDate(ast.value);
++  },
+ });
+ 
+ module.exports = { DateTime };

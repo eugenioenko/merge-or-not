@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "merge",
+  "context": "Migration adding a loyalty tier column and supporting lookup table to the customers table.",
+  "explanation": "The column is added with a constant DEFAULT so it is a fast metadata-only change even on a populated table, the foreign key ties it to a small reference table instead of a free-form CHECK, and the whole migration is wrapped in a single transaction so it either fully applies or fully rolls back. Safe to merge.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 2
+}

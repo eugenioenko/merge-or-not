@@ -1,0 +1,21 @@
+diff --git a/internal/poller/watcher.go b/internal/poller/watcher.go
+index 6f2b9d1..e4a7c50 100644
+--- a/internal/poller/watcher.go
++++ b/internal/poller/watcher.go
+@@ -6,3 +6,16 @@ func NewWatcher(ch <-chan Event) *Watcher {
+ func NewWatcher(ch <-chan Event) *Watcher {
+ 	return &Watcher{ch: ch}
+ }
++
++func (w *Watcher) Watch(ctx context.Context) {
++	for {
++		select {
++		case <-ctx.Done():
++			return
++		case evt := <-w.ch:
++			w.handle(evt)
++		case <-time.After(30 * time.Second):
++			log.Println("no events received in 30s")
++		}
++	}
++}

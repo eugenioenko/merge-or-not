@@ -1,0 +1,31 @@
+diff --git a/src/app.js b/src/app.js
+index 655afe0..2efecf1 100644
+--- a/src/app.js
++++ b/src/app.js
+@@ -3,8 +3,8 @@
+ const app = express();
+ 
+ app.use(helmet());
+-app.use(express.json({ limit: '1mb' }));
+-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
++app.use(express.json({ limit: '500mb' }));
++app.use(express.urlencoded({ extended: true, limit: '500mb' }));
+ 
+ app.use('/api/users', require('./routes/users'));
+ app.use('/api/orders', require('./routes/orders'));
+diff --git a/src/routes/imports.js b/src/routes/imports.js
+new file mode 100644
+index 0000000..6e95f4f 100644
+--- /dev/null
++++ b/src/routes/imports.js
+@@ -0,0 +1,10 @@
++const express = require('express');
++const router = express.Router();
++const { importCsv } = require('../services/importer');
++
++router.post('/imports/csv', async (req, res) => {
++  const summary = await importCsv(req.body.rows);
++  res.status(201).json(summary);
++});
++
++module.exports = router;

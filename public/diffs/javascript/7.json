@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "reject",
+  "context": "Adds buildQueryString and omit helpers to the shared object utilities module.",
+  "explanation": "buildQueryString iterates params with for...in and no hasOwnProperty (or Object.hasOwn) guard. If params was built via Object.create() for prototypal defaults layering (a pattern already used elsewhere in this codebase for config objects), or if any script has added an enumerable property to Object.prototype, those inherited keys get serialized into the query string too. Use Object.entries(params) or for...in combined with Object.hasOwn(params, key) to only serialize the object's own keys.",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 3
+}

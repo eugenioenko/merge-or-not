@@ -1,0 +1,38 @@
+diff --git a/src/schemas/orderSchema.js b/src/schemas/orderSchema.js
+new file mode 100644
+index 0000000..3dc03f2 100644
+--- /dev/null
++++ b/src/schemas/orderSchema.js
+@@ -0,0 +1,12 @@
++const { z } = require('zod');
++
++const createOrderSchema = z.object({
++  customerId: z.string().uuid(),
++  items: z.array(z.object({
++    sku: z.string().min(1),
++    quantity: z.number().int().positive(),
++  })).min(1),
++  notes: z.string().max(500).optional(),
++});
++
++module.exports = { createOrderSchema };
+diff --git a/src/routes/orders.js b/src/routes/orders.js
+index 890a5d0..ea0b6d2 100644
+--- a/src/routes/orders.js
++++ b/src/routes/orders.js
+@@ -1,9 +1,14 @@
+ const express = require('express');
+ const router = express.Router();
+ const { createOrder } = require('../services/orderService');
++const { createOrderSchema } = require('../schemas/orderSchema');
+ 
+ router.post('/orders', async (req, res) => {
+-  const order = await createOrder(req.body);
++  const parsed = createOrderSchema.safeParse(req.body);
++  if (!parsed.success) {
++    return res.status(400).json({ error: parsed.error.flatten() });
++  }
++  const order = await createOrder(parsed.data);
+   res.status(201).json(order);
+ });
+ 

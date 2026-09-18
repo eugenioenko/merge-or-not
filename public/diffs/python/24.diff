@@ -1,0 +1,24 @@
+diff --git a/app/services/distributed_lock.py b/app/services/distributed_lock.py
+index 2baa310..7cc7099 100644
+--- a/app/services/distributed_lock.py
++++ b/app/services/distributed_lock.py
+@@ -1,5 +1,6 @@
+ import uuid
+ 
++from app.errors import LockAcquisitionError
+ from app.redis_client import redis
+ 
+ 
+@@ -17,3 +18,12 @@ class RedisLock:
+         current = await redis.get(self.key)
+         if current == self.token:
+             await redis.delete(self.key)
++
++    async def __aenter__(self):
++        if not await self.acquire():
++            raise LockAcquisitionError(self.key)
++        return self
++
++    async def __aexit__(self, exc_type, exc, tb):
++        await self.release()
++        return False

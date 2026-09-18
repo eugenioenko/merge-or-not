@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "merge",
+  "context": "Adds tracing spans to the order creation and cancellation handlers.",
+  "explanation": "Both handlers get a #[instrument] span with skip(pool, items) to avoid expensive/irrelevant Debug-formatting of the pool handle and full item list, plus structured fields (customer_id, item_count, order_id) so these code paths are correlated and filterable in production tracing. Completion events log structured fields rather than interpolating values into a message string, keeping them queryable in a structured log backend.",
+  "language": "rust",
+  "category": "observability",
+  "difficulty": 2
+}

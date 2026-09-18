@@ -1,0 +1,22 @@
+diff --git a/Services/ReportExporter.cs b/Services/ReportExporter.cs
+index 7e99b91..fa52139 100644
+--- a/Services/ReportExporter.cs
++++ b/Services/ReportExporter.cs
+@@ -1,6 +1,6 @@
+ namespace Api.Services;
+ 
+-public class ReportExporter
++public class ReportExporter : IDisposable
+ {
+     private readonly PdfEngine _pdfEngine;
+ 
+@@ -13,4 +13,9 @@
+     {
+         return _pdfEngine.Render(report.ToHtml());
+     }
++
++    public void Dispose()
++    {
++        _pdfEngine.Dispose();
++    }
+ }

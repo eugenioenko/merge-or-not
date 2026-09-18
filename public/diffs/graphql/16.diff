@@ -1,0 +1,29 @@
+diff --git a/src/graphql/resolvers/inventory.js b/src/graphql/resolvers/inventory.js
+index 8cb87bf..8fd5875 100644
+--- a/src/graphql/resolvers/inventory.js
++++ b/src/graphql/resolvers/inventory.js
+@@ -1,16 +1,18 @@
+ const Mutation = {
+   bulkUpdateInventory: async (_parent, { updates }, { db }) => {
+-    return db.$transaction(async (tx) => {
+-      const results = [];
+-      for (const update of updates) {
+-        const record = await tx.inventory.update({
++    const results = [];
++    for (const update of updates) {
++      try {
++        const record = await db.inventory.update({
+           where: { sku: update.sku },
+           data: { quantity: update.quantity },
+         });
+         results.push(record);
++      } catch (err) {
++        console.log('failed to update', update.sku);
+       }
+-      return results;
+-    });
++    }
++    return results;
+   },
+ };
+ 

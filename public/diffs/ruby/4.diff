@@ -1,0 +1,21 @@
+diff --git a/app/controllers/products_controller.rb b/app/controllers/products_controller.rb
+index 3d31f7d..03ed9b6 100644
+--- a/app/controllers/products_controller.rb
++++ b/app/controllers/products_controller.rb
+@@ -1,10 +1,14 @@
+ class ProductsController < ApplicationController
+   def index
+     @products = Product.where("category = ?", params[:category])
+-                        .order(:name)
++                        .order(params[:sort].presence || "name")
+ 
+     if params[:q].present?
+-      @products = @products.where("name ILIKE ?", "%#{params[:q]}%")
++      @products = @products.where("name ILIKE '%#{params[:q]}%'")
++    end
++
++    if params[:min_price].present?
++      @products = @products.where("price >= #{params[:min_price]}")
+     end
+ 
+     render json: @products

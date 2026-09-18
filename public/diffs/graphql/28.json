@@ -1,0 +1,9 @@
+{
+  "id": 28,
+  "answer": "merge",
+  "context": "`commentAdded` subscription currently hands back the raw pubsub iterator with no authentication or scoping to any particular post.",
+  "explanation": "Safe to merge. The subscribe function now requires an authenticated `currentUser`, and `withFilter` checks both that the event belongs to the requested `postId` and that the current user has membership on that post before delivering it — so clients only receive comment events for posts they're actually authorized to see.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 3
+}

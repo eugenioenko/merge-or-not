@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "reject",
+  "context": "Gateway stitches together the user, billing, and admin subservice schemas into one public GraphQL API.",
+  "explanation": "The `filterSchema`/`pruneSchema` step that limited the admin subschema to an explicit allowlist of public-safe root fields is removed, and the full, unfiltered `adminSchema` is stitched in instead. Every internal-only query and mutation on the admin service — user impersonation, internal debug queries, whatever else lives there — becomes reachable through the public gateway. Fix: keep filtering the admin subschema down to only the fields meant to be public before stitching it in.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 3
+}

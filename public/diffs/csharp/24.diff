@@ -1,0 +1,34 @@
+diff --git a/Validators/CreateOrderRequestValidator.cs b/Validators/CreateOrderRequestValidator.cs
+new file mode 100644
+index 0000000..204abee
+--- /dev/null
++++ b/Validators/CreateOrderRequestValidator.cs
+@@ -0,0 +1,15 @@
++namespace Api.Validators;
++
++public class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>
++{
++    public CreateOrderRequestValidator()
++    {
++        RuleFor(x => x.CustomerId).GreaterThan(0);
++        RuleFor(x => x.Items).NotEmpty();
++        RuleForEach(x => x.Items).ChildRules(item =>
++        {
++            item.RuleFor(i => i.Quantity).GreaterThan(0);
++            item.RuleFor(i => i.Sku).NotEmpty().MaximumLength(64);
++        });
++    }
++}
+diff --git a/Program.cs b/Program.cs
+index bf1fc04..f7b41e9 100644
+--- a/Program.cs
++++ b/Program.cs
+@@ -2,6 +2,8 @@
+ 
+ builder.Services.AddControllers();
+ builder.Services.AddScoped<IOrderService, OrderService>();
++builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderRequestValidator>();
++builder.Services.AddFluentValidationAutoValidation();
+ 
+ var app = builder.Build();
+ 

@@ -1,0 +1,46 @@
+diff --git a/src/components/ProfileCard.jsx b/src/components/ProfileCard.jsx
+index 2db4927..3f790bd 100644
+--- a/src/components/ProfileCard.jsx
++++ b/src/components/ProfileCard.jsx
+@@ -1,34 +1,40 @@
+ import { useEffect, useState } from 'react'
+ 
+ export function ProfileCard({ userId }) {
+   const [profile, setProfile] = useState(null)
+   const [imageError, setImageError] = useState(false)
+ 
+   useEffect(() => {
+     let active = true
+     fetch(`/api/users/${userId}/profile`)
+       .then((res) => res.json())
+       .then((data) => {
+         if (active) setProfile(data)
+       })
+     return () => {
+       active = false
+     }
+   }, [userId])
+ 
+   if (!profile) {
+-    return <p>Loading...</p>
++    return (
++      <div className="profile-card profile-card--skeleton" aria-busy="true">
++        <div className="skeleton skeleton-avatar" />
++        <div className="skeleton skeleton-line skeleton-line--title" />
++        <div className="skeleton skeleton-line skeleton-line--body" />
++      </div>
++    )
+   }
+ 
+   return (
+     <div className="profile-card">
+       {imageError ? (
+         <div className="profile-card-avatar-fallback">{profile.initials}</div>
+       ) : (
+         <img src={profile.avatarUrl} alt={profile.name} onError={() => setImageError(true)} />
+       )}
+       <h3>{profile.name}</h3>
+       <p>{profile.bio}</p>
+     </div>
+   )
+ }

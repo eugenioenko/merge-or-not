@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "`Query.me` and `Query.user` resolvers previously mapped the database record to a small, explicit set of public fields before returning it.",
+  "explanation": "Both resolvers now return the raw database row (`currentUser` / the Prisma record) directly instead of an explicit safe projection. Any field on the underlying User model — password hash, internal role flags, billing identifiers, anything added to the table later — becomes reachable the moment a matching field is added to the GraphQL type, with no resolver-level gate. Fix: keep mapping to an explicit allowlist of public fields instead of returning the model as-is.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 2
+}

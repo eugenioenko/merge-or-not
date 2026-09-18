@@ -1,0 +1,9 @@
+{
+  "id": 30,
+  "answer": "merge",
+  "context": "Adds exponential backoff with jitter to the inventory client's retry logic for transient network and 5xx errors.",
+  "explanation": "A well-implemented retry: it only retries errors that are actually transient (connection resets, timeouts, 5xx), caps the delay so it doesn't grow unbounded, and adds jitter so many clients recovering from the same outage don't all retry in lockstep and hammer the service at once (the thundering herd problem). Non-retryable errors (e.g. 4xx) still fail immediately.",
+  "category": "correctness",
+  "difficulty": 3,
+  "language": "node"
+}

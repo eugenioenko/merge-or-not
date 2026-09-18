@@ -1,0 +1,29 @@
+diff --git a/src/components/PriceCalculator.jsx b/src/components/PriceCalculator.jsx
+index b8ba94b..f70cb7f 100644
+--- a/src/components/PriceCalculator.jsx
++++ b/src/components/PriceCalculator.jsx
+@@ -1,14 +1,21 @@
+-import { useMemo } from 'react'
++import { useState } from 'react'
+ 
+-export function PriceCalculator({ basePrice, taxRate, discountPercent }) {
++export function PriceCalculator({ basePrice, taxRate, discountPercent, onReset }) {
++  const [total, setTotal] = useState(0)
++
+   const discounted = basePrice - basePrice * (discountPercent / 100)
+-  const total = useMemo(() => discounted + discounted * taxRate, [discounted, taxRate])
++  const withTax = discounted + discounted * taxRate
++
++  if (total !== withTax) {
++    setTotal(withTax)
++  }
+ 
+   return (
+     <div className="price-calculator">
+       <p>Base price: ${basePrice.toFixed(2)}</p>
+       <p>Discount: {discountPercent}%</p>
+       <p>Total: ${total.toFixed(2)}</p>
++      <button onClick={() => { setTotal(0); onReset?.() }}>Reset</button>
+     </div>
+   )
+ }

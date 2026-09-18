@@ -1,0 +1,9 @@
+{
+  "id": 22,
+  "answer": "merge",
+  "context": "Adding a reusable retry decorator with exponential backoff and jitter for calls to flaky downstream services.",
+  "explanation": "This is a solid, idiomatic implementation: functools.wraps preserves the wrapped function's name and docstring, the exception filter only retries the specified exception types instead of using a bare except, attempts are capped by max_attempts and the delay is capped by max_delay, and a small random jitter is added to each delay to avoid synchronized retry storms when many callers back off at the same rate. On the final attempt it re-raises the original exception instead of swallowing it. Clean and safe to merge.",
+  "language": "python",
+  "category": "reliability",
+  "difficulty": 2
+}

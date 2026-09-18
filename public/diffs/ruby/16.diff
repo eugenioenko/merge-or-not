@@ -1,0 +1,28 @@
+diff --git a/app/jobs/webhook_delivery_job.rb b/app/jobs/webhook_delivery_job.rb
+index e804a41..bfed3db 100644
+--- a/app/jobs/webhook_delivery_job.rb
++++ b/app/jobs/webhook_delivery_job.rb
+@@ -1,9 +1,22 @@
+ class WebhookDeliveryJob < ApplicationJob
+   queue_as :webhooks
+ 
++  class DeliveryFailed < StandardError; end
++
++  RETRY_ATTEMPTS = 5
++
++  retry_on DeliveryFailed, wait: :polynomially_longer, attempts: RETRY_ATTEMPTS do |job, error|
++    DeadLetter.create!(
++      job_class: job.class.name,
++      arguments: job.arguments,
++      error_message: error.message,
++      failed_at: Time.current
++    )
++  end
++
+   def perform(webhook_id, payload)
+     webhook = Webhook.find(webhook_id)
+     response = HTTP.timeout(5).post(webhook.url, json: payload)
+-    raise "Webhook delivery failed: #{response.status}" unless response.status.success?
++    raise DeliveryFailed, "Webhook delivery failed: #{response.status}" unless response.status.success?
+   end
+ end

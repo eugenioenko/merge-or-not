@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "merge",
+  "context": "Adds shared debounce and throttle helpers to replace the ad-hoc setTimeout logic scattered across the search and scroll handlers.",
+  "explanation": "Both implementations are correct: debounce clears and reschedules a single timer per call and exposes cancel() to abandon a pending invocation, while throttle tracks the last call time and schedules at most one trailing call for the remaining interval. Neither leaks timers, and `this`/arguments are forwarded correctly with apply. Good, reusable utility.",
+  "language": "javascript",
+  "category": "performance",
+  "difficulty": 3
+}

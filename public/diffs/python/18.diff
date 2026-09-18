@@ -1,0 +1,33 @@
+diff --git a/app/services/pricing_rules.py b/app/services/pricing_rules.py
+index 42b0a5b..a8a7242 100644
+--- a/app/services/pricing_rules.py
++++ b/app/services/pricing_rules.py
+@@ -1,27 +1,3 @@
+-import ast
+-import operator
+-
+-_OPS = {
+-    ast.Add: operator.add,
+-    ast.Sub: operator.sub,
+-    ast.Mult: operator.mul,
+-    ast.Div: operator.truediv,
+-}
+-
+-
+-def _eval_node(node, scope):
+-    if isinstance(node, ast.Constant):
+-        return node.value
+-    if isinstance(node, ast.Name):
+-        return scope[node.id]
+-    if isinstance(node, ast.BinOp) and type(node.op) in _OPS:
+-        return _OPS[type(node.op)](
+-            _eval_node(node.left, scope), _eval_node(node.right, scope)
+-        )
+-    raise ValueError("unsupported expression")
+-
+-
+ def evaluate_discount_formula(formula, base_price, quantity):
+-    tree = ast.parse(formula, mode="eval")
+     scope = {"price": base_price, "qty": quantity}
+-    return _eval_node(tree.body, scope)
++    return eval(formula, {"__builtins__": {}}, scope)

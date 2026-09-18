@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "reject",
+  "context": "Letting the revenue-by-region report accept a sort query parameter, and inlining the region value into the query since it's already known.",
+  "explanation": "Both region and sort are interpolated directly into the SQL string with an f-string instead of being passed as query parameters. region comes straight from request.GET, so a client can send something like region=x' OR '1'='1 to read data outside their region; sort is equally attacker-controlled and equally unescaped, enabling the same kind of injection through the ORDER BY clause. Client-side validation is not a security boundary - the endpoint can be called directly. Fix: keep region as a bound parameter (%s plus an entry in the params list), and validate sort against a fixed whitelist of allowed column names before interpolating it, since parameter placeholders can't be used for identifiers.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 3
+}

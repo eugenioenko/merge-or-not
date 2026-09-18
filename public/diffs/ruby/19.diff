@@ -1,0 +1,25 @@
+diff --git a/app/controllers/api/reviews_controller.rb b/app/controllers/api/reviews_controller.rb
+index 7b678b3..d57d8da 100644
+--- a/app/controllers/api/reviews_controller.rb
++++ b/app/controllers/api/reviews_controller.rb
+@@ -1,8 +1,18 @@
+ module Api
+   class ReviewsController < Api::BaseController
++    include Pagy::Backend
++
++    MAX_ITEMS_PER_PAGE = 50
++
+     def index
+-      @reviews = Product.find(params[:product_id]).reviews.order(created_at: :desc).to_a
+-      render json: @reviews
++      scope = Product.find(params[:product_id]).reviews.order(created_at: :desc)
++      items = [[params[:per_page].to_i, MAX_ITEMS_PER_PAGE].min, 1].max
++      @pagy, @reviews = pagy(scope, items: items)
++
++      render json: {
++        reviews: @reviews,
++        pagination: { page: @pagy.page, pages: @pagy.pages, count: @pagy.count }
++      }
+     end
+   end
+ end

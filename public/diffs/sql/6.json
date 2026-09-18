@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "merge",
+  "context": "Switching the product listing endpoint from offset pagination to keyset pagination as the catalog has grown past a million rows.",
+  "explanation": "OFFSET pagination forces Postgres to scan and discard every skipped row, which gets slower the deeper a client pages into the catalog. Keyset pagination on the indexed id column jumps straight to the right spot regardless of page depth, giving consistent performance, and the extra category filter still uses the composite index. Safe to merge.",
+  "language": "sql",
+  "category": "performance",
+  "difficulty": 3
+}

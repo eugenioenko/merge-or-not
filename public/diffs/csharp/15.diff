@@ -1,0 +1,20 @@
+diff --git a/Services/SubscriptionCleanupService.cs b/Services/SubscriptionCleanupService.cs
+index 291e046..e918507 100644
+--- a/Services/SubscriptionCleanupService.cs
++++ b/Services/SubscriptionCleanupService.cs
+@@ -11,10 +11,12 @@
+ 
+     public void RemoveExpired(DateTime now)
+     {
+-        var expired = _subscriptions.Where(s => s.ExpiresAt < now).ToList();
+-        foreach (var subscription in expired)
++        foreach (var subscription in _subscriptions)
+         {
+-            _subscriptions.Remove(subscription);
++            if (subscription.ExpiresAt < now)
++            {
++                _subscriptions.Remove(subscription);
++            }
+         }
+     }
+ }

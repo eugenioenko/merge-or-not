@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "reject",
+  "context": "Add a generic `patch` method to the in-memory repository for partial updates.",
+  "explanation": "patch accepts changes: any and casts the retrieved entity to any, which defeats the whole purpose of the generic Repository<T> contract - callers can now pass arbitrary shapes and silently corrupt entities with typos or wrong field types, with no compiler help.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 3
+}

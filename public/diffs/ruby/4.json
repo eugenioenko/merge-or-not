@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "reject",
+  "context": "Adds sort and minimum-price filtering to the public products search endpoint.",
+  "explanation": "Two new user-controlled inputs are interpolated directly into raw SQL: params[:sort] is spliced into order(...) and params[:min_price] into a where(\"price >= #{...}\") string, alongside an existing ILIKE clause that was also switched from a bind parameter to string interpolation. Any of these lets an attacker inject arbitrary SQL (e.g. via q, sort, or min_price) to exfiltrate data or break out of the query. Fix: use bind parameters (where(\"price >= ?\", params[:min_price])) and a safe allowlist for the sort column.",
+  "language": "ruby",
+  "category": "security",
+  "difficulty": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "Adding pagination to the transaction history endpoint, which lists a table with hundreds of millions of rows.",
+  "explanation": "OFFSET forces the database to walk through and discard every skipped row before it can return a page, so deep pages against a table this size get progressively slower and can time out entirely once a customer with years of history pages far enough back. Keyset pagination on the indexed id or created_at column should be used instead. Should be rejected.",
+  "language": "sql",
+  "category": "performance",
+  "difficulty": 3
+}

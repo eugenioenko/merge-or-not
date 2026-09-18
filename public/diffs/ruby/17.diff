@@ -1,0 +1,26 @@
+diff --git a/app/services/order_processor.rb b/app/services/order_processor.rb
+index 5434102..9864757 100644
+--- a/app/services/order_processor.rb
++++ b/app/services/order_processor.rb
+@@ -1,13 +1,16 @@
+ class OrderProcessor
+-  def initialize(order)
++  def initialize(order, logger: Rails.logger)
+     @order = order
++    @logger = logger
+   end
+ 
+   def call
+-    puts "Processing order #{@order.id}"
+-    charge_payment
+-    reserve_inventory
+-    puts "Order #{@order.id} processed"
++    @logger.tagged("OrderProcessor", "order_id=#{@order.id}") do
++      @logger.info("Processing order")
++      charge_payment
++      reserve_inventory
++      @logger.info("Order processed")
++    end
+   end
+ 
+   private

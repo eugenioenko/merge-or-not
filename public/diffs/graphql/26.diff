@@ -1,0 +1,30 @@
+diff --git a/src/graphql/resolvers/comment.js b/src/graphql/resolvers/comment.js
+index bc1c1d1..64c0ee5 100644
+--- a/src/graphql/resolvers/comment.js
++++ b/src/graphql/resolvers/comment.js
+@@ -1,6 +1,23 @@
+ const Query = {
+-  comments: (_parent, { postId }, { db }) =>
+-    db.comment.findMany({ where: { postId }, orderBy: { createdAt: 'asc' } }),
++  comments: async (_parent, { postId, first = 20, after }, { db }) => {
++    const limit = Math.min(first, 100);
++    const comments = await db.comment.findMany({
++      where: { postId },
++      take: limit + 1,
++      skip: after ? 1 : 0,
++      cursor: after ? { id: after } : undefined,
++      orderBy: { createdAt: 'asc' },
++    });
++    const hasNextPage = comments.length > limit;
++    const nodes = hasNextPage ? comments.slice(0, limit) : comments;
++    return {
++      edges: nodes.map((comment) => ({ cursor: comment.id, node: comment })),
++      pageInfo: {
++        hasNextPage,
++        endCursor: nodes.length ? nodes[nodes.length - 1].id : null,
++      },
++    };
++  },
+ };
+ 
+ module.exports = { Query };

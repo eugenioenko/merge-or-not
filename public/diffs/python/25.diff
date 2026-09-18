@@ -1,0 +1,43 @@
+diff --git a/app/db.py b/app/db.py
+index 6bb183b..58cfbd7 100644
+--- a/app/db.py
++++ b/app/db.py
+@@ -1,13 +1,30 @@
+-import psycopg2
++from psycopg2 import pool
+ 
+ from app.config import settings
+ 
++_pool = pool.ThreadedConnectionPool(
++    minconn=settings.DB_POOL_MIN,
++    maxconn=settings.DB_POOL_MAX,
++    host=settings.DB_HOST,
++    port=settings.DB_PORT,
++    dbname=settings.DB_NAME,
++    user=settings.DB_USER,
++    password=settings.DB_PASSWORD,
++)
++
++
++class PooledConnection:
++    def __enter__(self):
++        self.conn = _pool.getconn()
++        return self.conn
++
++    def __exit__(self, exc_type, exc, tb):
++        if exc_type is not None:
++            self.conn.rollback()
++        else:
++            self.conn.commit()
++        _pool.putconn(self.conn)
++
+ 
+ def get_connection():
+-    return psycopg2.connect(
+-        host=settings.DB_HOST,
+-        port=settings.DB_PORT,
+-        dbname=settings.DB_NAME,
+-        user=settings.DB_USER,
+-        password=settings.DB_PASSWORD,
+-    )
++    return PooledConnection()

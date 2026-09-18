@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "ApolloServer setup previously toggled `introspection` and `playground` off based on `NODE_ENV === 'production'`.",
+  "explanation": "The production check is deleted and both `introspection` and `playground` are hardcoded to `true`. In production this exposes the full schema — every type, field, argument, and deprecated-but-still-live mutation — to anyone who queries it, making it trivial for an attacker to map the entire API surface before probing it. Fix: keep introspection and the playground disabled outside development, gated on `NODE_ENV`.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 1
+}

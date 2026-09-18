@@ -1,0 +1,9 @@
+{
+  "id": 25,
+  "answer": "merge",
+  "context": "Adds Zod schema validation to the order creation endpoint, which previously passed the raw request body straight through.",
+  "explanation": "A good defensive addition: the schema enforces types, required fields, a minimum item count, and bounds on free-text notes before createOrder ever runs, and safeParse returns a structured error instead of throwing, so malformed requests get a clean 400 with details rather than an unhandled exception or bad data reaching the order service.",
+  "category": "correctness",
+  "difficulty": 2,
+  "language": "node"
+}

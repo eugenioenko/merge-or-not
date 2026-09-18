@@ -1,0 +1,22 @@
+diff --git a/src/routes/auth.js b/src/routes/auth.js
+index 2933503..410f156 100644
+--- a/src/routes/auth.js
++++ b/src/routes/auth.js
+@@ -1,16 +1,8 @@
+ const express = require('express');
+ const router = express.Router();
+-const rateLimit = require('express-rate-limit');
+ const { verifyPassword } = require('../services/authService');
+ 
+-const loginLimiter = rateLimit({
+-  windowMs: 15 * 60 * 1000,
+-  max: 5,
+-  standardHeaders: true,
+-  legacyHeaders: false,
+-});
+-
+-router.post('/login', loginLimiter, async (req, res) => {
++router.post('/login', async (req, res) => {
+   const { email, password } = req.body;
+   const user = await verifyPassword(email, password);
+   if (!user) return res.status(401).json({ error: 'Invalid credentials' });

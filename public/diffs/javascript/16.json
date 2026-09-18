@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "merge",
+  "context": "Adds emitAsync to the EventEmitter, deferring handler calls with queueMicrotask, plus a small listenerCount helper.",
+  "explanation": "queueMicrotask schedules the callback to run after the current synchronous code finishes but before any macrotask (setTimeout, I/O, rendering), which is exactly the right guarantee for 'notify listeners once the current operation settles' semantics, and it runs earlier and more predictably than setTimeout(fn, 0). Snapshotting the handler set with [...handlers] before scheduling also avoids bugs where a handler added or removed while the microtask is pending changes what fires. Correct, minimal addition.",
+  "language": "javascript",
+  "category": "concurrency",
+  "difficulty": 3
+}

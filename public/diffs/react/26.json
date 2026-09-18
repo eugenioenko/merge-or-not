@@ -1,0 +1,9 @@
+{
+  "id": 26,
+  "answer": "merge",
+  "context": "Modal renders an overlay and content box on top of the page. It was getting clipped by an ancestor's overflow:hidden and stacking under other fixed elements.",
+  "explanation": "Safe to merge. Rendering through createPortal into document.body takes the modal out of the normal DOM hierarchy so it's no longer subject to an ancestor's overflow or z-index/stacking-context constraints, while React's event system still bubbles events through the component tree as before. The escape-key handling and cleanup are unchanged and correct.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 2
+}

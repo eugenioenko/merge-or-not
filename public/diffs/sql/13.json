@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "Migration adding a phone verification flag and its supporting index to the users table.",
+  "explanation": "ADD COLUMN ... NOT NULL with no DEFAULT fails immediately on a populated table because Postgres cannot backfill existing rows with a value. Even on engines that allow it, it forces a full table rewrite and takes an exclusive lock for the duration, blocking every other query against users. Should be rejected.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 3
+}

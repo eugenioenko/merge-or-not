@@ -1,0 +1,30 @@
+diff --git a/app/services/checkout.py b/app/services/checkout.py
+index 84076de..f35ccca 100644
+--- a/app/services/checkout.py
++++ b/app/services/checkout.py
+@@ -1,19 +1,20 @@
+-import logging
++import structlog
+ 
+ from app.payments import charge_card
+ from app.models import Order
+ 
+-logger = logging.getLogger(__name__)
++logger = structlog.get_logger(__name__)
+ 
+ 
+ def complete_checkout(cart, payment_method):
+     order = Order.create_from_cart(cart)
++    log = logger.bind(order_id=order.id, cart_id=cart.id)
+     try:
+         charge_card(payment_method, order.total)
+-    except Exception as exc:
+-        logger.error("checkout failed for order %s: %s", order.id, exc)
++    except Exception:
++        log.exception("checkout.failed", amount=order.total)
+         order.mark_failed()
+         raise
+     order.mark_paid()
+-    logger.info("checkout completed for order %s", order.id)
++    log.info("checkout.completed", amount=order.total)
+     return order

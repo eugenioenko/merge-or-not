@@ -1,0 +1,9 @@
+{
+  "id": 23,
+  "answer": "merge",
+  "context": "ProductFilterList filters and sorts a product catalog. A theme toggle button was added alongside the list.",
+  "explanation": "Safe to merge. Wrapping the filter/sort pipeline in useMemo, keyed on products, query, and sortBy, means toggling the unrelated theme state no longer re-runs the expensive filter and sort on every render \u2014 it only recomputes when the actual inputs change.",
+  "language": "react",
+  "category": "performance",
+  "difficulty": 2
+}

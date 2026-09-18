@@ -1,0 +1,29 @@
+diff --git a/src/handlers/user.rs b/src/handlers/user.rs
+index 0000000..1111111 100644
+--- a/src/handlers/user.rs
++++ b/src/handlers/user.rs
+@@ -1,4 +1,5 @@
+ use axum::{extract::State, http::HeaderMap, Json};
++use serde::Deserialize;
+ use crate::{db::Pool, error::AppError, models::User};
+ 
+ pub async fn get_user(State(pool): State<Pool>, headers: HeaderMap) -> Result<Json<User>, AppError> {
+@@ -10,3 +11,18 @@
+     let user = pool.fetch_user(user_id).await?;
+     Ok(Json(user))
+ }
++
++#[derive(Deserialize)]
++pub struct UpdateEmailRequest {
++    pub user_id: String,
++    pub email: String,
++}
++
++pub async fn update_email(
++    State(pool): State<Pool>,
++    Json(payload): Json<UpdateEmailRequest>,
++) -> Result<Json<User>, AppError> {
++    let domain = payload.email.split('@').nth(1).unwrap();
++    let user = pool.update_email(&payload.user_id, &payload.email, domain).await?;
++    Ok(Json(user))
++}

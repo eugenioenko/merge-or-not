@@ -1,0 +1,20 @@
+diff --git a/queries/get_user_profile.sql b/queries/get_user_profile.sql
+--- a/queries/get_user_profile.sql
++++ b/queries/get_user_profile.sql
+@@ -1,15 +1,4 @@
+-SELECT
+-    u.id,
+-    u.email,
+-    u.display_name,
+-    u.avatar_url,
+-    u.loyalty_tier,
+-    u.timezone,
+-    u.locale,
+-    u.phone_number,
+-    u.marketing_opt_in,
+-    u.default_shipping_address_id,
+-    u.created_at
++SELECT *
+ FROM users u
+ WHERE u.id = $1
+   AND u.deleted_at IS NULL;

@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "merge",
+  "context": "Adds a lock_version column and handles concurrent edits on inventory items.",
+  "explanation": "The migration adds the lock_version integer column (default 0, not null) that ActiveRecord's optimistic locking automatically picks up on InventoryItem. The controller now rescues ActiveRecord::StaleObjectError — raised when a concurrent update has already bumped lock_version — and returns a clear 409 Conflict instead of letting the exception bubble up as a 500 or silently overwriting a concurrent change. This is exactly how Rails expects optimistic locking to be wired up end to end.",
+  "language": "ruby",
+  "category": "concurrency",
+  "difficulty": 3
+}

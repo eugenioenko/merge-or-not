@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "This is a reusable `workflow_call` workflow that many repos in the org invoke to deploy. A teammate added a Slack notification on success.",
+  "explanation": "`some-org/slack-notify-action@master` is pinned to a mutable branch, not a release tag or SHA. Because this is a shared reusable workflow, every repo that calls it inherits whatever code lands on that branch at run time — a single compromised or force-pushed `master` on the notify action silently runs inside every consuming repo's deploy job, with access to `DEPLOY_TOKEN` and `SLACK_WEBHOOK`. The blast radius here is much bigger than a normal workflow because it's centralized. Fix: pin to a release tag or, better, a full commit SHA.",
+  "language": "ci",
+  "category": "supply-chain",
+  "difficulty": 3
+}

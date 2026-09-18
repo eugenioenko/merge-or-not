@@ -1,0 +1,9 @@
+{
+  "id": 29,
+  "answer": "merge",
+  "context": "Requires an Idempotency-Key header on payment creation and replays the stored result for a key that's already been used.",
+  "explanation": "This is the standard, correct fix for a classic payments bug: a client retry after a timeout (the charge actually succeeded but the response was lost) would otherwise double-charge the card. Requiring the key and short-circuiting to the stored response for a repeat key makes retries safe, and the TTL keeps the store from growing forever.",
+  "category": "correctness",
+  "difficulty": 3,
+  "language": "node"
+}

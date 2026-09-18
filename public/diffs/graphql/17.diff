@@ -1,0 +1,27 @@
+diff --git a/src/graphql/resolvers/post.js b/src/graphql/resolvers/post.js
+index 4e97603..c761418 100644
+--- a/src/graphql/resolvers/post.js
++++ b/src/graphql/resolvers/post.js
+@@ -1,20 +1,10 @@
+-const { UserInputError } = require('../errors');
+-
+ const Query = {
+   posts: async (_parent, { first = 20, after }, { db }) => {
+     const limit = Math.min(first, 50);
+-    let cursor;
+-    if (after) {
+-      const decoded = decodeCursor(after);
+-      if (!decoded || typeof decoded.id !== 'string') {
+-        throw new UserInputError('Invalid cursor');
+-      }
+-      cursor = { id: decoded.id };
+-    }
+     const posts = await db.post.findMany({
+       take: limit + 1,
+-      skip: cursor ? 1 : 0,
+-      cursor,
++      skip: after ? 1 : 0,
++      cursor: after ? { id: after } : undefined,
+       orderBy: { createdAt: 'desc' },
+     });
+     const hasNextPage = posts.length > limit;

@@ -1,0 +1,42 @@
+diff --git a/Services/GeocodingClient.cs b/Services/GeocodingClient.cs
+index bdf69cb..f11200a 100644
+--- a/Services/GeocodingClient.cs
++++ b/Services/GeocodingClient.cs
+@@ -2,17 +2,18 @@
+ 
+ public class GeocodingClient
+ {
++    private readonly HttpClient _httpClient;
+     private readonly string _apiKey;
+ 
+-    public GeocodingClient(IConfiguration configuration)
++    public GeocodingClient(HttpClient httpClient, IConfiguration configuration)
+     {
++        _httpClient = httpClient;
+         _apiKey = configuration["Geocoding:ApiKey"]!;
+     }
+ 
+     public async Task<Coordinates> GeocodeAsync(string address)
+     {
+-        using var client = new HttpClient();
+-        var response = await client.GetAsync($"https://geo.example.com/v1/lookup?address={Uri.EscapeDataString(address)}&key={_apiKey}");
++        var response = await _httpClient.GetAsync($"/v1/lookup?address={Uri.EscapeDataString(address)}&key={_apiKey}");
+         response.EnsureSuccessStatusCode();
+         return await response.Content.ReadFromJsonAsync<Coordinates>()
+             ?? throw new InvalidOperationException("Empty geocoding response.");
+diff --git a/Program.cs b/Program.cs
+index 7111b13..7b4d391 100644
+--- a/Program.cs
++++ b/Program.cs
+@@ -1,7 +1,10 @@
+ var builder = WebApplication.CreateBuilder(args);
+ 
+ builder.Services.AddControllers();
+-builder.Services.AddScoped<GeocodingClient>();
++builder.Services.AddHttpClient<GeocodingClient>(client =>
++{
++    client.BaseAddress = new Uri("https://geo.example.com");
++});
+ 
+ var app = builder.Build();
+ 

@@ -1,0 +1,9 @@
+{
+  "id": 28,
+  "answer": "merge",
+  "context": "Reworking the flat, unrelated exception classes in app/errors.py into a DomainError hierarchy so a single except DomainError can catch any domain failure, and every error carries a status_code/error_code an API handler can serialize.",
+  "explanation": "All domain exceptions now derive from a common DomainError base, so call sites that need to catch any expected domain failure can do except DomainError as exc: return jsonify(error=exc.error_code), exc.status_code instead of listing every concrete exception type. Grouping OrderNotFound under NotFoundError (404) and InsufficientStock under ConflictError (409) gives callers a coarser catch point when they only care about the HTTP-status category. Existing code that catches the concrete classes by name, such as except OrderNotFound, keeps working unchanged since those class names are preserved - this only adds shared structure above them.",
+  "language": "python",
+  "category": "maintainability",
+  "difficulty": 2
+}

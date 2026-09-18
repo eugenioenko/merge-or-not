@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "Removing the try/finally around the order-export async generator loop since async for already stops iteration cleanly.",
+  "explanation": "When the loop exits early via break (writer.should_stop()), the async generator gen is left suspended mid-iteration inside its async with async_session() block, so the DB session/stream it holds open is never finalized. Python doesn't guarantee prompt cleanup of a suspended async generator, so the underlying connection can stay checked out of the pool until the garbage collector eventually gets to it - or leak for the life of the process - eventually exhausting the connection pool under load. async for only closes the generator when it's exhausted naturally (StopAsyncIteration), not on an early break. Fix: restore try/finally: await gen.aclose() (or wrap the loop in contextlib.aclosing(gen)) around any async generator loop that can exit early.",
+  "language": "python",
+  "category": "correctness",
+  "difficulty": 4
+}

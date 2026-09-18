@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "merge",
+  "context": "Extracts Project's archive/unarchive logic into a reusable Archivable concern.",
+  "explanation": "The archived_at scopes and archive!/unarchive!/archived? methods are moved into Archivable, an ActiveSupport::Concern with a clear included block for the scopes and instance methods for the behavior. Project now just include Archivable, with no behavior change, and any other model that later needs the same archived-at pattern (e.g. Task, Document) can include it without duplicating the logic. A textbook, low-risk extraction.",
+  "language": "ruby",
+  "category": "maintainability",
+  "difficulty": 2
+}

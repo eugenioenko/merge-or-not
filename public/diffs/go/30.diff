@@ -1,0 +1,32 @@
+diff --git a/internal/repository/search_repo.go b/internal/repository/search_repo.go
+index 2c9e5a4..f8b1d63 100644
+--- a/internal/repository/search_repo.go
++++ b/internal/repository/search_repo.go
+@@ -1,7 +1,6 @@
+ package repository
+ 
+ import (
+ 	"context"
+-	"fmt"
+ )
+ 
+@@ -9,18 +8,17 @@ func (r *SearchRepository) FindByName(ctx context.Context, name string) ([]Use
+ func (r *SearchRepository) FindByName(ctx context.Context, name string) ([]User, error) {
+-	query := fmt.Sprintf("SELECT id, email, name FROM users WHERE name = '%s'", name)
+-	rows, err := r.db.QueryContext(ctx, query)
++	rows, err := r.db.QueryContext(ctx, "SELECT id, email, name FROM users WHERE name = $1", name)
+ 	if err != nil {
+ 		return nil, err
+ 	}
+ 	defer rows.Close()
+ 
+ 	var users []User
+ 	for rows.Next() {
+ 		var u User
+ 		if err := rows.Scan(&u.ID, &u.Email, &u.Name); err != nil {
+ 			return nil, err
+ 		}
+ 		users = append(users, u)
+ 	}
+ 	return users, rows.Err()
+ }

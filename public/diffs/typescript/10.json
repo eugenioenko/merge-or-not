@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "merge",
+  "context": "Brand UserId so raw strings can't be passed where a validated user id is required.",
+  "explanation": "UserId is now a branded type that can only be produced by createUserId, which validates the format first. lookupOrder's signature is tightened to require a UserId, so an arbitrary unvalidated string can no longer be passed through by accident - the type system enforces that validation happened.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 4
+}

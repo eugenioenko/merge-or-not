@@ -5,6 +5,7 @@ export const LANGUAGE_LABELS = {
   vue: 'Vue',
   angular: 'Angular',
   go: 'Go',
+  javascript: 'JavaScript',
   node: 'Node.js',
   python: 'Python',
   csharp: 'C#',
@@ -12,4 +13,8 @@ export const LANGUAGE_LABELS = {
   rest: 'REST',
   auth: 'Auth',
   ci: 'CI/CD',
+  typescript: 'TypeScript',
+  rust: 'Rust',
+  sql: 'SQL',
+  ruby: 'Ruby',
 }

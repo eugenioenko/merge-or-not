@@ -1,0 +1,9 @@
+{
+  "id": 25,
+  "answer": "merge",
+  "context": "MessageList renders a scrollable panel of chat messages, which can grow to several thousand entries in active rooms.",
+  "explanation": "Safe to merge. Only the rows within the visible scroll range (plus a small overscan buffer) are rendered, with a spacer sized to the full list height keeping scrollbar behavior correct. This avoids mounting thousands of DOM nodes at once, which is what was making long-running chat rooms sluggish.",
+  "language": "react",
+  "category": "performance",
+  "difficulty": 4
+}

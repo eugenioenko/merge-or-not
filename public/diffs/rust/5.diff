@@ -1,0 +1,27 @@
+diff --git a/src/parser/tokenizer.rs b/src/parser/tokenizer.rs
+index 0000000..1111111 100644
+--- a/src/parser/tokenizer.rs
++++ b/src/parser/tokenizer.rs
+@@ -1,6 +1,6 @@
+-pub struct Token<'a> {
++pub struct Token {
+     pub kind: TokenKind,
+-    pub text: &'a str,
++    pub text: String,
+ }
+ 
+ #[derive(Debug, PartialEq)]
+@@ -10,11 +10,11 @@
+     Symbol,
+ }
+ 
+-pub fn tokenize(input: &str) -> Vec<Token<'_>> {
++pub fn tokenize(input: &str) -> Vec<Token> {
+     let mut tokens = Vec::new();
+     for word in input.split_whitespace() {
+         let kind = classify(word);
+-        tokens.push(Token { kind, text: word });
++        tokens.push(Token { kind, text: word.to_string() });
+     }
+     tokens
+ }

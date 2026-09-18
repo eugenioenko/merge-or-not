@@ -1,0 +1,9 @@
+{
+  "id": 22,
+  "answer": "merge",
+  "context": "The security team asked for automated dependency vetting on every PR that touches package manifests.",
+  "explanation": "Safe to merge. Uses GitHub's official `dependency-review-action`, scoped to `pull_request` only, with least-privilege permissions (`contents: read`, `pull-requests: write` for the summary comment). `fail-on-severity: high` blocks PRs that introduce high/critical vulnerable dependencies, and the license allow/deny lists prevent accidental copyleft dependencies from slipping in. No secrets, no elevated token, no injection surface.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 2
+}

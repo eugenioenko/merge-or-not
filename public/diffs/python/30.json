@@ -1,0 +1,9 @@
+{
+  "id": 30,
+  "answer": "merge",
+  "context": "Wrapping calls to the inventory service in a circuit breaker so repeated failures short-circuit further calls for a cooldown window instead of piling up slow timeouts against a struggling downstream service.",
+  "explanation": "This is a textbook circuit breaker: call() tracks consecutive failures, opens once failure_threshold is reached and rejects further calls immediately with InventoryUnavailable instead of waiting out the 2s httpx timeout on every call, which matters because the old approach could burn N x 2s of worker time during an inventory-service outage. Once reset_timeout seconds have passed it clears opened_at and lets a call through again, and any success resets failures back to zero. get_stock_level's public signature and return type are unchanged, so callers don't need updating.",
+  "language": "python",
+  "category": "reliability",
+  "difficulty": 3
+}

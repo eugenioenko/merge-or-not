@@ -1,0 +1,35 @@
+diff --git a/src/services/exportRows.js b/src/services/exportRows.js
+index aeaa0fe..4c5a822 100644
+--- a/src/services/exportRows.js
++++ b/src/services/exportRows.js
+@@ -2,23 +2,16 @@
+ 
+ async function exportRows(pool, query, onRow) {
+   const client = await pool.connect();
+-  try {
+-    const cursor = client.query(new Cursor(query));
+-    try {
+-      let rows;
+-      while ((rows = await cursor.read(100)).length > 0) {
+-        for (const row of rows) {
+-          if (!onRow(row)) {
+-            return;
+-          }
+-        }
++  const cursor = client.query(new Cursor(query));
++  let rows;
++  while ((rows = await cursor.read(100)).length > 0) {
++    for (const row of rows) {
++      if (!onRow(row)) {
++        return;
+       }
+-    } finally {
+-      await cursor.close();
+     }
+-  } finally {
+-    client.release();
+   }
++  client.release();
+ }
+ 
+ module.exports = { exportRows };

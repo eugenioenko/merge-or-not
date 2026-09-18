@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "merge",
+  "context": "Add a type guard so callers get proper narrowing on unknown API errors instead of a manual cast.",
+  "explanation": "isApiError now returns value is ApiError instead of a plain boolean, so TypeScript narrows value inside the if block automatically. The caller no longer needs its own unsafe as cast to get typed access to .code and .message.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 2
+}

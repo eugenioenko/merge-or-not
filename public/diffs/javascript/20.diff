@@ -1,0 +1,46 @@
+diff --git a/src/models/Account.js b/src/models/Account.js
+new file mode 100644
+index 0000000..3b6d9f2
+--- /dev/null
++++ b/src/models/Account.js
+@@ -0,0 +1,40 @@
++const privateFields = new WeakMap()
++
++export class Account {
++  constructor(owner, initialBalance = 0) {
++    privateFields.set(this, {
++      balance: initialBalance,
++      pin: null,
++    })
++    this.owner = owner
++  }
++
++  get balance() {
++    return privateFields.get(this).balance
++  }
++
++  deposit(amount) {
++    if (amount <= 0) {
++      throw new RangeError('deposit amount must be positive')
++    }
++    privateFields.get(this).balance += amount
++    return this.balance
++  }
++
++  withdraw(amount) {
++    const state = privateFields.get(this)
++    if (amount > state.balance) {
++      throw new Error('insufficient funds')
++    }
++    state.balance -= amount
++    return this.balance
++  }
++
++  setPin(pin) {
++    privateFields.get(this).pin = pin
++  }
++
++  verifyPin(candidate) {
++    return privateFields.get(this).pin === candidate
++  }
++}

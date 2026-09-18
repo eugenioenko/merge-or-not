@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "merge",
+  "context": "Adds a memoization cache for expensive per-key computations that holds its values with WeakRef and cleans up via FinalizationRegistry.",
+  "explanation": "Caching large computed values (like parsed documents or derived objects) in a plain Map keeps them alive forever, which is a memory leak for a long-running cache. Wrapping stored values in WeakRef lets them be garbage collected once nothing else references them, and FinalizationRegistry removes the now-dangling Map entry when that happens. The deref() !== undefined check correctly treats a collected entry as a cache miss. Solid pattern for a bounded-memory memoization cache.",
+  "language": "javascript",
+  "category": "memory",
+  "difficulty": 4
+}

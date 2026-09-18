@@ -1,0 +1,23 @@
+diff --git a/app/utils/tokens.py b/app/utils/tokens.py
+index 183595c..a99ec9f 100644
+--- a/app/utils/tokens.py
++++ b/app/utils/tokens.py
+@@ -4,8 +4,6 @@ import time
+ 
+ from app.config import settings
+ 
+-__all__ = ["issue_token", "verify_token"]
+-
+ 
+ def raw_compare(a, b):
+     return a == b
+@@ -27,3 +25,9 @@ def verify_token(token):
+     payload, signature = token.rsplit(":", 1)
+     expected = _sign(payload)
+     return hmac.compare_digest(expected, signature)
++
++
++def parse_bearer_header(header_value):
++    if not header_value or not header_value.startswith("Bearer "):
++        return None
++    return header_value[len("Bearer "):]

@@ -1,0 +1,28 @@
+diff --git a/src/api/loadUserProfile.js b/src/api/loadUserProfile.js
+new file mode 100644
+index 0000000..8e2c9f4
+--- /dev/null
++++ b/src/api/loadUserProfile.js
+@@ -0,0 +1,22 @@
++import { fetchUser, fetchPermissions } from './client.js'
++
++export function loadUserProfile(id) {
++  return new Promise(async (resolve, reject) => {
++    const user = await fetchUser(id)
++    const permissions = await fetchPermissions(user.id)
++    resolve({ user, permissions })
++  })
++}
++
++export function loadUserProfiles(ids) {
++  return Promise.all(ids.map((id) => loadUserProfile(id)))
++}
++
++export async function loadUserProfileCached(id, cache) {
++  if (cache.has(id)) {
++    return cache.get(id)
++  }
++  const profile = await loadUserProfile(id)
++  cache.set(id, profile)
++  return profile
++}

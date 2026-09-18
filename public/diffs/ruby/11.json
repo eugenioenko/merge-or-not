@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "merge",
+  "context": "Replaces permit! with an explicit strong-parameters allowlist on the articles API.",
+  "explanation": "params.require(:article).permit! accepted every key sent in the request body, including any attribute a client cared to add — a mass assignment risk on any model with sensitive columns. The new article_params method whitelists exactly :title, :body, :status, and :published_at, so create and update can only ever set those four fields regardless of what else shows up in the payload. Clean, minimal, and testable.",
+  "language": "ruby",
+  "category": "security",
+  "difficulty": 2
+}

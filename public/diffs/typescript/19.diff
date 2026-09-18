@@ -1,0 +1,27 @@
+diff --git a/src/services/audit-logger.ts b/src/services/audit-logger.ts
+index 7e8f9a0..1b2c3d4 100644
+--- a/src/services/audit-logger.ts
++++ b/src/services/audit-logger.ts
+@@ -1,13 +1,19 @@
+ export interface AuditEvent {
+   actorId: string;
+   action: string;
+   targetId: string;
+ }
+ 
+ export async function recordEvents(events: AuditEvent[]): Promise<void> {
+-  for (const event of events) {
+-    await persistEvent(event);
+-  }
++  events.forEach(async (event) => {
++    await persistEvent(event);
++  });
++}
++
++export async function recordAndNotify(events: AuditEvent[]): Promise<void> {
++  await recordEvents(events);
++  await notifyComplianceTeam(events.length);
+ }
+ 
+ declare function persistEvent(event: AuditEvent): Promise<void>;
++declare function notifyComplianceTeam(count: number): Promise<void>;

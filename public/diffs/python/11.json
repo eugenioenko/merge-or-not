@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "Adding support for an !env tag so config files can reference environment variables by name.",
+  "explanation": "Switching from yaml.safe_load to yaml.load with the plain yaml.Loader re-enables Python object construction tags (e.g. !!python/object/apply). Anyone who can influence the contents of a config file - a misconfigured deploy pulling one from an untrusted source, or a second app on the same host with write access to it - can execute arbitrary code the moment load_config runs. Fix: register the !env constructor on yaml.SafeLoader (or use yaml.CSafeLoader) and keep calling yaml.load with that safe loader instead of the unrestricted default.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 3
+}

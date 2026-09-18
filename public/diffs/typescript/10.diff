@@ -1,0 +1,32 @@
+diff --git a/src/types/user-id.ts b/src/types/user-id.ts
+index 8b9c0d1..2e3f4a5 100644
+--- a/src/types/user-id.ts
++++ b/src/types/user-id.ts
+@@ -1,11 +1,16 @@
+-export type UserId = string;
+-
+-export function createUserId(raw: string): UserId {
+-  return raw;
+-}
+-
+-export function getOrderTotal(userId: UserId, orderId: string): number {
+-  return lookupOrder(userId, orderId).total;
+-}
+-
+-declare function lookupOrder(userId: string, orderId: string): { total: number };
++declare const brand: unique symbol;
++
++export type UserId = string & { readonly [brand]: "UserId" };
++
++export function createUserId(raw: string): UserId {
++  if (!/^usr_[a-zA-Z0-9]{8,}$/.test(raw)) {
++    throw new Error(`Invalid user id: ${raw}`);
++  }
++  return raw as UserId;
++}
++
++export function getOrderTotal(userId: UserId, orderId: string): number {
++  return lookupOrder(userId, orderId).total;
++}
++
++declare function lookupOrder(userId: UserId, orderId: string): { total: number };

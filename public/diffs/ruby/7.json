@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "reject",
+  "context": "Refactors NotificationBatch to define its default tags as a constant instead of nil, plus a couple of new helper methods.",
+  "explanation": "DEFAULT_TAGS is a single array object created once at class-load time. Because tags: DEFAULT_TAGS is used directly as the keyword default (not a fresh array per call), every NotificationBatch built without an explicit tags: argument shares the exact same array as @tags. Calling add_tag or merge_tags on one instance mutates DEFAULT_TAGS itself, silently polluting every other instance created afterward. Fix: default to nil and build a fresh array (tags: nil; @tags = tags || []), or use a method default with .dup.",
+  "language": "ruby",
+  "category": "correctness",
+  "difficulty": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "A `workflow_run`-triggered deploy job fires after the CI workflow finishes, so it can publish results with production credentials.",
+  "explanation": "The CI workflow builds a `dist` artifact from PRs, including ones from forks — that artifact is entirely attacker-controlled. Unlike a fork's own `pull_request` run, this `workflow_run` job runs on the base repo with real secrets (`PROD_DEPLOY_TOKEN`). Downloading that artifact and executing `dist/deploy.sh` directly is textbook artifact poisoning: a malicious fork PR just needs to make CI produce a `dist/deploy.sh` that does whatever it wants, and this job will run it with production access. Fix: never execute artifact contents from a workflow triggered by an untrusted build; if you must consume the artifact, treat it as data, verify its provenance, or rebuild from source in the trusted context instead.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 5
+}

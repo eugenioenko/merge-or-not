@@ -1,0 +1,36 @@
+diff --git a/.github/workflows/release-version.yml b/.github/workflows/release-version.yml
+index 95203d1..a5b1c4f 100644
+--- a/.github/workflows/release-version.yml
++++ b/.github/workflows/release-version.yml
+@@ -6,23 +6,21 @@ on:
+ 
+ permissions:
+   contents: write
++  pull-requests: write
++  issues: write
+ 
+ jobs:
+   release:
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
++        with:
++          fetch-depth: 0
+       - uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+       - run: npm ci
+-      - name: Bump version
+-        run: npm version patch --no-git-tag-version
+-      - name: Commit and tag
+-        run: |
+-          git config user.name "release-bot"
+-          git config user.email "release-bot@example.com"
+-          VERSION=$(node -p "require('./package.json').version")
+-          git commit -am "chore(release): $VERSION"
+-          git tag "v$VERSION"
+-          git push --follow-tags
++      - name: Semantic Release
++        env:
++          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
++        run: npx semantic-release

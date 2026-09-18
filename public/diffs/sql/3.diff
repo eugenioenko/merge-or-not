@@ -1,0 +1,25 @@
+diff --git a/migrations/0161_add_pending_orders_partial_index.sql b/migrations/0161_add_pending_orders_partial_index.sql
+new file mode 100644
+--- /dev/null
++++ b/migrations/0161_add_pending_orders_partial_index.sql
+@@ -0,0 +1,20 @@
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_orders_pending_created
++    ON orders (created_at)
++    WHERE status = 'pending';
++
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_payments_failed_created
++    ON payments (created_at)
++    WHERE status = 'failed';
++
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_notifications_unread_user
++    ON notifications (user_id, created_at)
++    WHERE read_at IS NULL;
++
++CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_refunds_pending_created
++    ON refunds (created_at)
++    WHERE status = 'pending';
++
++ANALYZE orders;
++ANALYZE payments;
++ANALYZE notifications;
++ANALYZE refunds;

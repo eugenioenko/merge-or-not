@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "reject",
+  "context": "Inlining _make_validator directly into build_field_validators's loop body to avoid an extra function call per field.",
+  "explanation": "The old code's separate _make_validator(field) function gave each validate closure its own function-call frame, so min_len, max_len and field were fresh local variables captured correctly per field. Inlining that logic into the for loop makes every validate closure share the single, mutating min_len, max_len and field variables from the enclosing loop - a classic late-binding closure bug. Those names are looked up when the closure is finally called, not when it's defined, so by the time any validator actually runs, the loop has finished and every one of them sees the last field's values. Fix: keep the values captured either via a helper function per iteration (as before) or as default arguments, e.g. def validate(value, min_len=min_len, max_len=max_len).",
+  "language": "python",
+  "category": "correctness",
+  "difficulty": 3
+}

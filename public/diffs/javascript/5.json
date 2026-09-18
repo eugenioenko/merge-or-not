@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "Refactors the sum() helper to use a for...in loop instead of a classic index loop, and adds a describe() summary function.",
+  "explanation": "for...in enumerates enumerable property keys, including inherited ones and any extra properties attached to the array (or its prototype), not just numeric indices in order. If any code or library adds a custom property to Array.prototype, or the array is sparse, sum() will iterate over unexpected keys and either throw, produce NaN, or silently include garbage values. Array summation should use a for loop, for...of, or reduce, all of which iterate values in order.",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 3
+}

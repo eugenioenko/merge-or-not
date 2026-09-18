@@ -1,0 +1,39 @@
+diff --git a/src/components/ErrorBoundary.jsx b/src/components/ErrorBoundary.jsx
+new file mode 100644
+index 0000000..87bf14f
+--- /dev/null
++++ b/src/components/ErrorBoundary.jsx
+@@ -0,0 +1,33 @@
++import { Component } from 'react'
++
++export class ErrorBoundary extends Component {
++  constructor(props) {
++    super(props)
++    this.state = { hasError: false, error: null }
++  }
++
++  static getDerivedStateFromError(error) {
++    return { hasError: true, error }
++  }
++
++  componentDidCatch(error, info) {
++    console.error('ErrorBoundary caught an error', error, info)
++    this.props.onError?.(error, info)
++  }
++
++  handleReset = () => {
++    this.setState({ hasError: false, error: null })
++  }
++
++  render() {
++    if (this.state.hasError) {
++      return (
++        <div className="error-boundary-fallback" role="alert">
++          <p>Something went wrong.</p>
++          <button onClick={this.handleReset}>Try again</button>
++        </div>
++      )
++    }
++    return this.props.children
++  }
++}

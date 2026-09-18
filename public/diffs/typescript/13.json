@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "Migrate OrderStatus from a string union to an enum, matching the rest of the codebase's models.",
+  "explanation": "The enum has implicit numeric values (0, 1, 2, 3) that get persisted straight to the database. Inserting a new status anywhere but the end, or reordering members, silently renumbers every existing row's meaning. String literal unions serialize unambiguously; this refactor trades that safety for a subtle data-corruption risk.",
+  "language": "typescript",
+  "category": "maintainability",
+  "difficulty": 3
+}

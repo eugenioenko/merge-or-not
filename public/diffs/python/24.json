@@ -1,0 +1,9 @@
+{
+  "id": 24,
+  "answer": "merge",
+  "context": "Adding __aenter__/__aexit__ to RedisLock so callers can write async with RedisLock(key) as lock: instead of manually pairing acquire()/release() calls.",
+  "explanation": "This is a correct, additive async context manager: __aenter__ raises a clear LockAcquisitionError if the lock couldn't be obtained instead of silently returning a lock object nobody checked, and __aexit__ unconditionally calls release() - including when the wrapped block raises - then returns False so the original exception still propagates instead of being swallowed. The existing acquire()/release() methods are untouched, so any code calling them manually keeps working; this only adds a safer, leak-proof way to use the lock.",
+  "language": "python",
+  "category": "reliability",
+  "difficulty": 2
+}

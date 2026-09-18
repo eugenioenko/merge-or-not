@@ -1,0 +1,9 @@
+{
+  "id": 26,
+  "answer": "merge",
+  "context": "Wraps calls to the external payment gateway in a circuit breaker so a failing gateway doesn't take the whole checkout flow down with it.",
+  "explanation": "This is a solid resilience pattern: once error rate crosses the threshold, the breaker trips and fails fast (via the fallback) instead of piling up slow, doomed requests against a struggling gateway, and resetTimeout lets it retry after a cooldown to detect recovery. It bounds cascading latency without changing the charge() function's public signature.",
+  "category": "performance",
+  "difficulty": 3,
+  "language": "node"
+}

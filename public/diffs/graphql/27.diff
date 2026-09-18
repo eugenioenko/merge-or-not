@@ -1,0 +1,31 @@
+diff --git a/src/graphql/resolvers/review.js b/src/graphql/resolvers/review.js
+index 63c4a03..7e1c838 100644
+--- a/src/graphql/resolvers/review.js
++++ b/src/graphql/resolvers/review.js
+@@ -1,15 +1,22 @@
+-const { AuthenticationError } = require('../errors');
++const { AuthenticationError, UserInputError } = require('../errors');
+ 
+ const Mutation = {
+   createReview: async (_parent, { input }, { db, currentUser }) => {
+     if (!currentUser) {
+       throw new AuthenticationError('Must be logged in');
+     }
++    const { productId, rating, body } = input;
++    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
++      throw new UserInputError('Rating must be an integer between 1 and 5');
++    }
++    if (body && body.length > 2000) {
++      throw new UserInputError('Review body too long');
++    }
+     return db.review.create({
+       data: {
+-        productId: input.productId,
+-        rating: input.rating,
+-        body: input.body,
++        productId,
++        rating,
++        body: body ? body.trim() : null,
+         authorId: currentUser.id,
+       },
+     });

@@ -1,0 +1,25 @@
+diff --git a/internal/service/order_service.go b/internal/service/order_service.go
+index a5d2c81..7e6b3f9 100644
+--- a/internal/service/order_service.go
++++ b/internal/service/order_service.go
+@@ -1,15 +1,19 @@
+ package service
+ 
+ import (
+ 	"context"
+ )
+ 
+ func (s *OrderService) CancelOrder(ctx context.Context, orderID string) error {
+ 	order, err := s.repo.FindByID(ctx, orderID)
+ 	if err != nil {
+ 		return err
+ 	}
+ 
+ 	order.Status = "cancelled"
+-	return s.repo.Save(ctx, order)
++	if err := s.repo.Save(ctx, order); err != nil {
++		return err
++	}
++
++	return s.notifier.Send(context.Background(), order.CustomerEmail, "order_cancelled")
+ }

@@ -1,0 +1,35 @@
+diff --git a/app/services/validators.py b/app/services/validators.py
+index f5cabb7..58a299c 100644
+--- a/app/services/validators.py
++++ b/app/services/validators.py
+@@ -1,19 +1,15 @@
+-def _make_validator(field):
+-    min_len = field.min_length
+-    max_len = field.max_length
+-
+-    def validate(value):
+-        if not (min_len <= len(value) <= max_len):
+-            raise ValueError(
+-                f"{field.name} must be between {min_len} and {max_len} chars"
+-            )
+-        return value
+-
+-    return validate
+-
+-
+ def build_field_validators(fields):
+     validators = {}
+     for field in fields:
+-        validators[field.name] = _make_validator(field)
++        min_len = field.min_length
++        max_len = field.max_length
++
++        def validate(value):
++            if not (min_len <= len(value) <= max_len):
++                raise ValueError(
++                    f"{field.name} must be between {min_len} and {max_len} chars"
++                )
++            return value
++
++        validators[field.name] = validate
+     return validators

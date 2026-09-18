@@ -1,0 +1,9 @@
+{
+  "id": 30,
+  "answer": "merge",
+  "context": "usePolling repeatedly fetches a URL on an interval and returns the latest data along with how many times it has polled.",
+  "explanation": "Safe to merge. setCount(prev => prev + 1) replaces the stale closure over count (previously always read as its initial value inside the interval callback), the effect now returns a cleanup that clears the interval and marks the fetch as inactive, and url/intervalMs are added to the dependency array so changing them correctly restarts polling instead of silently keeping the old interval alive.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 3
+}

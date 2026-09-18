@@ -1,0 +1,9 @@
+{
+  "id": 21,
+  "answer": "merge",
+  "context": "ApolloServer setup for a public-facing API currently accepts arbitrary query documents from any client.",
+  "explanation": "Safe to merge. Adding a persisted-query plugin that rejects any query not in the allowlist means clients can only execute operations the team has explicitly published, closing off arbitrary/expensive ad-hoc queries and shrinking the attack surface for injection-style query abuse. The existing formatError and context wiring are untouched.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 3
+}

@@ -1,0 +1,26 @@
+diff --git a/src/utils/responseCache.js b/src/utils/responseCache.js
+index af2e07f..aa478aa 100644
+--- a/src/utils/responseCache.js
++++ b/src/utils/responseCache.js
+@@ -1,20 +1,15 @@
+ const cache = new Map();
+-const MAX_ENTRIES = 500;
+ 
+ function getCached(key) {
+   return cache.get(key);
+ }
+ 
+ function setCached(key, value) {
+-  if (cache.size >= MAX_ENTRIES) {
+-    const oldestKey = cache.keys().next().value;
+-    cache.delete(oldestKey);
+-  }
+   cache.set(key, value);
+ }
+ 
+ function cacheStats() {
+-  return { size: cache.size, max: MAX_ENTRIES };
++  return { size: cache.size };
+ }
+ 
+ module.exports = { getCached, setCached, cacheStats };

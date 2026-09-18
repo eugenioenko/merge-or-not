@@ -1,0 +1,9 @@
+{
+  "id": 28,
+  "answer": "reject",
+  "context": "TagInput renders one text input per tag so users can rename tags inline, plus a draft input for adding new ones.",
+  "explanation": "The list key was changed from the stable tag.id to Math.random(), which generates a new value on every single render. React treats each row as a brand-new element whenever this happens, unmounting and remounting every input \u2014 so the DOM node holding focus is destroyed on every keystroke, and users lose focus after typing just one character. Fix: use the stable tag.id as the key.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 2
+}

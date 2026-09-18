@@ -1,0 +1,26 @@
+diff --git a/src/services/notifications.js b/src/services/notifications.js
+index 3f8a1d6..7c2e9b4 100644
+--- a/src/services/notifications.js
++++ b/src/services/notifications.js
+@@ -1,6 +1,17 @@
+ export async function notifyAll(subscribers, message) {
+-  const results = await Promise.all(
+-    subscribers.map((subscriber) => subscriber.send(message))
+-  )
+-  return results
++  const outcomes = await Promise.allSettled(
++    subscribers.map((subscriber) => subscriber.send(message))
++  )
++
++  const failed = outcomes
++    .map((outcome, index) => ({ outcome, subscriber: subscribers[index] }))
++    .filter(({ outcome }) => outcome.status === 'rejected')
++
++  return {
++    delivered: outcomes.length - failed.length,
++    failed: failed.map(({ subscriber, outcome }) => ({
++      subscriberId: subscriber.id,
++      reason: outcome.reason,
++    })),
++  }
+ }

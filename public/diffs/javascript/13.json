@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "Drops the lodash-es dependency from the undo/redo history module by replacing cloneDeep with a hand-rolled JSON.parse(JSON.stringify(...)) clone.",
+  "explanation": "JSON.parse(JSON.stringify(x)) silently drops functions, undefined values, and Symbol keys, converts Dates to strings, turns Map/Set into {} or [], and throws on circular references or BigInt. If any piece of application state being snapshotted contains a Date, a Map, or a function (common in editor/form state), undo/redo will restore a corrupted version of it instead of the real one. structuredClone (or keeping cloneDeep) handles all of these correctly; the JSON round-trip does not.",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 3
+}

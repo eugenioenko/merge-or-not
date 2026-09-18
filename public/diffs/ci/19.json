@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "A teammate added an end-to-end test job with Playwright, gated behind the existing unit test job.",
+  "explanation": "The `unit` job has `timeout-minutes: 10`, but the new `e2e` job has none. Browser-driven e2e suites are exactly the kind of job that hangs — a flaky selector wait or a stuck browser process can block for GitHub's default 360-minute timeout, tying up a runner and burning CI minutes for six hours on a single stuck run. Fix: add an explicit, tight `timeout-minutes` to every job, especially ones prone to hanging.",
+  "language": "ci",
+  "category": "reliability",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "Simplifies the expired-subscription cleanup by removing the intermediate list and iterating the live collection directly.",
+  "explanation": "Removing an item from _subscriptions while a foreach is iterating over that same list invalidates the enumerator and throws InvalidOperationException: Collection was modified; enumeration operation may not execute. The previous version avoided this by first materializing the expired items into a separate list with .ToList() and then removing from the original collection. Fix: revert to iterating a snapshot (ToList()) before mutating, or iterate backwards with a for loop, or use RemoveAll(predicate).",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 2
+}

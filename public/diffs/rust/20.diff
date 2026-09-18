@@ -1,0 +1,26 @@
+diff --git a/src/handlers/payment.rs b/src/handlers/payment.rs
+index 0000000..1111111 100644
+--- a/src/handlers/payment.rs
++++ b/src/handlers/payment.rs
+@@ -1,7 +1,16 @@
+-use crate::{gateway::PaymentGateway, models::PaymentResult};
++use crate::{error::PaymentError, gateway::PaymentGateway, models::PaymentResult};
+ 
+-pub async fn charge_card(gateway: &PaymentGateway, token: &str, amount_cents: u64) -> PaymentResult {
+-    let response = gateway.charge(token, amount_cents).await.unwrap();
+-    let receipt_id = response.headers().get("x-receipt-id").unwrap().to_str().unwrap();
+-    PaymentResult::Success { receipt_id: receipt_id.to_string() }
++pub async fn charge_card(
++    gateway: &PaymentGateway,
++    token: &str,
++    amount_cents: u64,
++) -> Result<PaymentResult, PaymentError> {
++    let response = gateway.charge(token, amount_cents).await?;
++    let receipt_id = response
++        .headers()
++        .get("x-receipt-id")
++        .ok_or(PaymentError::MissingReceipt)?
++        .to_str()
++        .map_err(|_| PaymentError::MalformedReceipt)?;
++    Ok(PaymentResult::Success { receipt_id: receipt_id.to_string() })
+ }

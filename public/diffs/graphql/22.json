@@ -1,0 +1,9 @@
+{
+  "id": 22,
+  "answer": "merge",
+  "context": "Schema directive transformers registered on the executable schema. Only a `@deprecated` directive exists so far.",
+  "explanation": "Safe to merge. The new `authDirective` wraps any field marked `@auth(requires: ROLE)` so its resolver only runs after checking `context.currentUser` exists and has the required role, throwing AuthenticationError/ForbiddenError otherwise — a clean, reusable, schema-declared authorization mechanism instead of duplicating role checks inside every resolver.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 3
+}

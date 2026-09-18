@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "merge",
+  "context": "Derive UpdateUserDto and UserFormErrors from CreateUserDto with mapped types instead of maintaining three separate interfaces.",
+  "explanation": "Partial<CreateUserDto> and a mapped type over CreateUserDto's keys mean adding or renaming a field only requires touching one interface - the update DTO and the form-errors shape update automatically instead of silently drifting out of sync with hand-maintained duplicates.",
+  "language": "typescript",
+  "category": "maintainability",
+  "difficulty": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "merge",
+  "context": "main() previously called srv.ListenAndServe() directly with log.Fatal, so the process died instantly on SIGTERM with in-flight requests dropped and no cleanup.",
+  "explanation": "Safe to merge. The server now runs in a goroutine, waits for SIGINT/SIGTERM via signal.Notify, and calls srv.Shutdown with a bounded 10-second context so in-flight requests can finish before the process exits. ErrServerClosed is correctly excluded from the fatal error path since it's the expected error when Shutdown is called. This is the standard graceful shutdown pattern for net/http.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 3
+}

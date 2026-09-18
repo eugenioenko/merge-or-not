@@ -1,0 +1,23 @@
+diff --git a/src/services/notifier.js b/src/services/notifier.js
+index fc6f421..644553d 100644
+--- a/src/services/notifier.js
++++ b/src/services/notifier.js
+@@ -2,16 +2,10 @@
+ const { sendNotification } = require('./pushService');
+ 
+ async function notifyAll(userIds, message) {
+-  const results = await Promise.allSettled(
++  const results = await Promise.all(
+     userIds.map((id) => sendNotification(id, message))
+   );
+-  const failures = results
+-    .map((r, i) => (r.status === 'rejected' ? { id: userIds[i], reason: r.reason } : null))
+-    .filter(Boolean);
+-  if (failures.length > 0) {
+-    logger.warn('Some notifications failed', { failures });
+-  }
+-  return { sent: results.length - failures.length, failed: failures.length };
++  return { sent: results.length, failed: 0 };
+ }
+ 
+ module.exports = { notifyAll };

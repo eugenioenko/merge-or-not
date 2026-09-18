@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "reject",
+  "context": "Adds an ops notification when PaymentSyncJob fails, and widens the rescue clause 'to make sure nothing slips through unnoticed'.",
+  "explanation": "rescue StandardError was changed to rescue Exception. Exception sits above StandardError in Ruby's hierarchy and also catches things like SignalException, Interrupt, SystemExit, and NoMemoryError. In a background worker this can swallow or interfere with graceful shutdown signals and timeout-based interrupts that job runners (Sidekiq, etc.) rely on to stop long-running jobs, turning a routine deploy/restart into a hung or misbehaving worker. Fix: rescue StandardError (or the specific PaymentGateway error), not Exception.",
+  "language": "ruby",
+  "category": "error-handling",
+  "difficulty": 3
+}

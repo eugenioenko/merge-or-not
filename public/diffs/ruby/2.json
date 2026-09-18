@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "Simplifies the orders scope chain and adds a new CSV-style export action, per the PR description.",
+  "explanation": "The .includes(:line_items, :shipping_address) eager-loading was dropped from index and show, and the new export action never loads them either — yet order_summary still calls order.line_items.sum and order.shipping_address for every order. Under N orders this now issues 2N+1 extra queries instead of a handful, and it gets worse as export iterates every order for the current user. Fix: keep (or restore) includes on every path that renders line items and shipping address.",
+  "language": "ruby",
+  "category": "performance",
+  "difficulty": 2
+}

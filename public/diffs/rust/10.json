@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "reject",
+  "context": "Optimizes header decoding by removing the length check and reading fields with get_unchecked.",
+  "explanation": "The buf.len() < 8 guard was removed and every field read now uses get_unchecked, which skips Rust's bounds checking entirely. decode_header is fed bytes straight off the wire, so any packet shorter than 8 bytes now reads past the end of the slice - undefined behavior rather than a safe None return. A remote peer sending a short or malformed packet can trigger an out-of-bounds read, risking memory corruption or an exploitable info leak.",
+  "language": "rust",
+  "category": "memory-safety",
+  "difficulty": 4
+}

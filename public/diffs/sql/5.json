@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "merge",
+  "context": "Adding tenant isolation via row level security on the documents and document_versions tables.",
+  "explanation": "Enabling and forcing row level security, then scoping each policy to the current session's tenant id, is the standard safe pattern for enforcing multi-tenant isolation at the database layer instead of trusting every call site to remember a WHERE clause. FORCE ROW LEVEL SECURITY ensures even the table owner is subject to the policy, and the supporting indexes keep the policy check cheap. Safe to merge.",
+  "language": "sql",
+  "category": "security",
+  "difficulty": 4
+}

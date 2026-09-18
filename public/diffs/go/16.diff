@@ -1,0 +1,41 @@
+diff --git a/internal/client/payment_client.go b/internal/client/payment_client.go
+index 5d3e9a1..c1f8b4e 100644
+--- a/internal/client/payment_client.go
++++ b/internal/client/payment_client.go
+@@ -1,6 +1,8 @@
+ package client
+ 
+ import (
+ 	"context"
++	"fmt"
++	"time"
+ )
+ 
+@@ -10,7 +12,22 @@ func (c *PaymentClient) Charge(ctx context.Context, req *ChargeRequest) (*Char
+ func (c *PaymentClient) Charge(ctx context.Context, req *ChargeRequest) (*ChargeResponse, error) {
+-	resp, err := c.doRequest(ctx, "POST", "/charges", req)
+-	if err != nil {
+-		return nil, err
+-	}
+-	return resp, nil
++	var resp *ChargeResponse
++	var err error
++
++	backoff := 100 * time.Millisecond
++	for attempt := 0; attempt < 4; attempt++ {
++		resp, err = c.doRequest(ctx, "POST", "/charges", req)
++		if err == nil {
++			return resp, nil
++		}
++		if !isRetryable(err) {
++			return nil, err
++		}
++		select {
++		case <-time.After(backoff):
++			backoff *= 2
++		case <-ctx.Done():
++			return nil, ctx.Err()
++		}
++	}
++	return nil, fmt.Errorf("charge failed after retries: %w", err)
+ }

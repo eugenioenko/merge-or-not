@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "reject",
+  "context": "Add a discount-applying helper to the invoice service.",
+  "explanation": "applyDiscount computes a plain number and then casts the whole object `as Invoice`, stripping the PositiveAmount brand instead of re-validating through toPositiveAmount. A discount of 100% or more now produces a zero or negative amount that still type-checks as PositiveAmount and flows straight into processCharge.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 4
+}

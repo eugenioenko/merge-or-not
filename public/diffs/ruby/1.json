@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "Adds a bulk-update action to the admin users controller, described in the PR as a convenience for support staff managing multiple accounts at once.",
+  "explanation": "The permitted params list now includes :role and :admin alongside the safe profile fields. Since user_params is shared by both update and the new bulk_update action, any authenticated admin-panel request (or a crafted form) can flip a user's role or admin flag by simply including those keys in the request body — a classic mass assignment vulnerability. Fix: keep privilege fields out of the mass-assignment allowlist and expose a separate, explicitly authorized endpoint for role changes.",
+  "language": "ruby",
+  "category": "security",
+  "difficulty": 3
+}

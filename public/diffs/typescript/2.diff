@@ -1,0 +1,41 @@
+diff --git a/src/utils/type-guards.ts b/src/utils/type-guards.ts
+index 9c2d1a4..e5f7b31 100644
+--- a/src/utils/type-guards.ts
++++ b/src/utils/type-guards.ts
+@@ -1,16 +1,20 @@
+-export function isApiError(value: unknown): boolean {
+-  return (
+-    typeof value === "object" &&
+-    value !== null &&
+-    "message" in value &&
+-    "code" in value
+-  );
+-}
+-
+-export function handleResult(value: unknown): string {
+-  if (isApiError(value)) {
+-    const err = value as { message: string; code: number };
+-    return `Error ${err.code}: ${err.message}`;
+-  }
+-  return "OK";
+-}
++interface ApiError {
++  message: string;
++  code: number;
++}
++
++export function isApiError(value: unknown): value is ApiError {
++  return (
++    typeof value === "object" &&
++    value !== null &&
++    "message" in value &&
++    "code" in value
++  );
++}
++
++export function handleResult(value: unknown): string {
++  if (isApiError(value)) {
++    return `Error ${value.code}: ${value.message}`;
++  }
++  return "OK";
++}

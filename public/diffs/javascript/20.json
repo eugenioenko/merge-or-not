@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "merge",
+  "context": "Introduces an Account class that keeps balance and pin in a module-level WeakMap keyed by instance instead of as regular object properties.",
+  "explanation": "Keying sensitive state off a WeakMap keyed by `this` keeps it genuinely inaccessible from outside the module (unlike a regular property, it won't show up in Object.keys, JSON.stringify, or casual property access), while still letting each Account instance be garbage collected normally, since WeakMap holds its keys weakly and doesn't prevent collection. Every method correctly reads through privateFields.get(this) rather than caching a stale reference. A clean encapsulation pattern that predates and still coexists fine with native #private fields.",
+  "language": "javascript",
+  "category": "api-design",
+  "difficulty": 3
+}

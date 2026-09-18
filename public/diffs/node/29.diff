@@ -1,0 +1,25 @@
+diff --git a/src/routes/payments.js b/src/routes/payments.js
+index 930279d..f61e834 100644
+--- a/src/routes/payments.js
++++ b/src/routes/payments.js
+@@ -1,10 +1,20 @@
+ const express = require('express');
+ const router = express.Router();
+ const { chargeCard } = require('../services/paymentService');
++const idempotencyStore = require('../services/idempotencyStore');
+ 
+ router.post('/payments', async (req, res) => {
+   const { amount, cardToken } = req.body;
++  const idempotencyKey = req.headers['idempotency-key'];
++  if (!idempotencyKey) {
++    return res.status(400).json({ error: 'Idempotency-Key header is required' });
++  }
++  const existing = await idempotencyStore.get(idempotencyKey);
++  if (existing) {
++    return res.status(existing.status).json(existing.body);
++  }
+   const result = await chargeCard(cardToken, amount);
++  await idempotencyStore.set(idempotencyKey, { status: 201, body: result }, { ttlSeconds: 86400 });
+   res.status(201).json(result);
+ });
+ 

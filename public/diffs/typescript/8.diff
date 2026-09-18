@@ -1,0 +1,26 @@
+diff --git a/src/types/dto.ts b/src/types/dto.ts
+index 6f7a8b9..0c1d2e3 100644
+--- a/src/types/dto.ts
++++ b/src/types/dto.ts
+@@ -1,17 +1,11 @@
+ export interface CreateUserDto {
+   name: string;
+   email: string;
+   age: number;
+ }
+ 
+-export interface UpdateUserDto {
+-  name?: string;
+-  email?: string;
+-  age?: number;
+-}
++export type UpdateUserDto = Partial<CreateUserDto>;
+ 
+-export interface UserFormErrors {
+-  name?: string;
+-  email?: string;
+-  age?: string;
+-}
++export type UserFormErrors = {
++  [K in keyof CreateUserDto]?: string;
++};

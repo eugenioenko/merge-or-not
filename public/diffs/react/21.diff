@@ -1,0 +1,27 @@
+diff --git a/src/components/ProductTable.jsx b/src/components/ProductTable.jsx
+index d914452..feb7c68 100644
+--- a/src/components/ProductTable.jsx
++++ b/src/components/ProductTable.jsx
+@@ -1,12 +1,8 @@
+-import { useCallback, useState } from 'react'
++import { useState } from 'react'
+ import { ProductRow } from './ProductRow'
+ 
+ export function ProductTable({ products }) {
+   const [selectedId, setSelectedId] = useState(null)
+-
+-  const handleSelect = useCallback((id) => {
+-    setSelectedId(id)
+-  }, [])
+ 
+   return (
+     <table>
+@@ -16,7 +12,7 @@
+             key={product.id}
+             product={product}
+             selected={product.id === selectedId}
+-            onSelect={handleSelect}
++            onSelect={(id) => setSelectedId(id)}
+           />
+         ))}
+       </tbody>

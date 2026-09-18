@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "reject",
+  "context": "Generalize `mergeConfigs` to accept any object as the override, not just a Partial of the base type.",
+  "explanation": "Widening override from Partial<T> to plain object (and adding an `as T` cast) means the compiler can no longer check that the override's keys actually belong to T. The typo retryCount instead of retries compiles cleanly and silently fails to override the intended field.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 4
+}

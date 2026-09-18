@@ -1,0 +1,22 @@
+diff --git a/.github/workflows/deploy.yml b/.github/workflows/deploy.yml
+index 5bd2968..a3d9daf 100644
+--- a/.github/workflows/deploy.yml
++++ b/.github/workflows/deploy.yml
+@@ -16,5 +16,17 @@ jobs:
+           name: build-metadata
+           run-id: ${{ github.event.workflow_run.id }}
+           github-token: ${{ secrets.GITHUB_TOKEN }}
++      - name: Download build output
++        uses: actions/download-artifact@v4
++        with:
++          name: dist
++          run-id: ${{ github.event.workflow_run.id }}
++          github-token: ${{ secrets.GITHUB_TOKEN }}
+       - name: Publish release notes
+         run: cat build-metadata/notes.txt >> "$GITHUB_STEP_SUMMARY"
++      - name: Deploy build
++        env:
++          DEPLOY_TOKEN: ${{ secrets.PROD_DEPLOY_TOKEN }}
++        run: |
++          chmod +x dist/deploy.sh
++          ./dist/deploy.sh

@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "merge",
+  "context": "Adds a length check to frame header parsing and returns a typed error instead of indexing blindly.",
+  "explanation": "parse_frame_header previously indexed straight into buf without checking its length, so any caller passing fewer than 3 bytes - such as a truncated read off the network - would panic. The new version validates the length up front and returns a typed FrameTooShort error via a Result, turning a potential remotely-triggered panic into ordinary, recoverable error handling.",
+  "language": "rust",
+  "category": "correctness",
+  "difficulty": 2
+}

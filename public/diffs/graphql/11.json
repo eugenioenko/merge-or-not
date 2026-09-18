@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "Auth mutations for login, password reset requests, and email verification. Each is wrapped with `rateLimiter` to throttle abuse.",
+  "explanation": "The rate limiter wrapper is removed from `requestPasswordReset`, the one endpoint most attractive to abuse: it can be hammered to spam a victim's inbox with reset emails, or used to enumerate which addresses are registered by timing/response differences. Fix: keep every unauthenticated, user-triggered mutation — especially password reset — behind its rate limiter.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 2
+}

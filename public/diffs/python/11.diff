@@ -1,0 +1,26 @@
+diff --git a/app/services/config_loader.py b/app/services/config_loader.py
+index a4631af..12863a6 100644
+--- a/app/services/config_loader.py
++++ b/app/services/config_loader.py
+@@ -9,12 +9,20 @@ CONFIG_PATHS = [
+ ]
+ 
+ 
++def _env_tag(loader, node):
++    value = loader.construct_scalar(node)
++    return os.environ.get(value, "")
++
++
++yaml.add_constructor("!env", _env_tag, Loader=yaml.Loader)
++
++
+ def load_config(path=None):
+     candidates = [path] if path else CONFIG_PATHS
+     for candidate in candidates:
+         if candidate and os.path.exists(candidate):
+             with open(candidate) as f:
+-                data = yaml.safe_load(f)
++                data = yaml.load(f, Loader=yaml.Loader)
+             if data is None:
+                 raise ConfigError(f"Empty config file: {candidate}")
+             return data

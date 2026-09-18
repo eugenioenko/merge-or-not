@@ -1,0 +1,29 @@
+diff --git a/Services/AccountService.cs b/Services/AccountService.cs
+index a80befc..819fe15 100644
+--- a/Services/AccountService.cs
++++ b/Services/AccountService.cs
+@@ -12,22 +12,12 @@
+     public async Task<string> GetDisplayNameAsync(int userId)
+     {
+         var user = await _userRepo.FindByIdAsync(userId);
+-        if (user is null)
+-        {
+-            throw new UserNotFoundException(userId);
+-        }
+-
+-        return user.DisplayName;
++        return user!.DisplayName;
+     }
+ 
+     public async Task<string> GetEmailAsync(int userId)
+     {
+         var user = await _userRepo.FindByIdAsync(userId);
+-        if (user is null)
+-        {
+-            throw new UserNotFoundException(userId);
+-        }
+-
+-        return user.Email;
++        return user!.Email;
+     }
+ }

@@ -1,0 +1,29 @@
+diff --git a/src/api/response-parser.ts b/src/api/response-parser.ts
+index 9c0d1e2..3f4a5b6 100644
+--- a/src/api/response-parser.ts
++++ b/src/api/response-parser.ts
+@@ -1,12 +1,19 @@
+ interface UserResponse {
+   id: string;
+   name: string;
+   email: string;
+   createdAt: Date;
+ }
+ 
+-export async function fetchUser(id: string): Promise<UserResponse> {
+-  const res = await fetch(`/api/users/${id}`);
+-  const json = await res.json();
+-  return json as UserResponse;
+-}
++const cache = new Map<string, UserResponse>();
++
++export async function fetchUser(id: string): Promise<UserResponse> {
++  if (cache.has(id)) {
++    return cache.get(id) as UserResponse;
++  }
++  const res = await fetch(`/api/users/${id}`);
++  const json = await res.json();
++  const user = json as UserResponse;
++  cache.set(id, user);
++  return user;
++}

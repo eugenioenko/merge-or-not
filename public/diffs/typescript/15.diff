@@ -1,0 +1,31 @@
+diff --git a/src/services/cart-summary.ts b/src/services/cart-summary.ts
+index 3a4b5c6..7d8e9f0 100644
+--- a/src/services/cart-summary.ts
++++ b/src/services/cart-summary.ts
+@@ -1,17 +1,22 @@
+ export interface Cart {
+   items: CartItem[];
+   discountCode: string | null;
+ }
+ 
+ export interface CartItem {
+   sku: string;
+   quantity: number;
+   price: number;
+ }
+ 
+ export function getItemCount(cart: Cart | undefined): number {
+-  if (!cart) {
+-    throw new Error("Cart is required");
+-  }
+-  return cart.items.length;
++  return cart?.items?.length ?? 0;
++}
++
++export function getCheckoutTotal(cart: Cart | undefined): number {
++  const count = getItemCount(cart);
++  if (count === 0) {
++    return 0;
++  }
++  return cart!.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+ }

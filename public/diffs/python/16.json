@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "reject",
+  "context": "Simplifying save_upload's duplicate-filename check to a plain os.path.exists guard.",
+  "explanation": "Checking os.path.exists(dest_path) and then opening the file in a separate step is a time-of-check-to-time-of-use race: between the check and the open() call, a concurrent upload with the same filename (or a symlink planted at that path) can win, and this code will silently overwrite it instead of raising UploadError. The old code used os.open with O_CREAT | O_EXCL, which atomically fails if the file already exists - there's no window between checking and creating. Fix: restore the atomic os.open(..., os.O_CREAT | os.O_EXCL | os.O_WRONLY) pattern instead of check-then-open.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 4
+}

@@ -1,0 +1,43 @@
+diff --git a/src/services/payment-status.ts b/src/services/payment-status.ts
+index 3a1f9c2..7b8e4d1 100644
+--- a/src/services/payment-status.ts
++++ b/src/services/payment-status.ts
+@@ -1,17 +1,21 @@
+-export interface PaymentEvent {
+-  id: string;
+-  status: string;
+-  amount: number;
+-  failureReason?: string;
+-}
+-
+-export function describePayment(event: PaymentEvent): string {
+-  if (event.status === "pending") {
+-    return `Payment ${event.id} is awaiting confirmation`;
+-  } else if (event.status === "completed") {
+-    return `Payment ${event.id} for $${event.amount} succeeded`;
+-  } else if (event.status === "failed") {
+-    return `Payment ${event.id} failed: ${event.failureReason ?? "unknown"}`;
+-  }
+-  return `Payment ${event.id} has an unrecognized status`;
+-}
++export type PaymentEvent =
++  | { id: string; status: "pending"; amount: number }
++  | { id: string; status: "completed"; amount: number }
++  | { id: string; status: "failed"; amount: number; failureReason: string };
++
++function assertUnreachable(value: never): never {
++  throw new Error(`Unhandled payment status: ${JSON.stringify(value)}`);
++}
++
++export function describePayment(event: PaymentEvent): string {
++  switch (event.status) {
++    case "pending":
++      return `Payment ${event.id} is awaiting confirmation`;
++    case "completed":
++      return `Payment ${event.id} for $${event.amount} succeeded`;
++    case "failed":
++      return `Payment ${event.id} failed: ${event.failureReason}`;
++    default:
++      return assertUnreachable(event);
++  }
++}

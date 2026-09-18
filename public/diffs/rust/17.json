@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "merge",
+  "context": "Adds graceful shutdown to the connection-accept loop using a watch channel and tokio::select!.",
+  "explanation": "The accept loop now races listener.accept() against a watch::Receiver shutdown signal via tokio::select!, so the server stops accepting new connections as soon as shutdown fires instead of blocking forever inside accept().await. Each spawned per-connection task also selects against the same signal, letting in-flight connections observe shutdown and wind down instead of being silently abandoned. This is the standard, correct tokio pattern for graceful shutdown.",
+  "language": "rust",
+  "category": "concurrency",
+  "difficulty": 3
+}

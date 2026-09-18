@@ -1,0 +1,26 @@
+diff --git a/Services/CacheReader.cs b/Services/CacheReader.cs
+index 815703a..6d0b273 100644
+--- a/Services/CacheReader.cs
++++ b/Services/CacheReader.cs
+@@ -13,15 +13,17 @@
+ 
+     public async Task<int> ReadCountAsync(string key)
+     {
+-        var count = await _cache.GetCountAsync(key);
++        ValueTask<int> countTask = _cache.GetCountAsync(key);
++        var count = await countTask;
+         _logger.LogInformation("Read {Key} = {Count}", key, count);
+-        return count;
++        return await countTask;
+     }
+ 
+     public async Task<long> ReadSizeAsync(string key)
+     {
+-        var size = await _cache.GetSizeAsync(key);
++        ValueTask<long> sizeTask = _cache.GetSizeAsync(key);
++        var size = await sizeTask;
+         _logger.LogInformation("Size {Key} = {Size}", key, size);
+-        return size;
++        return await sizeTask;
+     }
+ }

@@ -1,0 +1,9 @@
+{
+  "id": 30,
+  "answer": "merge",
+  "context": "FindByName previously built its SQL query with fmt.Sprintf, interpolating the user-supplied name directly into the query string.",
+  "explanation": "Safe to merge. The query now uses a $1 placeholder and passes name as a driver argument to QueryContext, so the database driver escapes it correctly instead of concatenating raw user input into SQL. This closes the SQL injection hole, and the now-unused fmt import is correctly dropped along with it.",
+  "language": "go",
+  "category": "security",
+  "difficulty": 2
+}

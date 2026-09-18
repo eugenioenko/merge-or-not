@@ -1,0 +1,27 @@
+diff --git a/migrations/0156_add_loyalty_tier_column.sql b/migrations/0156_add_loyalty_tier_column.sql
+new file mode 100644
+--- /dev/null
++++ b/migrations/0156_add_loyalty_tier_column.sql
+@@ -0,0 +1,22 @@
++BEGIN;
++
++CREATE TABLE loyalty_tiers (
++    code text PRIMARY KEY,
++    display_name text NOT NULL,
++    min_lifetime_spend_cents bigint NOT NULL DEFAULT 0
++);
++
++INSERT INTO loyalty_tiers (code, display_name, min_lifetime_spend_cents) VALUES
++    ('standard', 'Standard', 0),
++    ('silver', 'Silver', 50000),
++    ('gold', 'Gold', 200000),
++    ('platinum', 'Platinum', 1000000);
++
++ALTER TABLE customers
++    ADD COLUMN loyalty_tier text NOT NULL DEFAULT 'standard'
++    REFERENCES loyalty_tiers (code);
++
++CREATE INDEX idx_customers_loyalty_tier
++    ON customers (loyalty_tier);
++
++COMMIT;

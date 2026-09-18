@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "reject",
+  "context": "Adds an index action to the documents API and 'simplifies' the existing lookups, per the PR summary.",
+  "explanation": "show and download used to scope through current_account.documents.find(...), guaranteeing a document belongs to the caller's account. They — and the new index action — now call Document.find/Document.order directly on the unscoped model. Any authenticated user from any account can now list, view, or download any other account's documents just by knowing or guessing an id, a textbook cross-tenant IDOR. Fix: scope every lookup through current_account.documents.",
+  "language": "ruby",
+  "category": "security",
+  "difficulty": 3
+}

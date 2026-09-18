@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "Streamlines the login route, dropping a middleware that a contributor flagged as 'probably unused'.",
+  "explanation": "The rate limiter guarding /login was removed entirely, so the endpoint now accepts unlimited login attempts from any client. That turns it into an open door for credential-stuffing and brute-force password guessing. Fix: keep (or reinstate) per-IP/per-account rate limiting on all authentication endpoints, ideally paired with account lockout or backoff after repeated failures.",
+  "category": "security",
+  "difficulty": 2,
+  "language": "node"
+}

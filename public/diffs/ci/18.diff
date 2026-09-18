@@ -1,0 +1,22 @@
+diff --git a/.github/workflows/docker-build.yml b/.github/workflows/docker-build.yml
+index c3e3504..7679547 100644
+--- a/.github/workflows/docker-build.yml
++++ b/.github/workflows/docker-build.yml
+@@ -24,4 +24,16 @@ jobs:
+         with:
+           context: .
+           push: true
+-          tags: ghcr.io/${{ github.repository }}:latest
++          tags: |
++            ghcr.io/${{ github.repository }}:latest
++            ghcr.io/${{ github.repository }}:${{ github.sha }}
++          build-args: |
++            NPM_TOKEN=ghp-abc123def456ghi789jkl012mno345
++          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache
++          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:cache,mode=max
++      - name: Print image digest
++        run: docker inspect ghcr.io/${{ github.repository }}:latest
++      - name: Scan image for vulnerabilities
++        run: trivy image ghcr.io/${{ github.repository }}:latest
++      - name: Notify deploy channel
++        run: ./scripts/notify-slack.sh "Image published"

@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "merge",
+  "context": "Adds a borrowing iterator to the ring buffer so callers can walk it with standard combinators.",
+  "explanation": "RingBufferIter walks the buffer in logical order starting at head, correctly bounded by len (not the underlying capacity), and yields &T so callers get map/filter/collect/for-loops without seeing the internal Vec<Option<T>> representation. The iterator's lifetime is tied to the borrow of the buffer, which is the right shape for a non-consuming iterator and keeps the existing push API untouched.",
+  "language": "rust",
+  "category": "api-design",
+  "difficulty": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "merge",
+  "context": "GeocodeClient.Lookup calls an external geocoding API. Previously it used c.http.Get with no way to bound how long the call could take or cancel it from an upstream caller.",
+  "explanation": "Safe to merge. Lookup now takes a context, derives a 5-second timeout from it, and builds the request with http.NewRequestWithContext so the outbound call is bound by both the caller's cancellation and the local timeout. defer cancel() releases the timer promptly, and the rest of the response handling is unchanged.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

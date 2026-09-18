@@ -1,0 +1,22 @@
+diff --git a/src/utils/validate-email.js b/src/utils/validate-email.js
+index 4f8a2c1..d7e9b56 100644
+--- a/src/utils/validate-email.js
++++ b/src/utils/validate-email.js
+@@ -1 +1 @@
+-const EMAIL_PATTERN = /^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/
++const EMAIL_PATTERN = /^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/g
+@@ -5,3 +5,7 @@ export function isValidEmail(value) {
+ }
+ 
++export function countEmailMatches(value) {
++  return (value.match(EMAIL_PATTERN) || []).length
++}
++
+ export function extractEmails(text) {
+@@ -8,2 +12,6 @@ export function extractEmails(text) {
+   return text.match(/[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/g) || []
+ }
++
++export function validateEmailList(values) {
++  return values.every((value) => isValidEmail(value))
++}

@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "merge",
+  "context": "Introduces an ApiError/ValidationError hierarchy with cause chaining and a parseApiResponse helper to replace scattered plain Error throws.",
+  "explanation": "Both classes call super(message, { cause }) so the standard Error 'cause' option is preserved through the chain, giving stack traces and logging tools the original underlying error (like a JSON parse failure) instead of losing it. Setting this.name lets instanceof and name-based error handling keep working after minification. ValidationError correctly narrows ApiError with a fixed status/code and its own fields. Clean, idiomatic error modeling.",
+  "language": "javascript",
+  "category": "error-handling",
+  "difficulty": 3
+}

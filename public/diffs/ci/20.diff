@@ -1,0 +1,21 @@
+diff --git a/.github/workflows/changelog.yml b/.github/workflows/changelog.yml
+index d49e37d..ef7b765 100644
+--- a/.github/workflows/changelog.yml
++++ b/.github/workflows/changelog.yml
+@@ -22,3 +22,16 @@ jobs:
+     steps:
+       - uses: actions/checkout@v4
+       - run: echo "${{ needs.extract.outputs.title }}" >> CHANGELOG.md
++      - name: Commit changelog
++        run: |
++          git config user.name "changelog-bot"
++          git config user.email "bot@example.com"
++          git add CHANGELOG.md
++          git commit -m "Update changelog: ${{ needs.extract.outputs.title }}"
++          git push
++      - name: Tag release
++        run: |
++          git tag -a "changelog-${{ github.event.pull_request.number }}" -m "${{ needs.extract.outputs.title }}"
++          git push --tags
++      - name: Post summary
++        run: echo "Merged: ${{ needs.extract.outputs.title }}" >> "$GITHUB_STEP_SUMMARY"

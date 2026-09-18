@@ -1,0 +1,45 @@
+diff --git a/.github/CODEOWNERS b/.github/CODEOWNERS
+new file mode 100644
+index 0000000..928dae8
+--- /dev/null
++++ b/.github/CODEOWNERS
+@@ -0,0 +1,3 @@
++* @org/platform-team
++/.github/ @org/devops-team
++/src/payments/ @org/payments-team
+diff --git a/.github/workflows/codeowners-check.yml b/.github/workflows/codeowners-check.yml
+new file mode 100644
+index 0000000..6a8a06c
+--- /dev/null
++++ b/.github/workflows/codeowners-check.yml
+@@ -0,0 +1,30 @@
++name: CODEOWNERS Review Check
++
++on:
++  pull_request:
++    types: [opened, synchronize, reopened, review_requested]
++  pull_request_review:
++    types: [submitted]
++
++permissions:
++  contents: read
++  pull-requests: read
++
++jobs:
++  check-approval:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - name: Verify CODEOWNERS approval
++        uses: actions/github-script@v7
++        with:
++          script: |
++            const { data: reviews } = await github.rest.pulls.listReviews({
++              owner: context.repo.owner,
++              repo: context.repo.repo,
++              pull_number: context.issue.number
++            });
++            const approved = reviews.some(r => r.state === 'APPROVED');
++            if (!approved) {
++              core.setFailed('This PR requires approval from a CODEOWNERS reviewer.');
++            }

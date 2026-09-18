@@ -1,0 +1,24 @@
+diff --git a/src/resources/connection.rs b/src/resources/connection.rs
+index 0000000..1111111 100644
+--- a/src/resources/connection.rs
++++ b/src/resources/connection.rs
+@@ -15,12 +15,18 @@
+     pub fn age(&self) -> std::time::Duration {
+         self.established_at.elapsed()
+     }
++
++    pub fn is_open(&self) -> bool {
++        self.socket.is_some()
++    }
+ }
+ 
+ impl Drop for Connection {
+     fn drop(&mut self) {
+         if let Some(socket) = self.socket.take() {
+-            let _ = socket.shutdown(std::net::Shutdown::Both);
++            socket
++                .shutdown(std::net::Shutdown::Both)
++                .expect("failed to shut down connection socket");
+         }
+     }
+ }

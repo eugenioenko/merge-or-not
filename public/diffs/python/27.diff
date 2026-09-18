@@ -1,0 +1,49 @@
+diff --git a/app/middleware/request_id.py b/app/middleware/request_id.py
+new file mode 100644
+index 0000000..8bd7b31
+--- /dev/null
++++ b/app/middleware/request_id.py
+@@ -0,0 +1,27 @@
++import contextvars
++import uuid
++
++request_id_var = contextvars.ContextVar("request_id", default=None)
++
++
++class RequestIDMiddleware:
++    def __init__(self, app):
++        self.app = app
++
++    def __call__(self, environ, start_response):
++        incoming = environ.get("HTTP_X_REQUEST_ID")
++        request_id = incoming or str(uuid.uuid4())
++        token = request_id_var.set(request_id)
++
++        def custom_start_response(status, headers, exc_info=None):
++            headers.append(("X-Request-ID", request_id))
++            return start_response(status, headers, exc_info)
++
++        try:
++            return self.app(environ, custom_start_response)
++        finally:
++            request_id_var.reset(token)
++
++
++def get_request_id():
++    return request_id_var.get()
+diff --git a/app/app.py b/app/app.py
+index 1b0301c..ff63a38 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -1,9 +1,11 @@
+ from flask import Flask
+ 
++from app.middleware.request_id import RequestIDMiddleware
+ from app.routes import register_routes
+ 
+ 
+ def create_app():
+     app = Flask(__name__)
+     register_routes(app)
++    app.wsgi_app = RequestIDMiddleware(app.wsgi_app)
+     return app

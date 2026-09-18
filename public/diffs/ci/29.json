@@ -1,0 +1,9 @@
+{
+  "id": 29,
+  "answer": "merge",
+  "context": "A supply-chain audit flagged that CI actions are pinned to floating version tags, which can be repointed by the action's maintainer (or an attacker who compromises their account).",
+  "explanation": "Safe to merge. Pins both actions to full commit SHAs (with the human-readable version kept as a trailing comment for maintainability), which is what GitHub's own hardening guidance recommends — a tag can be moved, a SHA can't. The accompanying `dependabot.yml` keeps this from becoming a maintenance burden: it checks weekly for newer commits behind those tags and groups all `github-actions` updates into a single PR instead of one-per-action noise.",
+  "language": "ci",
+  "category": "supply-chain",
+  "difficulty": 2
+}

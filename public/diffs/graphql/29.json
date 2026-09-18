@@ -1,0 +1,9 @@
+{
+  "id": 29,
+  "answer": "merge",
+  "context": "`inviteTeamMember` mutation lets an authenticated user send an email invite to join their team. It currently has no rate limiting.",
+  "explanation": "Safe to merge. Wrapping the resolver with `rateLimiter`, keyed by the authenticated user's id rather than by IP, caps how many invite emails a single account can trigger per hour — closing off both accidental spam loops and deliberate abuse (using the invite mutation as a free mail relay) without affecting other users sharing the same IP.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 2
+}

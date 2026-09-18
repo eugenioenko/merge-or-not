@@ -1,0 +1,45 @@
+diff --git a/Services/EmailSender.cs b/Services/EmailSender.cs
+index d8a686e..9c1965f 100644
+--- a/Services/EmailSender.cs
++++ b/Services/EmailSender.cs
+@@ -2,21 +2,17 @@
+ 
+ public class EmailSender
+ {
+-    private readonly string _smtpHost;
+-    private readonly int _smtpPort;
+-    private readonly string _fromAddress;
++    private readonly SmtpOptions _options;
+ 
+-    public EmailSender(IConfiguration configuration)
++    public EmailSender(IOptions<SmtpOptions> options)
+     {
+-        _smtpHost = configuration["Smtp:Host"]!;
+-        _smtpPort = int.Parse(configuration["Smtp:Port"]!);
+-        _fromAddress = configuration["Smtp:From"]!;
++        _options = options.Value;
+     }
+ 
+     public async Task SendAsync(string to, string subject, string body)
+     {
+-        using var client = new SmtpClient(_smtpHost, _smtpPort);
+-        var message = new MailMessage(_fromAddress, to, subject, body);
++        using var client = new SmtpClient(_options.Host, _options.Port);
++        var message = new MailMessage(_options.From, to, subject, body);
+         await client.SendMailAsync(message);
+     }
+ }
+diff --git a/Services/SmtpOptions.cs b/Services/SmtpOptions.cs
+new file mode 100644
+index 0000000..82d03b6
+--- /dev/null
++++ b/Services/SmtpOptions.cs
+@@ -0,0 +1,8 @@
++namespace Api.Services;
++
++public class SmtpOptions
++{
++    public string Host { get; set; } = string.Empty;
++    public int Port { get; set; } = 587;
++    public string From { get; set; } = string.Empty;
++}

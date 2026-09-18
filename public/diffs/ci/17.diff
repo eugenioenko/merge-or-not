@@ -1,0 +1,22 @@
+diff --git a/.github/workflows/reusable-deploy.yml b/.github/workflows/reusable-deploy.yml
+index c7d10ff..7ec71d2 100644
+--- a/.github/workflows/reusable-deploy.yml
++++ b/.github/workflows/reusable-deploy.yml
+@@ -9,6 +9,8 @@ on:
+     secrets:
+       DEPLOY_TOKEN:
+         required: true
++      SLACK_WEBHOOK:
++        required: true
+ 
+ jobs:
+   deploy:
+@@ -25,3 +27,8 @@ jobs:
+         env:
+           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+         run: ./scripts/deploy.sh
++      - name: Notify Slack
++        uses: some-org/slack-notify-action@master
++        with:
++          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
++          status: success

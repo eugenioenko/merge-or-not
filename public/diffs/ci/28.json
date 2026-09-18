@@ -1,0 +1,9 @@
+{
+  "id": 28,
+  "answer": "merge",
+  "context": "This monorepo's CI runs both the frontend and backend suites on every PR, even when a PR only touches one side.",
+  "explanation": "Safe to merge. Adds a `changes` job using `dorny/paths-filter` to detect which part of the monorepo actually changed, and gates the `frontend`/`backend` jobs behind `needs.changes.outputs.*`. A PR that only touches `frontend/` no longer waits on an unrelated Go test run, cutting CI time and resource usage without weakening coverage — each job still runs in full whenever its own path is touched.",
+  "language": "ci",
+  "category": "efficiency",
+  "difficulty": 2
+}

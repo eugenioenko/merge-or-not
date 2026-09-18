@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "Adds an endpoint for updating a user's email address, parsed from the JSON request body.",
+  "explanation": "payload.email is attacker-controlled input straight from the request body. If the client sends an email with no '@' (or an empty string), split('@').nth(1) returns None and unwrap() panics, taking down the request handler. User-supplied data should never be unwrapped directly; return a 400 via ok_or_else(...)? or validate the address before use.",
+  "language": "rust",
+  "category": "correctness",
+  "difficulty": 2
+}

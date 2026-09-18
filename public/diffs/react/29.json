@@ -1,0 +1,9 @@
+{
+  "id": 29,
+  "answer": "merge",
+  "context": "SignupForm collects an email and password and was reading their values from refs with no validation before submitting.",
+  "explanation": "Safe to merge. Switching to controlled inputs with local state lets the form validate email format and password length before calling onSubmit, and inline error messages give users immediate feedback instead of silently accepting bad input.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 2
+}

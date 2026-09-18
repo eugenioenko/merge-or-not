@@ -1,0 +1,26 @@
+diff --git a/src/graphql/formatError.js b/src/graphql/formatError.js
+index d3a8f39..e04b3f4 100644
+--- a/src/graphql/formatError.js
++++ b/src/graphql/formatError.js
+@@ -1,4 +1,21 @@
++const logger = require('./logger');
++
++const SAFE_CODES = new Set(['BAD_USER_INPUT', 'UNAUTHENTICATED', 'FORBIDDEN']);
++
+ const formatError = (error) => {
++  const code = error.extensions?.code;
++  if (!SAFE_CODES.has(code)) {
++    logger.error('Unhandled GraphQL error', {
++      message: error.message,
++      path: error.path,
++      stack: error.originalError?.stack,
++    });
++    return {
++      message: 'Internal server error',
++      path: error.path,
++      extensions: { code: 'INTERNAL_SERVER_ERROR' },
++    };
++  }
+   return {
+     message: error.message,
+     locations: error.locations,

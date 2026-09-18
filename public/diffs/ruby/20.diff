@@ -1,0 +1,34 @@
+diff --git a/app/models/contact.rb b/app/models/contact.rb
+index 3006a1c..151cf8a 100644
+--- a/app/models/contact.rb
++++ b/app/models/contact.rb
+@@ -2,6 +2,8 @@ class Contact < ApplicationRecord
+   belongs_to :account
+ 
+   validates :name, presence: true
+-  validates :phone_number, presence: true, format: { with: /\A\+?[0-9\s\-()]+\z/ }
++  validates :phone_number, presence: true
+   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
++
++  validates_with E164PhoneValidator, attributes: [:phone_number]
+ end
+diff --git a/app/validators/e164_phone_validator.rb b/app/validators/e164_phone_validator.rb
+new file mode 100644
+index 0000000..dd1c87d
+--- /dev/null
++++ b/app/validators/e164_phone_validator.rb
+@@ -0,0 +1,14 @@
++class E164PhoneValidator < ActiveModel::Validator
++  E164_FORMAT = /\A\+[1-9]\d{1,14}\z/
++
++  def validate(record)
++    options[:attributes].each do |attribute|
++      value = record.public_send(attribute)
++      next if value.blank?
++
++      unless value.match?(E164_FORMAT)
++        record.errors.add(attribute, "must be a valid E.164 phone number, e.g. +14155552671")
++      end
++    end
++  end
++end

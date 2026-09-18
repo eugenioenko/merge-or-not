@@ -1,0 +1,9 @@
+{
+  "id": 30,
+  "answer": "merge",
+  "context": "Custom `DateTime` scalar currently wraps values in `new Date(...)` with no validation, so an invalid input silently becomes an `Invalid Date`.",
+  "explanation": "Safe to merge. `serialize`, `parseValue`, and `parseLiteral` all now validate the resulting date with `Number.isNaN(date.getTime())` and throw a `GraphQLError` on bad input instead of silently producing `Invalid Date`, and `parseLiteral` additionally rejects non-string AST nodes. Output is normalized to ISO 8601 via `toISOString()` instead of the locale-dependent `toString()`.",
+  "language": "graphql",
+  "category": "correctness",
+  "difficulty": 2
+}

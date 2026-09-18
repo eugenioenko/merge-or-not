@@ -1,0 +1,27 @@
+diff --git a/Program.cs b/Program.cs
+index 6c0fb73..c22fea5 100644
+--- a/Program.cs
++++ b/Program.cs
+@@ -2,8 +2,10 @@
+ 
+ builder.Services.AddControllers();
+ builder.Services.AddScoped<ICatalogService, CatalogService>();
++builder.Services.AddResponseCaching();
+ 
+ var app = builder.Build();
+ 
++app.UseResponseCaching();
+ app.MapControllers();
+ app.Run();
+diff --git a/Controllers/CatalogController.cs b/Controllers/CatalogController.cs
+index c21da6e..cd4a886 100644
+--- a/Controllers/CatalogController.cs
++++ b/Controllers/CatalogController.cs
+@@ -12,6 +12,7 @@
+     }
+ 
+     [HttpGet]
++    [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "currency" }, VaryByHeader = "Accept-Language")]
+     public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll(string? currency)
+     {
+         var products = await _catalogService.GetAllAsync(currency ?? "USD");

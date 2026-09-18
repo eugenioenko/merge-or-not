@@ -1,0 +1,23 @@
+diff --git a/app/services/email_templates.py b/app/services/email_templates.py
+index 5c811ae..4e51445 100644
+--- a/app/services/email_templates.py
++++ b/app/services/email_templates.py
+@@ -10,9 +10,16 @@ env = Environment(autoescape=select_autoescape())
+ 
+ def render_notification(template_name, context):
+     template_row = EmailTemplate.get_by_name(template_name)
+-    template = env.get_template(template_row.file_path)
++    if template_row.custom_body:
++        template = env.from_string(template_row.custom_body)
++    else:
++        template = env.get_template(template_row.file_path)
+     rendered = template.render(**context)
+-    logger.info("rendered notification template %s", template_name)
++    logger.info(
++        "rendered notification template %s (%d context keys)",
++        template_name,
++        len(context),
++    )
+     return rendered
+ 
+ 

@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "merge",
+  "context": "Adds liveness and readiness health check endpoints for the Kubernetes probes, checking the database and Redis only for readiness.",
+  "explanation": "Safe to merge. Liveness uses Predicate = _ => false so it never runs a dependency check and just confirms the process can respond, which avoids the pod being killed and restarted because of a slow downstream dependency. Readiness is tagged to include the DB and Redis checks, so the pod is correctly pulled out of the load balancer rotation when a dependency is down. This is the standard ASP.NET Core health check split for orchestrated deployments.",
+  "language": "csharp",
+  "category": "reliability",
+  "difficulty": 3
+}

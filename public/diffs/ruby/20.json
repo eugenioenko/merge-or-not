@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "merge",
+  "context": "Replaces Contact's loose phone-number regex with a dedicated E.164 validator.",
+  "explanation": "The old format regex (/\\A\\+?[0-9\\s\\-()]+\\z/) accepted almost any digit soup with optional spaces, dashes, and parentheses, which doesn't guarantee a usable, dialable number. E164PhoneValidator enforces the actual E.164 standard (a leading +, no leading zero, 2-15 digits total) via ActiveModel::Validator, is reusable across any model with a phone-like attribute, and gives a clear, actionable error message. A real correctness improvement over the previous validation.",
+  "language": "ruby",
+  "category": "correctness",
+  "difficulty": 2
+}

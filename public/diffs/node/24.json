@@ -1,0 +1,9 @@
+{
+  "id": 24,
+  "answer": "merge",
+  "context": "Adds a graceful shutdown path so in-flight requests finish and the DB pool closes cleanly before the process exits.",
+  "explanation": "This is the correct pattern: server.close() stops accepting new connections while letting in-flight requests complete, the database pool is closed only after that, and a safety-valve setTimeout (unref'd so it doesn't itself keep the process alive) forces an exit if something hangs, so a deploy or orchestrator restart no longer drops active requests or leaves the pool in a half-open state.",
+  "category": "correctness",
+  "difficulty": 3,
+  "language": "node"
+}

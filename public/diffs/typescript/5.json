@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "merge",
+  "context": "Constrain event names to a template literal type instead of a bare string so typos can't compile.",
+  "explanation": "EventName is now `${EventDomain}:${EventAction}`, so onEvent(\"userClick\", ...) - a typo missing the colon - is now a compile error instead of a silently-ignored listener that never fires.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 2
+}

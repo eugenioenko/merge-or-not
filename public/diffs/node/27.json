@@ -1,0 +1,9 @@
+{
+  "id": 27,
+  "answer": "merge",
+  "context": "Adds a /health endpoint that checks the database and Redis before reporting readiness, for the load balancer and orchestrator to probe.",
+  "explanation": "A useful, low-risk addition: it independently checks each dependency, catches each check's failure so one down dependency doesn't throw and crash the request, and returns 503 when degraded so load balancers and orchestrators can correctly stop routing traffic to (or restart) an unhealthy instance instead of relying on it silently failing user requests.",
+  "category": "correctness",
+  "difficulty": 1,
+  "language": "node"
+}

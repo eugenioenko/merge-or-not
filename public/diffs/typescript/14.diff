@@ -1,0 +1,25 @@
+diff --git a/src/services/notification-dispatcher.ts b/src/services/notification-dispatcher.ts
+index 2f3a4b5..6c7d8e9 100644
+--- a/src/services/notification-dispatcher.ts
++++ b/src/services/notification-dispatcher.ts
+@@ -1,17 +1,19 @@
+ export type Notification =
+   | { type: "email"; to: string; subject: string }
+-  | { type: "sms"; to: string; body: string };
++  | { type: "sms"; to: string; body: string }
++  | { type: "push"; to: string; title: string; body: string };
+ 
+ export function dispatch(notification: Notification): void {
+   switch (notification.type) {
+     case "email":
+       sendEmail(notification.to, notification.subject);
+       break;
+     case "sms":
+       sendSms(notification.to, notification.body);
+       break;
+   }
+ }
+ 
+ declare function sendEmail(to: string, subject: string): void;
+ declare function sendSms(to: string, body: string): void;
++declare function sendPush(to: string, title: string, body: string): void;

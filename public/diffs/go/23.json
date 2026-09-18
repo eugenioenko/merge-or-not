@@ -1,0 +1,9 @@
+{
+  "id": 23,
+  "answer": "reject",
+  "context": "WriteReport buffers report data and writes it to disk. Reports are generated on a schedule and written to a mounted network volume.",
+  "explanation": "The final f.Close() return value is discarded on every path, including the success path. Close on a buffered/OS-cached file can be the point where a deferred write error actually surfaces (full disk, network filesystem hiccup, quota exceeded) — Flush() succeeding only means the bytes left the bufio.Writer, not that they reached stable storage. Silently ignoring that error means WriteReport can return nil while the report file is truncated or missing. Fix: capture and return (or wrap) the error from f.Close(), e.g. `if cerr := f.Close(); cerr != nil { return cerr }`.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 3
+}

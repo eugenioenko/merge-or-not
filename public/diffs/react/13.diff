@@ -1,0 +1,26 @@
+diff --git a/src/components/UserAvatar.jsx b/src/components/UserAvatar.jsx
+index abf9f5e..ce6f37a 100644
+--- a/src/components/UserAvatar.jsx
++++ b/src/components/UserAvatar.jsx
+@@ -1,6 +1,10 @@
+ import { useEffect, useMemo, useState } from 'react'
+ 
+ export function UserAvatar({ user }) {
++  if (!user) {
++    return <div className="avatar avatar-placeholder" />
++  }
++
+   const [imageError, setImageError] = useState(false)
+   const [tooltipOpen, setTooltipOpen] = useState(false)
+ 
+@@ -9,10 +13,6 @@
+   }, [user?.avatarUrl])
+ 
+   const displayName = useMemo(() => user?.name?.trim() ?? '', [user])
+-
+-  if (!user) {
+-    return <div className="avatar avatar-placeholder" />
+-  }
+ 
+   return (
+     <div

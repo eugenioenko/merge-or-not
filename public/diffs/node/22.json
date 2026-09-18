@@ -1,0 +1,9 @@
+{
+  "id": 22,
+  "answer": "merge",
+  "context": "Replaces the per-query Client that opened and closed a fresh TCP connection every call with a shared Pool.",
+  "explanation": "This is the right fix: opening a new Postgres connection per query is slow (TCP + TLS + auth handshake every time) and can exhaust the database's max_connections under load. A bounded Pool reuses connections, caps concurrency at max, times out both idle and pending connection attempts, and the added error listener on the pool prevents an idle client's error from becoming an unhandled 'error' event.",
+  "category": "performance",
+  "difficulty": 3,
+  "language": "node"
+}

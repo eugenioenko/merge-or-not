@@ -1,0 +1,9 @@
+{
+  "id": 27,
+  "answer": "reject",
+  "context": "Adds ApproximatePriceComparer, an IEqualityComparer<decimal> used as the comparer for a Dictionary<decimal, List<Offer>> that groups near-duplicate prices scraped from different suppliers.",
+  "explanation": "Tolerance-based Equals breaks transitivity: 10.00 equals 10.01 and 10.01 equals 10.02 under a 0.01 tolerance, but 10.00 does not equal 10.02. Dictionary and HashSet require Equals to be a true equivalence relation, so this produces non-deterministic bucket placement and lookups that silently fail depending on insertion order. GetHashCode also ignores the tolerance and hashes the raw value, so two decimals considered equal by Equals can land in different buckets entirely, breaking the Equals/GetHashCode contract outright. Fix: do not use a tolerance for hash-based equality; round to a fixed precision first and compare/hash the rounded value, or use a sorted structure instead.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 4
+}

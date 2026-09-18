@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "merge",
+  "context": "Replaces nested match arms that flatten every failure into a String with a typed ConfigError.",
+  "explanation": "load_config previously hand-matched each env::var/parse call and mapped failures into an opaque String. The new ConfigError uses #[from] to convert VarError and ParseIntError automatically, letting `?` do the work while load_config now reads as two clean lines. Callers keep the original error type and can match on the failure kind instead of parsing a message string, and the underlying cause is preserved via thiserror's #[error] formatting.",
+  "language": "rust",
+  "category": "error-handling",
+  "difficulty": 2
+}

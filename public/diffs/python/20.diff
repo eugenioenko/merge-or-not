@@ -1,0 +1,25 @@
+diff --git a/app/reports/views.py b/app/reports/views.py
+index 6bdd662..00bcf2f 100644
+--- a/app/reports/views.py
++++ b/app/reports/views.py
+@@ -8,15 +8,17 @@ class RevenueByRegionView(View):
+         region = request.GET.get("region", "")
+         start_date = request.GET.get("start_date")
+         end_date = request.GET.get("end_date")
++        sort = request.GET.get("sort", "total")
+         with connection.cursor() as cursor:
+             cursor.execute(
+-                """
++                f"""
+                 SELECT region, SUM(amount) AS total
+                 FROM orders
+-                WHERE region = %s AND created_at BETWEEN %s AND %s
++                WHERE region = '{region}' AND created_at BETWEEN %s AND %s
+                 GROUP BY region
++                ORDER BY {sort}
+                 """,
+-                [region, start_date, end_date],
++                [start_date, end_date],
+             )
+             rows = cursor.fetchall()
+         return JsonResponse({"results": rows}, safe=False)

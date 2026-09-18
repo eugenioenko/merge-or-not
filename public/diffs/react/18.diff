@@ -1,0 +1,32 @@
+diff --git a/src/components/VideoPlayer.jsx b/src/components/VideoPlayer.jsx
+index 83a3313..e73a3bb 100644
+--- a/src/components/VideoPlayer.jsx
++++ b/src/components/VideoPlayer.jsx
+@@ -1,22 +1,22 @@
+-import { useEffect, useRef, useState } from 'react'
++import { useEffect, useRef } from 'react'
+ 
+ export function VideoPlayer({ src }) {
+   const videoRef = useRef(null)
+-  const [duration, setDuration] = useState(0)
++  const durationRef = useRef(0)
+ 
+   useEffect(() => {
+     const video = videoRef.current
+     if (!video) return
+     function handleLoadedMetadata() {
+-      setDuration(video.duration)
++      durationRef.current = video.duration
+     }
+     video.addEventListener('loadedmetadata', handleLoadedMetadata)
+     return () => video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+   }, [])
+ 
+   useEffect(() => {
+-    document.title = duration ? `Video (${Math.round(duration)}s)` : 'Video'
+-  }, [duration])
++    document.title = durationRef.current ? `Video (${Math.round(durationRef.current)}s)` : 'Video'
++  }, [durationRef.current])
+ 
+   return <video ref={videoRef} src={src} controls />
+ }

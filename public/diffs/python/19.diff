@@ -1,0 +1,22 @@
+diff --git a/app/services/streaming_export.py b/app/services/streaming_export.py
+index 2c90442..1171a9d 100644
+--- a/app/services/streaming_export.py
++++ b/app/services/streaming_export.py
+@@ -14,12 +14,9 @@ async def _iter_orders(customer_id):
+ async def export_orders_csv(customer_id, writer):
+     gen = _iter_orders(customer_id)
+     rows_written = 0
+-    try:
+-        async for row in gen:
+-            writer.writerow([row.id, row.total, row.created_at])
+-            rows_written += 1
+-            if writer.should_stop():
+-                break
+-    finally:
+-        await gen.aclose()
++    async for row in gen:
++        writer.writerow([row.id, row.total, row.created_at])
++        rows_written += 1
++        if writer.should_stop():
++            break
+     return rows_written

@@ -1,0 +1,31 @@
+diff --git a/src/services/session-manager.ts b/src/services/session-manager.ts
+index 5c6d7e8..9f0a1b2 100644
+--- a/src/services/session-manager.ts
++++ b/src/services/session-manager.ts
+@@ -1,21 +1,22 @@
+ export interface Session {
+   userId: string;
+   expiresAt: number;
+ }
+ 
+ let currentSession: Session | null = null;
+ 
+ export function setSession(session: Session): void {
+   currentSession = session;
+ }
+ 
+ export function clearSession(): void {
+   currentSession = null;
+ }
+ 
+ export function getUserId(): string {
+-  if (!currentSession) {
+-    throw new Error("No active session");
+-  }
+-  return currentSession.userId;
++  return currentSession!.userId;
++}
++
++export function getSessionExpiry(): number {
++  return currentSession!.expiresAt;
+ }

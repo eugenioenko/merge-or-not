@@ -1,0 +1,28 @@
+diff --git a/.github/workflows/dependency-review.yml b/.github/workflows/dependency-review.yml
+new file mode 100644
+index 0000000..012785f
+--- /dev/null
++++ b/.github/workflows/dependency-review.yml
+@@ -0,0 +1,22 @@
++name: Dependency Review
++
++on:
++  pull_request:
++    branches: [main]
++
++permissions:
++  contents: read
++  pull-requests: write
++
++jobs:
++  dependency-review:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - name: Dependency Review
++        uses: actions/dependency-review-action@v4
++        with:
++          fail-on-severity: high
++          comment-summary-in-pr: always
++          allow-licenses: MIT, Apache-2.0, BSD-3-Clause, ISC
++          deny-licenses: GPL-3.0, AGPL-3.0

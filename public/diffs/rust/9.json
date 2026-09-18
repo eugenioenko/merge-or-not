@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "reject",
+  "context": "Adds an is_open helper and makes Drop report shutdown failures instead of ignoring them.",
+  "explanation": "Drop::drop now calls .expect() on the socket shutdown, which panics if the socket is already closed or the OS returns an error such as ECONNRESET. Panicking inside Drop is dangerous: if it happens while the stack is already unwinding from another panic, the process aborts immediately instead of unwinding cleanly, and even in the ordinary case it turns a routine 'already closed' condition into a hard crash of whatever scope owns this Connection. Drop impls should log and ignore failures, matching the previous behavior.",
+  "language": "rust",
+  "category": "reliability",
+  "difficulty": 3
+}

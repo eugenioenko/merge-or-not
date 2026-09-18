@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "reject",
+  "context": "Adds error logging around the CSV export and switches CSV.open to a plain assignment 'so the rescue block can log the partial path'.",
+  "explanation": "CSV.open(path, \"wb\") do |csv| ... end automatically flushes and closes the underlying file handle when the block exits, even on error. Replacing it with csv = CSV.open(path, \"wb\") followed by manual writes never closes the handle — not in the success path, and not in the new rescue branch either. Every export now leaks a file descriptor and risks buffered rows never being flushed to disk. Fix: keep the block form, or wrap the manual open in begin/ensure { csv.close }.",
+  "language": "ruby",
+  "category": "reliability",
+  "difficulty": 2
+}

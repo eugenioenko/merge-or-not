@@ -1,0 +1,24 @@
+diff --git a/migrations/0205_add_order_items_cascade_fk.sql b/migrations/0205_add_order_items_cascade_fk.sql
+new file mode 100644
+--- /dev/null
++++ b/migrations/0205_add_order_items_cascade_fk.sql
+@@ -0,0 +1,19 @@
++ALTER TABLE order_items
++    ADD CONSTRAINT fk_order_items_order_id
++    FOREIGN KEY (order_id) REFERENCES orders (id)
++    ON DELETE CASCADE;
++
++ALTER TABLE payments
++    ADD CONSTRAINT fk_payments_order_id
++    FOREIGN KEY (order_id) REFERENCES orders (id)
++    ON DELETE CASCADE;
++
++ALTER TABLE refunds
++    ADD CONSTRAINT fk_refunds_order_id
++    FOREIGN KEY (order_id) REFERENCES orders (id)
++    ON DELETE CASCADE;
++
++ALTER TABLE order_notes
++    ADD CONSTRAINT fk_order_notes_order_id
++    FOREIGN KEY (order_id) REFERENCES orders (id)
++    ON DELETE CASCADE;

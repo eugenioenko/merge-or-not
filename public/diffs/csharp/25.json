@@ -1,0 +1,9 @@
+{
+  "id": 25,
+  "answer": "reject",
+  "context": "Refactors the CSV export loop, described in the PR as cleaning up the row-building logic.",
+  "explanation": "A new StringBuilder is allocated on every loop iteration just to build one row, and the result is then appended to csv with +=, which reallocates and copies the entire growing string on every iteration. For N rows this is O(N^2) allocation and copying instead of O(N), turning a fast export into a slow one on large datasets and adding significant GC pressure. Fix: use a single StringBuilder created once before the loop (ideally pre-sized with an initial capacity) and append rows to it directly, returning ToString() once at the end.",
+  "language": "csharp",
+  "category": "performance",
+  "difficulty": 3
+}

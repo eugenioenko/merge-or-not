@@ -1,0 +1,31 @@
+diff --git a/app/controllers/api/base_controller.rb b/app/controllers/api/base_controller.rb
+index caa7f00..1cfd294 100644
+--- a/app/controllers/api/base_controller.rb
++++ b/app/controllers/api/base_controller.rb
+@@ -1,6 +1,10 @@
+ module Api
+   class BaseController < ActionController::API
++    RATE_LIMIT = 120
++    RATE_LIMIT_WINDOW = 1.minute
++
+     before_action :authenticate_api_user!
++    before_action :enforce_rate_limit!
+ 
+     rescue_from ActiveRecord::RecordNotFound do
+       render json: { error: "Not found" }, status: :not_found
+@@ -14,6 +18,15 @@ module Api
+       render json: { error: "Unauthorized" }, status: :unauthorized unless @current_user
+     end
+ 
++    def enforce_rate_limit!
++      key = "api_rate_limit:#{current_user.id}:#{Time.current.to_i / RATE_LIMIT_WINDOW}"
++      count = Rails.cache.increment(key, 1, expires_in: RATE_LIMIT_WINDOW)
++
++      if count && count > RATE_LIMIT
++        render json: { error: "Rate limit exceeded" }, status: :too_many_requests
++      end
++    end
++
+     def current_user
+       @current_user
+     end

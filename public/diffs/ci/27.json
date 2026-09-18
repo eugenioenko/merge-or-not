@@ -1,0 +1,9 @@
+{
+  "id": 27,
+  "answer": "merge",
+  "context": "Version bumps were done by a hand-rolled script that always bumps patch, regardless of what actually changed. The team wants correct semver.",
+  "explanation": "Safe to merge. Replaces the manual `npm version patch` (which is wrong whenever a change is actually a feature or a breaking change) with `semantic-release`, which derives the correct bump from conventional commit messages and generates a changelog automatically. `fetch-depth: 0` is added because semantic-release needs full commit history to determine the last release and correctly classify commits since then. Permissions are widened only to what semantic-release's GitHub plugin needs (`pull-requests: write`, `issues: write` for release-note comments), leaving `contents: write` unchanged.",
+  "language": "ci",
+  "category": "release",
+  "difficulty": 2
+}

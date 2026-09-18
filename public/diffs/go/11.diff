@@ -1,0 +1,37 @@
+diff --git a/internal/analytics/tracker.go b/internal/analytics/tracker.go
+index 3a1f9c2..7c88e4d 100644
+--- a/internal/analytics/tracker.go
++++ b/internal/analytics/tracker.go
+@@ -5,7 +5,32 @@ type Tracker struct {
+ type Tracker struct {
+ 	sink chan<- Event
+ }
+ 
+ func NewTracker(sink chan<- Event) *Tracker {
+ 	return &Tracker{sink: sink}
+ }
++
++func (t *Tracker) TrackAsync(userID string, action string) {
++	go func() {
++		event := Event{
++			UserID:    userID,
++			Action:    action,
++			Timestamp: time.Now(),
++		}
++		t.sink <- event
++	}()
++}
++
++func (t *Tracker) TrackBatch(userID string, actions []string) {
++	for _, action := range actions {
++		t.TrackAsync(userID, action)
++	}
++}
++
++func (t *Tracker) Flush(events []Event) {
++	for _, e := range events {
++		go func(evt Event) {
++			t.sink <- evt
++		}(e)
++	}
++}

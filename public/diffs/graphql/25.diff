@@ -1,0 +1,33 @@
+diff --git a/src/graphql/context.js b/src/graphql/context.js
+index d915e84..14f98f2 100644
+--- a/src/graphql/context.js
++++ b/src/graphql/context.js
+@@ -1,8 +1,28 @@
++const DataLoader = require('dataloader');
++
++const buildUserLoader = () =>
++  new DataLoader(async (ids) => {
++    const users = await db.user.findMany({ where: { id: { in: ids } } });
++    const byId = new Map(users.map((user) => [user.id, user]));
++    return ids.map((id) => byId.get(id) || null);
++  });
++
++const buildProductLoader = () =>
++  new DataLoader(async (ids) => {
++    const products = await db.product.findMany({ where: { id: { in: ids } } });
++    const byId = new Map(products.map((product) => [product.id, product]));
++    return ids.map((id) => byId.get(id) || null);
++  });
++
+ const buildContext = ({ req }) => {
+   const currentUser = req.user || null;
+   return {
+     db,
+     currentUser,
++    loaders: {
++      userLoader: buildUserLoader(),
++      productLoader: buildProductLoader(),
++    },
+   };
+ };
+ 

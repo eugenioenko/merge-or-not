@@ -1,0 +1,9 @@
+{
+  "id": 26,
+  "answer": "merge",
+  "context": "Production deploys were all-or-nothing; a bad deploy meant a manual scramble to roll back. The team wants a safer rollout.",
+  "explanation": "Safe to merge. Replaces the single blind `deploy.sh` call with a blue/green sequence: deploy to the idle (green) environment, run a health check, only switch live traffic if that health check succeeded, and explicitly switch back to blue with `if: failure()` if any prior step in the job fails. This is a textbook safe rollout pattern — production traffic is never pointed at unverified code, and rollback is automatic rather than manual.",
+  "language": "ci",
+  "category": "deployment",
+  "difficulty": 3
+}

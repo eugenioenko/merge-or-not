@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "Replaces the IHttpClientFactory-based typed client with a single static readonly HttpClient, described in the PR as removing DI overhead.",
+  "explanation": "A static HttpClient is held for the lifetime of the process and keeps its underlying connections open indefinitely, so it never picks up DNS changes such as a backend IP rotating behind a load balancer or during failover, causing requests to keep going to a stale address. IHttpClientFactory manages a pool of handlers with a rotation lifetime specifically to refresh DNS periodically. Fix: keep using IHttpClientFactory (named or typed client) instead of a static HttpClient instance.",
+  "language": "csharp",
+  "category": "performance",
+  "difficulty": 4
+}

@@ -1,0 +1,9 @@
+{
+  "id": 29,
+  "answer": "reject",
+  "context": "CancelOrder now sends a notification after saving the cancelled order. ctx is the request-scoped context from the HTTP handler, carrying the client's deadline plus trace and auth values injected by middleware.",
+  "explanation": "s.notifier.Send is called with context.Background() instead of the incoming ctx, so the notification call is silently detached from the request: it ignores the caller's deadline and cancellation (if the client disconnects, the send keeps running with no timeout at all) and loses any trace ID or auth token that downstream middleware attached to ctx. Fix: pass ctx through to notifier.Send so it inherits the same deadline, cancellation, and request-scoped values as the rest of the call chain.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 3
+}

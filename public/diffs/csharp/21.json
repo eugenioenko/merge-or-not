@@ -1,0 +1,9 @@
+{
+  "id": 21,
+  "answer": "reject",
+  "context": "Adds a GetSnapshot method to the metrics registry and, while touching the class, drops the volatile modifier on the backing singleton field.",
+  "explanation": "Without volatile, the compiler and CPU are free to reorder or cache the read/write of _instance, so another thread can observe the double-checked read outside the lock returning a reference to a MetricsRegistry object whose constructor has not fully finished writing its fields yet, i.e. a partially constructed instance. That thread would then read corrupted or default state from _counters. Fix: keep _instance marked volatile (or replace the whole pattern with Lazy<MetricsRegistry>, which does this correctly for you).",
+  "language": "csharp",
+  "category": "concurrency",
+  "difficulty": 4
+}

@@ -1,0 +1,28 @@
+diff --git a/src/repositories/base-repository.ts b/src/repositories/base-repository.ts
+index 0d1e2f3..4a5b6c7 100644
+--- a/src/repositories/base-repository.ts
++++ b/src/repositories/base-repository.ts
+@@ -1,16 +1,23 @@
+ export interface Repository<T> {
+   findById(id: string): Promise<T | null>;
+   save(entity: T): Promise<void>;
+ }
+ 
+ export class InMemoryRepository<T extends { id: string }> implements Repository<T> {
+   private items = new Map<string, T>();
+ 
+   async findById(id: string): Promise<T | null> {
+     return this.items.get(id) ?? null;
+   }
+ 
+   async save(entity: T): Promise<void> {
+     this.items.set(entity.id, entity);
+   }
++
++  async patch(id: string, changes: any): Promise<void> {
++    const existing: any = this.items.get(id);
++    if (!existing) return;
++    Object.assign(existing, changes);
++    this.items.set(id, existing);
++  }
+ }

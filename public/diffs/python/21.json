@@ -1,0 +1,9 @@
+{
+  "id": 21,
+  "answer": "merge",
+  "context": "Switching checkout logging from stdlib logging to structlog so order_id and cart_id are attached as structured fields instead of being formatted into the message text.",
+  "explanation": "logger.bind(order_id=order.id, cart_id=cart.id) attaches those values as structured key/value fields that a log aggregator can filter and query on, instead of burying them inside a free-text sentence. log.exception still captures the active exception's traceback automatically, same as the old logger.error(..., exc) call did manually, and re-raising afterward preserves it. Using stable event names (checkout.failed, checkout.completed) instead of sentence fragments makes log-based alerting more reliable. Behavior is unchanged - only the logging mechanism improved.",
+  "language": "python",
+  "category": "maintainability",
+  "difficulty": 2
+}

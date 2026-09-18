@@ -1,0 +1,9 @@
+{
+  "id": 22,
+  "answer": "merge",
+  "context": "Replaces manual IConfiguration string lookups in EmailSender with a strongly-typed SmtpOptions bound through the options pattern. Program.cs is updated separately to call Configure<SmtpOptions>.",
+  "explanation": "Safe to merge. SmtpOptions is a plain strongly-typed class bound from the Smtp configuration section, and EmailSender now receives it through IOptions<SmtpOptions> instead of parsing raw configuration strings (including a manual int.Parse that would throw on a bad value) by hand. This centralizes binding, is testable without IConfiguration, and is the idiomatic ASP.NET Core way to surface configuration to services.",
+  "language": "csharp",
+  "category": "maintainability",
+  "difficulty": 2
+}

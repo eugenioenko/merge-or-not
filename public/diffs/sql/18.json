@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "reject",
+  "context": "Migration adding a discount code column, backfilling it, then enforcing NOT NULL and a foreign key.",
+  "explanation": "None of these four steps are wrapped in a transaction, so if the backfill UPDATE fails partway through or the deploy is interrupted, the table is left with the column added but only partially backfilled, no way to atomically roll the whole thing back, and potentially a NOT NULL constraint applied over still-null rows. Should be rejected.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 3
+}

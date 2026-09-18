@@ -1,0 +1,48 @@
+diff --git a/src/components/TodoItem.jsx b/src/components/TodoItem.jsx
+index 7f6f2d0..7f22149 100644
+--- a/src/components/TodoItem.jsx
++++ b/src/components/TodoItem.jsx
+@@ -1,24 +1,32 @@
+ import { useState } from 'react'
+ 
+ export function TodoItem({ todo, onUpdate }) {
+-  const [saving, setSaving] = useState(false)
++  const [error, setError] = useState(false)
+ 
+   async function handleToggle() {
+-    setSaving(true)
+-    const res = await fetch(`/api/todos/${todo.id}`, {
+-      method: 'PATCH',
+-      headers: { 'Content-Type': 'application/json' },
+-      body: JSON.stringify({ done: !todo.done }),
+-    })
+-    const updated = await res.json()
+-    onUpdate(updated)
+-    setSaving(false)
++    const previous = todo
++    setError(false)
++    onUpdate({ ...todo, done: !todo.done })
++    try {
++      const res = await fetch(`/api/todos/${todo.id}`, {
++        method: 'PATCH',
++        headers: { 'Content-Type': 'application/json' },
++        body: JSON.stringify({ done: !todo.done }),
++      })
++      if (!res.ok) throw new Error('Request failed')
++      const updated = await res.json()
++      onUpdate(updated)
++    } catch {
++      onUpdate(previous)
++      setError(true)
++    }
+   }
+ 
+   return (
+     <li className={todo.done ? 'done' : ''}>
+-      <input type="checkbox" checked={todo.done} disabled={saving} onChange={handleToggle} />
++      <input type="checkbox" checked={todo.done} onChange={handleToggle} />
+       <span>{todo.title}</span>
++      {error && <span className="todo-error">Failed to save, reverted</span>}
+     </li>
+   )
+ }

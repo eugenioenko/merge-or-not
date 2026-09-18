@@ -1,0 +1,9 @@
+{
+  "id": 22,
+  "answer": "merge",
+  "context": "ProductCache is read on nearly every request (Get) and written rarely (Set, only on catalog refresh). It previously used a plain sync.Mutex, so concurrent readers serialized behind each other even though none of them mutate state.",
+  "explanation": "Safe to merge. Switching to sync.RWMutex and using RLock/RUnlock in Get lets concurrent readers proceed in parallel, while Set correctly keeps the exclusive Lock/Unlock to serialize writers against readers and each other. Since reads dominate writes here, this removes unnecessary contention without changing correctness.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 3
+}

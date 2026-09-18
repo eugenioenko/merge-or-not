@@ -1,0 +1,22 @@
+diff --git a/src/constants/roles.ts b/src/constants/roles.ts
+index 5e6f7a8..9b0c1d2 100644
+--- a/src/constants/roles.ts
++++ b/src/constants/roles.ts
+@@ -1,14 +1,13 @@
+-export const ROLES = ["admin", "member", "viewer"];
++export const ROLES = ["admin", "member", "viewer"] as const;
+ 
+-export type Role = string;
++export type Role = (typeof ROLES)[number];
+ 
+ export function isRole(value: string): value is Role {
+-  return ROLES.includes(value);
++  return (ROLES as readonly string[]).includes(value);
+ }
+ 
+ export function assignRole(userId: string, role: Role): void {
+   console.log(`Assigning role ${role} to user ${userId}`);
+ }
+ 
+ assignRole("user-1", "admin");
+-assignRole("user-2", "superadmin");

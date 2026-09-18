@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "reject",
+  "context": "Allow ApiConfig to carry arbitrary custom headers.",
+  "explanation": "The [key: string]: unknown index signature means any typo'd or unexpected property - timeoutMS, retryCount, whatever - is silently accepted as a valid ApiConfig field. The compiler can no longer catch misspelled overrides, which is exactly what the interface was supposed to prevent.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 2
+}

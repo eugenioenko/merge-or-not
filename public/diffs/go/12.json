@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "merge",
+  "context": "UserRepository wraps raw database calls. Previously, errors from Scan and Exec were returned unchanged, making it impossible to tell which query failed when several repository calls appear in the same stack trace.",
+  "explanation": "Safe to merge. Wrapping the underlying error with fmt.Errorf and %w adds useful context (which user, which operation) while preserving the original error so callers can still use errors.Is / errors.As to check for sql.ErrNoRows. This is the idiomatic Go error-wrapping pattern and has no behavioral downside.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

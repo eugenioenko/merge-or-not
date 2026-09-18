@@ -1,0 +1,50 @@
+diff --git a/internal/client/geocode_client.go b/internal/client/geocode_client.go
+index e2a7c91..5f9d3b8 100644
+--- a/internal/client/geocode_client.go
++++ b/internal/client/geocode_client.go
+@@ -1,8 +1,10 @@
+ package client
+ 
+ import (
++	"context"
+ 	"encoding/json"
+ 	"net/http"
+ 	"net/url"
++	"time"
+ )
+ 
+@@ -11,13 +13,21 @@ func (c *GeocodeClient) Lookup(address string) (*Coordinates, error) {
+-func (c *GeocodeClient) Lookup(address string) (*Coordinates, error) {
+-	resp, err := c.http.Get(c.baseURL + "/geocode?address=" + url.QueryEscape(address))
+-	if err != nil {
+-		return nil, err
+-	}
+-	defer resp.Body.Close()
+-
+-	var coords Coordinates
+-	if err := json.NewDecoder(resp.Body).Decode(&coords); err != nil {
+-		return nil, err
+-	}
+-	return &coords, nil
+-}
++func (c *GeocodeClient) Lookup(ctx context.Context, address string) (*Coordinates, error) {
++	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
++	defer cancel()
++
++	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.baseURL+"/geocode?address="+url.QueryEscape(address), nil)
++	if err != nil {
++		return nil, err
++	}
++
++	resp, err := c.http.Do(req)
++	if err != nil {
++		return nil, err
++	}
++	defer resp.Body.Close()
++
++	var coords Coordinates
++	if err := json.NewDecoder(resp.Body).Decode(&coords); err != nil {
++		return nil, err
++	}
++	return &coords, nil
++}

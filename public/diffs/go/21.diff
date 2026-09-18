@@ -1,0 +1,23 @@
+diff --git a/internal/fetcher/batch_fetch.go b/internal/fetcher/batch_fetch.go
+index c7d4a19..0f2e8b3 100644
+--- a/internal/fetcher/batch_fetch.go
++++ b/internal/fetcher/batch_fetch.go
+@@ -1,16 +1,17 @@
+ func FetchAll(urls []string) ([]Result, error) {
+ 	var results []Result
+ 	for _, u := range urls {
+ 		resp, err := http.Get(u)
+ 		if err != nil {
+ 			return nil, err
+ 		}
++		defer resp.Body.Close()
++
+ 		body, err := io.ReadAll(resp.Body)
+-		resp.Body.Close()
+ 		if err != nil {
+ 			return nil, err
+ 		}
+ 		results = append(results, Result{URL: u, Body: body})
+ 	}
+ 	return results, nil
+ }

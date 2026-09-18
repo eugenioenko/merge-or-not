@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "GroupByCategory partitions items into per-category slices. This change introduces a shared backing buffer to avoid allocating a new slice per category.",
+  "explanation": "buf[:0] is reused for every category, so each group shares the same underlying array as buf. Because append writes in place when capacity allows, each new category's items overwrite the previous category's entries in that shared array. By the time the loop ends, every value in result maps to a slice header pointing at the same buffer, and most of them contain the last category's data instead of their own. Fix: allocate a fresh slice per category (as the original var group []Item did) or clone the bytes before storing them.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 4
+}

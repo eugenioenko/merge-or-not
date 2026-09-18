@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "merge",
+  "context": "Changes normalize_path to return Cow<str> so already-normalized paths skip allocation.",
+  "explanation": "Most paths flowing through this function have no backslashes or double slashes, so the old code unconditionally allocated a new String via .replace() even when nothing needed to change. The Cow<str> version returns a borrowed slice of the original input in the common case and only allocates when a rewrite is actually needed, while staying ergonomic since Cow derefs to &str and callers needing an owned String can call .into_owned().",
+  "language": "rust",
+  "category": "performance",
+  "difficulty": 2
+}

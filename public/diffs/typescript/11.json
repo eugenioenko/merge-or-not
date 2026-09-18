@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "Add response caching to the user-fetching service.",
+  "explanation": "The cast `json as UserResponse` still hides that `createdAt` arrives from the API as an ISO string, not a Date instance - any caller doing `user.createdAt.getFullYear()` will throw at runtime. The new caching logic doesn't fix the root type mismatch, it just adds more places that trust the lie.",
+  "language": "typescript",
+  "category": "correctness",
+  "difficulty": 3
+}

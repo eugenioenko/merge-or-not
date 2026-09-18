@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "merge",
+  "context": "Replace a hand-rolled `as` cast with a Zod schema so parsing and typing come from a single source of truth.",
+  "explanation": "userSchema.parse actually validates the shape at runtime (UUID, email format, positive age, allowed roles) and z.infer derives the User type directly from the schema, so the type and the runtime validation can never drift apart the way a manual cast could.",
+  "language": "typescript",
+  "category": "type-safety",
+  "difficulty": 3
+}

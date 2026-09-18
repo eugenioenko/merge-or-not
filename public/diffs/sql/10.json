@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "merge",
+  "context": "Adding foreign keys from order_items to orders and products, with zero downtime in mind.",
+  "explanation": "Both supporting indexes are created CONCURRENTLY first so the foreign key checks have something cheap to use, each constraint is added NOT VALID to avoid a long table-wide lock, and VALIDATE CONSTRAINT checks existing rows afterward without blocking writes. Safe to merge.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 4
+}

@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "merge",
+  "context": "Switches the Kafka producer wrapper from blocking IDisposable cleanup to proper async disposal.",
+  "explanation": "Safe to merge. The previous Dispose() blocked a thread on FlushAsync().GetAwaiter().GetResult(), which risks a deadlock if a synchronization context is present and always wastes a thread waiting on I/O. DisposeAsync awaits the flush without blocking, still disposes the underlying producer, and calls GC.SuppressFinalize(this) as recommended for types implementing IAsyncDisposable. Callers switch to `await using`, which is the correct pattern for an async-cleanup resource.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 3
+}

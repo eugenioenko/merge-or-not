@@ -1,0 +1,9 @@
+{
+  "id": 24,
+  "answer": "merge",
+  "context": "Adds a FluentValidation validator for CreateOrderRequest and wires automatic validation into the request pipeline.",
+  "explanation": "Safe to merge. The validator enforces a positive customer id, a non-empty item list, and per-item rules (positive quantity, non-empty SKU within a sane length) using FluentValidation's declarative RuleFor/RuleForEach API. AddValidatorsFromAssemblyContaining plus AddFluentValidationAutoValidation registers it so invalid requests are rejected with a 400 before reaching the order service, replacing what would otherwise be scattered manual if-checks.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "Adds a log line reporting the cache read result by capturing the ValueTask<int> from the cache client before awaiting it.",
+  "explanation": "ValueTask<T> (and the IValueTaskSource it can wrap) is only guaranteed to support being awaited once. Storing it in countTask and awaiting it a second time to produce the return value is undefined behavior: depending on the underlying implementation it can throw InvalidOperationException, return stale or garbage data, or corrupt the pooled source backing the cache client. Fix: await the ValueTask exactly once, store the resulting int, and reuse that value for both the log call and the return.",
+  "language": "csharp",
+  "category": "concurrency",
+  "difficulty": 4
+}

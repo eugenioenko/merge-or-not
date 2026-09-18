@@ -1,0 +1,20 @@
+diff --git a/src/analytics/stats.rs b/src/analytics/stats.rs
+index 0000000..1111111 100644
+--- a/src/analytics/stats.rs
++++ b/src/analytics/stats.rs
+@@ -1,10 +1,8 @@
+-pub fn summarize(values: impl Iterator<Item = f64>) -> Summary {
+-    let collected: Vec<f64> = values.collect();
+-    let total: f64 = collected.iter().sum();
+-    let count = collected.len();
+-    let max = collected.iter().cloned().fold(f64::MIN, f64::max);
+-    let min = collected.iter().cloned().fold(f64::MAX, f64::min);
+-    Summary { total, count, max, min }
++pub fn summarize(mut values: impl Iterator<Item = f64>) -> Summary {
++    let total: f64 = values.by_ref().sum();
++    let max = values.by_ref().fold(f64::MIN, f64::max);
++    let min = values.fold(f64::MAX, f64::min);
++    Summary { total, count: 0, max, min }
+ }
+ 
+ pub struct Summary {

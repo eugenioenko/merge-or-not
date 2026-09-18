@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "Adds a ResizeWatcher class used to observe panel resizes, plus a helper that instantiates one per panel.",
+  "explanation": "close() flips an `open` flag but never calls window.removeEventListener('resize', this.handleResize). The bound listener keeps a strong reference to the ResizeWatcher instance (and through it, the DOM element and onResize callback) alive on the window object forever. Every panel that gets closed and re-created (e.g. on navigation) adds another permanent listener, so resize handlers pile up and neither the watcher nor the element it wraps can ever be garbage collected. close() needs to call window.removeEventListener('resize', this.handleResize) too.",
+  "language": "javascript",
+  "category": "memory",
+  "difficulty": 3
+}

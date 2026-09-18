@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "merge",
+  "context": "Adding partial indexes to speed up the operations dashboard, which only ever queries the small slice of active work.",
+  "explanation": "Each index only covers the narrow slice of rows the dashboard actually filters on (pending orders, failed payments, unread notifications), which keeps them tiny compared to a full-table index and keeps them cheap to maintain on write. CONCURRENTLY avoids locking the tables during creation, and ANALYZE lets the planner start using them right away. Safe to merge.",
+  "language": "sql",
+  "category": "performance",
+  "difficulty": 3
+}

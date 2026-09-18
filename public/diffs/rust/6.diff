@@ -1,0 +1,29 @@
+diff --git a/src/db/repository.rs b/src/db/repository.rs
+index 0000000..1111111 100644
+--- a/src/db/repository.rs
++++ b/src/db/repository.rs
+@@ -11,8 +11,22 @@
+         sqlx::query!("UPDATE orders SET status = 'shipped' WHERE id = $1", order_id)
+             .execute(&self.pool)
+             .await?;
+-        self.log_event(order_id, "shipped").await?;
+-        self.notifier.send_shipped_email(order_id).await?;
++        if let Ok(()) = self.log_event(order_id, "shipped").await {
++            tracing::debug!("order event logged");
++        }
++        if let Ok(()) = self.notifier.send_shipped_email(order_id).await {
++            tracing::debug!("shipment email sent");
++        }
++        Ok(())
++    }
++
++    pub async fn refund(&self, order_id: i64, amount_cents: i64) -> anyhow::Result<()> {
++        sqlx::query!("UPDATE orders SET status = 'refunded' WHERE id = $1", order_id)
++            .execute(&self.pool)
++            .await?;
++        if let Ok(()) = self.log_event(order_id, "refunded").await {
++            tracing::debug!("refund event logged");
++        }
+         Ok(())
+     }
+ 

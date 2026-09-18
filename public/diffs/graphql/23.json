@@ -1,0 +1,9 @@
+{
+  "id": 23,
+  "answer": "merge",
+  "context": "Server already enforces a query depth limit of 8. The team wants to also bound the total cost of a query, not just its nesting depth.",
+  "explanation": "Safe to merge. Adding `graphql-cost-analysis` alongside the existing depth limit closes the gap depth-limiting alone leaves open: a shallow query that requests a huge list field with an expensive resolver can still be cheap in depth but costly to execute. A maximumCost of 1000 with explicit default costs gives predictable protection against expensive queries.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "reject",
+  "context": "Organization type resolver walks up the `parentId` chain to build an `ancestors` list for breadcrumb navigation.",
+  "explanation": "The cycle guard (the `visited` set and the check against it) is removed. If org data ever ends up with a circular parent reference — a bad migration, a bug in the reparenting mutation, or a malicious admin edit — this resolver loops forever, calling the loader on the same ids repeatedly until the process hangs or runs out of memory. Fix: keep the visited-set guard so any cycle in the data breaks the loop instead of crashing the server.",
+  "language": "graphql",
+  "category": "correctness",
+  "difficulty": 3
+}

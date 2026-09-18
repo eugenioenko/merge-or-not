@@ -1,0 +1,39 @@
+diff --git a/src/middleware/requestId.js b/src/middleware/requestId.js
+new file mode 100644
+index 0000000..cdab78a 100644
+--- /dev/null
++++ b/src/middleware/requestId.js
+@@ -0,0 +1,16 @@
++const { randomUUID } = require('crypto');
++const { AsyncLocalStorage } = require('async_hooks');
++
++const requestContext = new AsyncLocalStorage();
++
++function requestId(req, res, next) {
++  const id = req.headers['x-request-id'] || randomUUID();
++  res.setHeader('X-Request-Id', id);
++  requestContext.run({ requestId: id }, () => next());
++}
++
++function getRequestId() {
++  return requestContext.getStore()?.requestId;
++}
++
++module.exports = { requestId, getRequestId };
+diff --git a/src/logger.js b/src/logger.js
+index cf3a68e..65a8b4b 100644
+--- a/src/logger.js
++++ b/src/logger.js
+@@ -1,7 +1,12 @@
+ const pino = require('pino');
++const { getRequestId } = require('./middleware/requestId');
+ 
+ const logger = pino({
+   level: process.env.LOG_LEVEL || 'info',
++  mixin() {
++    const requestId = getRequestId();
++    return requestId ? { requestId } : {};
++  },
+ });
+ 
+ module.exports = logger;

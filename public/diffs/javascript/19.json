@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "Adds sortedScoreLabels and rankIndex helpers to the leaderboard module, alongside a formatRank display helper.",
+  "explanation": "Array.prototype.sort() with no comparator converts elements to strings and sorts lexicographically. For numeric scores like [2, 10, 1], that produces [1, 10, 2] instead of [1, 2, 10], since '10' sorts before '2' as a string. Both sortedScoreLabels and rankIndex inherit this bug from the same unguarded .sort() call, so labels are shown in the wrong order and rankIndex returns the wrong position for any score list with double-digit values mixed with single digits. Always pass a numeric comparator: .sort((a, b) => a - b).",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 2
+}

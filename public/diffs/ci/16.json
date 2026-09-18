@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "reject",
+  "context": "Nightly build workflow. A teammate increased the build frequency and added benchmark result uploads for better tracking.",
+  "explanation": "The schedule moved from once a day to every 6 hours (4x more runs), and a new benchmark-results artifact was added alongside the existing dist and docker-image uploads — none of the three `upload-artifact` steps set `retention-days`. GitHub Actions defaults artifact retention to 90 days, so this is now 4x as many runs, each uploading three unbounded artifacts, retained for 3 months. That's a steadily growing storage bill for data nobody will look at after a day or two. Fix: set an explicit short `retention-days` (e.g. 7) on each upload, sized to how long the artifact is actually useful.",
+  "language": "ci",
+  "category": "cost",
+  "difficulty": 2
+}

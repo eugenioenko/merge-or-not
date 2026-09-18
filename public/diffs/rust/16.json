@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "merge",
+  "context": "Replaces HttpClient's four-positional-argument constructor with a builder.",
+  "explanation": "The old constructor took base_url, timeout_ms, retries, and user_agent as positional arguments - easy to mix up since timeout_ms and retries are both plain integers. HttpClientBuilder provides sensible defaults and named, chainable setters, so call sites read as HttpClientBuilder::new(url).retries(5).build() instead of guessing argument order, and future optional fields can be added without breaking existing callers.",
+  "language": "rust",
+  "category": "api-design",
+  "difficulty": 2
+}

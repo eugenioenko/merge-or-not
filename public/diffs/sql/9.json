@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "merge",
+  "context": "Migration adding email and phone verification flags to the users table.",
+  "explanation": "On modern Postgres, adding a column with a constant DEFAULT and NOT NULL is a metadata-only change even on a large populated table, because the default value does not need to be rewritten into every existing row. Both partial indexes are created afterward with CONCURRENTLY so they never block reads or writes. Safe to merge.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 24,
+  "answer": "merge",
+  "context": "Signup previously decoded the request body and passed the email and password straight through to CreateUser with no checks, so malformed or empty values only failed deep inside the store layer with a generic 500.",
+  "explanation": "Safe to merge. The new checks reject an empty or malformed email and a too-short password before hitting the database, each with a clear 400 response and an early return. This moves cheap validation in front of the expensive store call and gives the client an actionable error instead of an opaque internal failure.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

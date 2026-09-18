@@ -1,0 +1,23 @@
+diff --git a/Comparers/OfferComparers.cs b/Comparers/OfferComparers.cs
+index 2d1b73d..25ff061 100644
+--- a/Comparers/OfferComparers.cs
++++ b/Comparers/OfferComparers.cs
+@@ -12,3 +12,18 @@
+         return obj.Sku.ToUpperInvariant().GetHashCode();
+     }
+ }
++
++public class ApproximatePriceComparer : IEqualityComparer<decimal>
++{
++    private const decimal Tolerance = 0.01m;
++
++    public bool Equals(decimal x, decimal y)
++    {
++        return Math.Abs(x - y) <= Tolerance;
++    }
++
++    public int GetHashCode(decimal obj)
++    {
++        return obj.GetHashCode();
++    }
++}

@@ -1,0 +1,22 @@
+diff --git a/Controllers/InvoiceController.cs b/Controllers/InvoiceController.cs
+index 0139539..6d5aca1 100644
+--- a/Controllers/InvoiceController.cs
++++ b/Controllers/InvoiceController.cs
+@@ -14,7 +14,7 @@
+     [HttpGet("{id}")]
+     public async Task<ActionResult<InvoiceDto>> GetById(int id)
+     {
+-        var invoice = await _invoiceService.GetByIdAsync(id);
++        var invoice = await Task.Run(async () => await _invoiceService.GetByIdAsync(id));
+         if (invoice is null)
+         {
+             return NotFound();
+@@ -26,7 +26,7 @@
+     [HttpGet("{id}/pdf")]
+     public async Task<ActionResult<byte[]>> GetPdf(int id)
+     {
+-        var pdf = await _invoiceService.RenderPdfAsync(id);
++        var pdf = await Task.Run(async () => await _invoiceService.RenderPdfAsync(id));
+         return File(pdf, "application/pdf");
+     }
+ }

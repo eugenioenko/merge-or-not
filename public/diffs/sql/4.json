@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "merge",
+  "context": "Optimizing the customer lifetime value report query, which was timing out on the full customer table.",
+  "explanation": "The correlated subqueries previously executed twice per customer row, effectively an N+1 query pattern inside SQL. Replacing them with a single LEFT JOIN plus GROUP BY lets the planner compute both aggregates in one pass, and COALESCE keeps customers with zero orders in the result instead of silently dropping them. Safe to merge.",
+  "language": "sql",
+  "category": "performance",
+  "difficulty": 3
+}

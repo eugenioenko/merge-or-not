@@ -1,0 +1,20 @@
+diff --git a/queries/find_recent_orders.sql b/queries/find_recent_orders.sql
+--- a/queries/find_recent_orders.sql
++++ b/queries/find_recent_orders.sql
+@@ -1,15 +1,15 @@
+ SELECT
+     o.id,
+     o.status,
+     o.total_cents,
+     o.discount_cents,
+     o.shipping_address_id,
+     o.billing_address_id,
+     o.payment_method,
+     o.currency,
+     o.created_at
+ FROM orders o
+-WHERE o.customer_id = $1::integer
++WHERE o.customer_id::text = $1
+   AND o.status <> 'cancelled'
+ ORDER BY o.created_at DESC
+ LIMIT 50;

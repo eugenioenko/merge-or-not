@@ -1,0 +1,20 @@
+diff --git a/src/utils/leaderboard.js b/src/utils/leaderboard.js
+index 2a9c7e1..8f4b3d6 100644
+--- a/src/utils/leaderboard.js
++++ b/src/utils/leaderboard.js
+@@ -8,3 +8,15 @@ export function medianScore(scores) {
+   const mid = Math.floor(sorted.length / 2)
+   return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid]
+ }
++
++export function sortedScoreLabels(scores) {
++  return [...scores].sort().map((score) => `#${score}`)
++}
++
++export function rankIndex(scores, value) {
++  return [...scores].sort().indexOf(value)
++}
++
++export function formatRank(rank) {
++  return rank < 0 ? 'unranked' : `#${rank + 1}`
++}

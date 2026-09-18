@@ -1,0 +1,9 @@
+{
+  "id": 21,
+  "answer": "merge",
+  "context": "The team wants every PR reviewed by someone with domain ownership before merge, not just any approval.",
+  "explanation": "Safe to merge. Adds a `CODEOWNERS` file mapping paths to owning teams, plus a workflow that checks for at least one submitted approval and fails the check if none exists. Permissions are scoped to read-only (`contents: read`, `pull-requests: read`), which is all `listReviews` needs. This is a standard, low-risk way to enforce review discipline and pairs naturally with a required-status-check branch protection rule.",
+  "language": "ci",
+  "category": "governance",
+  "difficulty": 2
+}

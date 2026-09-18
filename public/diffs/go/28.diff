@@ -1,0 +1,46 @@
+diff --git a/internal/worker/pool.go b/internal/worker/pool.go
+index 8f1c3a6..b2e9d4f 100644
+--- a/internal/worker/pool.go
++++ b/internal/worker/pool.go
+@@ -1,11 +1,32 @@
+ package worker
+ 
+-type Pool struct {
+-	size int
+-}
+-
+-func (p *Pool) Submit(task Task) {
+-	go func() {
+-		task.Run()
+-	}()
+-}
++import (
++	"context"
++	"sync"
++)
++
++type Pool struct {
++	size int
++	sem  chan struct{}
++	wg   sync.WaitGroup
++}
++
++func (p *Pool) Submit(ctx context.Context, task Task) error {
++	select {
++	case p.sem <- struct{}{}:
++	case <-ctx.Done():
++		return ctx.Err()
++	}
++
++	p.wg.Add(1)
++	go func() {
++		defer p.wg.Done()
++		defer func() { <-p.sem }()
++		task.Run()
++	}()
++	return nil
++}
++
++func (p *Pool) Wait() {
++	p.wg.Wait()
++}

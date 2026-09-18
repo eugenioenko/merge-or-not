@@ -12,8 +12,11 @@ import csharp from 'refractor/lang/csharp.js'
 import graphql from 'refractor/lang/graphql.js'
 import json from 'refractor/lang/json.js'
 import yaml from 'refractor/lang/yaml.js'
+import rust from 'refractor/lang/rust.js'
+import sql from 'refractor/lang/sql.js'
+import ruby from 'refractor/lang/ruby.js'
 
-for (const lang of [jsx, typescript, markup, go, javascript, python, csharp, graphql, json, yaml]) {
+for (const lang of [jsx, typescript, markup, go, javascript, python, csharp, graphql, json, yaml, rust, sql, ruby]) {
   refractor.register(lang)
 }
 
@@ -23,6 +26,7 @@ const LANGUAGE_COLORS = {
   vue: '#42b883',
   angular: '#dd0031',
   go: '#00add8',
+  javascript: '#f0db4f',
   node: '#68a063',
   python: '#3776ab',
   csharp: '#9b4993',
@@ -30,6 +34,10 @@ const LANGUAGE_COLORS = {
   rest: '#f5a623',
   auth: '#f5a623',
   ci: '#2088ff',
+  typescript: '#3178c6',
+  rust: '#dea584',
+  sql: '#e38c00',
+  ruby: '#cc342d',
 }
 
 const REFRACTOR_ALIASES = {
@@ -37,6 +45,7 @@ const REFRACTOR_ALIASES = {
   vue: 'markup',
   angular: 'typescript',
   go: 'go',
+  javascript: 'javascript',
   node: 'javascript',
   python: 'python',
   csharp: 'csharp',
@@ -44,6 +53,10 @@ const REFRACTOR_ALIASES = {
   rest: 'json',
   auth: 'javascript',
   ci: 'yaml',
+  typescript: 'typescript',
+  rust: 'rust',
+  sql: 'sql',
+  ruby: 'ruby',
 }
 
 export default function DiffCard({ id, context, language }) {

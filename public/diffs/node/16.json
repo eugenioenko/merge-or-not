@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "reject",
+  "context": "Simplifies the integration preview endpoint so any webhook URL a customer configures can be test-fetched.",
+  "explanation": "The protocol allowlist, the isPrivateHost check, and maxRedirects: 0 were all dropped. A user can now point the server at http://169.254.169.254/latest/meta-data/ or any internal-only host and have the server fetch it on their behalf (SSRF), or supply a public URL that redirects to an internal one to bypass a naive check. Fix: restrict to https, resolve and reject private/loopback/link-local IP ranges, and keep redirects disabled or re-validate the target of every redirect hop.",
+  "category": "security",
+  "difficulty": 4,
+  "language": "node"
+}

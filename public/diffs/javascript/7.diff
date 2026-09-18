@@ -1,0 +1,24 @@
+diff --git a/src/utils/objects.js b/src/utils/objects.js
+index 8a2c4f1..d5e9b03 100644
+--- a/src/utils/objects.js
++++ b/src/utils/objects.js
+@@ -12,3 +12,19 @@ export function shallowEqual(a, b) {
+   return Object.keys(a).length === Object.keys(b).length &&
+     Object.keys(a).every((key) => a[key] === b[key])
+ }
++
++export function buildQueryString(params) {
++  const parts = []
++  for (const key in params) {
++    parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
++  }
++  return parts.join('&')
++}
++
++export function omit(source, keys) {
++  const result = { ...source }
++  for (const key of keys) {
++    delete result[key]
++  }
++  return result
++}

@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "reject",
+  "context": "Parallelize audit event persistence for better throughput.",
+  "explanation": "events.forEach(async (event) => ...) does not wait for the async callbacks - forEach ignores the returned promises entirely. recordEvents now resolves immediately, before any event is actually persisted, so recordAndNotify notifies compliance before (or even if) the audit trail is written, and any persist failures are silently dropped.",
+  "language": "typescript",
+  "category": "correctness",
+  "difficulty": 4
+}

@@ -1,0 +1,9 @@
+{
+  "id": 27,
+  "answer": "reject",
+  "context": "AppErrorBoundary wraps the app shell and is supposed to show a fallback message with a reload button when a child component throws during render.",
+  "explanation": "getDerivedStateFromError was removed, and componentDidCatch only logs the error \u2014 it never calls this.setState to flip hasError to true. Since nothing ever updates state, the render method's hasError check never becomes true, so the fallback UI (and its reload button) never appears; the error is logged but the user is left with a blank or broken screen. Fix: implement static getDerivedStateFromError (or call this.setState in componentDidCatch) to actually update state.",
+  "language": "react",
+  "category": "error-handling",
+  "difficulty": 2
+}

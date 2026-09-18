@@ -1,0 +1,25 @@
+diff --git a/app/controllers/api/documents_controller.rb b/app/controllers/api/documents_controller.rb
+index 8b92b87..6bdf98a 100644
+--- a/app/controllers/api/documents_controller.rb
++++ b/app/controllers/api/documents_controller.rb
+@@ -2,13 +2,18 @@ module Api
+   class DocumentsController < Api::BaseController
+     before_action :authenticate_api_user!
+ 
++    def index
++      @documents = Document.order(created_at: :desc).page(params[:page])
++      render json: @documents
++    end
++
+     def show
+-      @document = current_account.documents.find(params[:id])
++      @document = Document.find(params[:id])
+       render json: @document
+     end
+ 
+     def download
+-      @document = current_account.documents.find(params[:id])
++      @document = Document.find(params[:id])
+       send_data @document.file.download, filename: @document.filename
+     end
+   end

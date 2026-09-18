@@ -1,0 +1,44 @@
+diff --git a/src/components/TagInput.jsx b/src/components/TagInput.jsx
+index edd1c71..6e810a1 100644
+--- a/src/components/TagInput.jsx
++++ b/src/components/TagInput.jsx
+@@ -1,38 +1,38 @@
+ import { useState } from 'react'
+ 
+ export function TagInput({ tags, onChange }) {
+   const [draft, setDraft] = useState('')
+ 
+   function addTag() {
+     if (!draft.trim()) return
+     onChange([...tags, { id: crypto.randomUUID(), label: draft.trim() }])
+     setDraft('')
+   }
+ 
+   function updateLabel(id, label) {
+     onChange(tags.map((tag) => (tag.id === id ? { ...tag, label } : tag)))
+   }
+ 
+   function removeTag(id) {
+     onChange(tags.filter((tag) => tag.id !== id))
+   }
+ 
+   return (
+     <div className="tag-input">
+       {tags.map((tag) => (
+-        <span key={tag.id} className="tag-input-row">
++        <span key={Math.random()} className="tag-input-row">
+           <input value={tag.label} onChange={(e) => updateLabel(tag.id, e.target.value)} />
+           <button type="button" onClick={() => removeTag(tag.id)}>
+             ×
+           </button>
+         </span>
+       ))}
+       <input
+         value={draft}
+         onChange={(e) => setDraft(e.target.value)}
+         onKeyDown={(e) => e.key === 'Enter' && addTag()}
+         placeholder="Add tag"
+       />
+     </div>
+   )
+ }

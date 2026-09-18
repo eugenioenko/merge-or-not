@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "reject",
+  "context": "Removes the intermediate Vec in summarize to avoid collecting the whole iterator up front.",
+  "explanation": "values.by_ref().sum() fully drains the iterator to compute total. The next two lines then call .fold on that same, now-exhausted iterator to compute max and min - both immediately return their seed values (f64::MIN / f64::MAX) since there's nothing left to iterate. count is also hardcoded to 0, silently dropping that field. A single Iterator can only be walked once; removing the collect() to 'save an allocation' broke three of the four fields it was computing.",
+  "language": "rust",
+  "category": "correctness",
+  "difficulty": 3
+}

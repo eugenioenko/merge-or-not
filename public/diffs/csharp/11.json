@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "Wraps two existing async controller actions in Task.Run, described in the PR as an optimization for slow requests.",
+  "explanation": "Task.Run offloads work to a thread-pool thread, but GetByIdAsync and RenderPdfAsync are already asynchronous I/O calls with no CPU-bound work to offload. Wrapping them in Task.Run inside an ASP.NET Core request just queues an extra thread-pool work item per request, burning a thread pool slot and adding scheduling overhead for zero benefit. Under load this makes thread pool starvation more likely, not less. Fix: await the async calls directly; only use Task.Run to move genuinely CPU-bound work off the request thread.",
+  "language": "csharp",
+  "category": "concurrency",
+  "difficulty": 3
+}

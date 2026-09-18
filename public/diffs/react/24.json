@@ -1,0 +1,9 @@
+{
+  "id": 24,
+  "answer": "merge",
+  "context": "ProfileCard fetches and displays a user's profile. While loading, it previously showed a bare \"Loading...\" line.",
+  "explanation": "Safe to merge. Replacing the plain text with a skeleton that mirrors the final layout's dimensions reduces perceived load time and avoids layout shift when the real content arrives. Purely presentational \u2014 no data flow or lifecycle changes.",
+  "language": "react",
+  "category": "performance",
+  "difficulty": 1
+}

@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "merge",
+  "context": "CartProvider exposes cart items and mutators through context to the whole app. Many components far down the tree read from useCart().",
+  "explanation": "Safe to merge. Wrapping the context value in useMemo (keyed on its own dependencies) stops a new value object from being created on every provider render, so consumers only re-render when items or total actually change. Stabilizing addItem/removeItem with useCallback and throwing from useCart when used outside a provider are both solid, low-risk improvements.",
+  "language": "react",
+  "category": "performance",
+  "difficulty": 3
+}

@@ -1,0 +1,22 @@
+diff --git a/.github/workflows/deploy-prod.yml b/.github/workflows/deploy-prod.yml
+index 706d7a1..d814264 100644
+--- a/.github/workflows/deploy-prod.yml
++++ b/.github/workflows/deploy-prod.yml
+@@ -19,5 +19,15 @@ jobs:
+         with:
+           role-to-assume: arn:aws:iam::123456789012:role/deploy-role
+           aws-region: us-east-1
+-      - name: Deploy
+-        run: ./scripts/deploy.sh
++      - name: Deploy to green environment
++        id: deploy_green
++        run: ./scripts/deploy.sh green
++      - name: Health check green
++        id: health_check
++        run: ./scripts/health-check.sh green
++      - name: Switch traffic to green
++        if: steps.health_check.outcome == 'success'
++        run: ./scripts/switch-traffic.sh green
++      - name: Rollback on failure
++        if: failure()
++        run: ./scripts/switch-traffic.sh blue

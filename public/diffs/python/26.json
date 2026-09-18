@@ -1,0 +1,9 @@
+{
+  "id": 26,
+  "answer": "merge",
+  "context": "Wiring up SIGTERM/SIGINT handlers in task_runner so run() exits its poll loop on the next iteration instead of relying on the process being killed mid-task.",
+  "explanation": "This is a standard, correct graceful-shutdown pattern: SIGTERM (sent by process managers like systemd or Kubernetes during a rolling deploy) and SIGINT both flip _shutdown, which the loop checks between tasks, so an in-flight task.execute() is allowed to finish before the loop exits - no task gets killed mid-execution. Handlers are installed inside run() rather than at import time, which avoids surprising side effects for anything that merely imports this module, such as tests.",
+  "language": "python",
+  "category": "reliability",
+  "difficulty": 2
+}

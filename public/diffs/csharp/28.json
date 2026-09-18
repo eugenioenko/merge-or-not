@@ -1,0 +1,9 @@
+{
+  "id": 28,
+  "answer": "merge",
+  "context": "Replaces a new HttpClient() created on every GeocodeAsync call with a typed client injected via IHttpClientFactory.",
+  "explanation": "Safe to merge. Creating a new HttpClient per call means each instance's underlying handler holds its own socket until it is garbage collected, which under load exhausts ephemeral ports (socket exhaustion). AddHttpClient<GeocodingClient> registers a typed client whose handler is pooled and rotated by IHttpClientFactory, so connections are reused correctly and DNS changes are still picked up on rotation. The base address moves to registration, so the call site now uses a relative URL.",
+  "language": "csharp",
+  "category": "performance",
+  "difficulty": 3
+}

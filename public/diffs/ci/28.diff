@@ -1,0 +1,39 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index fb551dd..e5454e5 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -5,7 +5,25 @@ on:
+     branches: [main]
+ 
+ jobs:
++  changes:
++    runs-on: ubuntu-latest
++    outputs:
++      frontend: ${{ steps.filter.outputs.frontend }}
++      backend: ${{ steps.filter.outputs.backend }}
++    steps:
++      - uses: actions/checkout@v4
++      - uses: dorny/paths-filter@v3
++        id: filter
++        with:
++          filters: |
++            frontend:
++              - 'frontend/**'
++            backend:
++              - 'backend/**'
++
+   frontend:
++    needs: changes
++    if: needs.changes.outputs.frontend == 'true'
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
+@@ -16,6 +34,8 @@ jobs:
+       - run: npm test --prefix frontend
+ 
+   backend:
++    needs: changes
++    if: needs.changes.outputs.backend == 'true'
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4

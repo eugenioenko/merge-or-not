@@ -1,0 +1,20 @@
+diff --git a/queries/order_shipment_summary.sql b/queries/order_shipment_summary.sql
+--- a/queries/order_shipment_summary.sql
++++ b/queries/order_shipment_summary.sql
+@@ -1,15 +1,15 @@
+ SELECT
+     o.id AS order_id,
+     o.customer_id,
+     o.status,
+     o.total_cents,
+     o.shipping_address_id,
+     s.carrier,
+     s.tracking_number,
+     s.shipped_at,
+     s.delivered_at
+ FROM orders o
+-LEFT JOIN shipments s
++INNER JOIN shipments s
+     ON s.order_id = o.id
+ WHERE o.created_at >= now() - interval '30 days'
+ ORDER BY o.created_at DESC;

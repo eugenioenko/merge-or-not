@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "merge",
+  "context": "Adding indexes to speed up the customer order lookup, order item joins, and the operations dashboard.",
+  "explanation": "Every index is created CONCURRENTLY so none of them lock the tables, the composite index matches the exact column order used by the hot query (customer_id, status, created_at), the partial index is scoped to the statuses the dashboard actually filters on, and ANALYZE is run afterward so the planner picks them all up immediately. Safe to merge.",
+  "language": "sql",
+  "category": "performance",
+  "difficulty": 2
+}

@@ -1,0 +1,30 @@
+diff --git a/.github/workflows/nightly-build.yml b/.github/workflows/nightly-build.yml
+index 5f2aad6..704f715 100644
+--- a/.github/workflows/nightly-build.yml
++++ b/.github/workflows/nightly-build.yml
+@@ -2,7 +2,7 @@ name: Nightly Build
+ 
+ on:
+   schedule:
+-    - cron: '0 3 * * *'
++    - cron: '0 */6 * * *'
+ 
+ jobs:
+   build:
+@@ -10,6 +10,7 @@ jobs:
+     steps:
+       - uses: actions/checkout@v4
+       - run: ./scripts/build-all.sh
++      - run: ./scripts/run-benchmarks.sh
+       - name: Upload build output
+         uses: actions/upload-artifact@v4
+         with:
+@@ -20,3 +21,8 @@ jobs:
+         with:
+           name: docker-image-${{ github.run_id }}
+           path: image.tar
++      - name: Upload benchmark results
++        uses: actions/upload-artifact@v4
++        with:
++          name: benchmarks-${{ github.run_id }}
++          path: benchmark-results/

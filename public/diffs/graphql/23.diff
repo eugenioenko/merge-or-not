@@ -1,0 +1,29 @@
+diff --git a/src/graphql/server.js b/src/graphql/server.js
+index 3ff9b76..158d00b 100644
+--- a/src/graphql/server.js
++++ b/src/graphql/server.js
+@@ -1,5 +1,6 @@
+ const { ApolloServer } = require('apollo-server-express');
+ const depthLimit = require('graphql-depth-limit');
++const costAnalysis = require('graphql-cost-analysis');
+ const { formatError } = require('./formatError');
+ 
+ const server = new ApolloServer({
+@@ -7,7 +8,16 @@
+   resolvers,
+   formatError,
+   context: buildContext,
+-  validationRules: [depthLimit(8)],
++  validationRules: [
++    depthLimit(8),
++    costAnalysis({
++      maximumCost: 1000,
++      defaultCost: 1,
++      onComplete: (cost) => {
++        console.log('query cost', cost);
++      },
++    }),
++  ],
+ });
+ 
+ module.exports = { server };

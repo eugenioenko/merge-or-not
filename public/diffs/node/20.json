@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "reject",
+  "context": "Simplifies the row-export helper that streams large query results through a cursor to a callback.",
+  "explanation": "The try/finally blocks were removed. If onRow returns false to stop early, or cursor.read throws, the function now returns or throws before cursor.close() and client.release() run, leaking an open cursor and, worse, a pooled connection that never goes back to the pool. Under repeated exports this exhausts the connection pool. Fix: keep the nested try/finally so the cursor is always closed and the client is always released, on every exit path.",
+  "category": "error-handling",
+  "difficulty": 4,
+  "language": "node"
+}

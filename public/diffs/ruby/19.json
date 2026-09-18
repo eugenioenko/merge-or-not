@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "merge",
+  "context": "Adds pagination to the product reviews API, which previously loaded every review into memory.",
+  "explanation": "The old action called .to_a on the full reviews relation, materializing every review for a product in one response regardless of how many existed. The new version uses Pagy with a clamped items count ([[per_page, 50].min, 1].max), so a caller can't request an unbounded page size, and returns pagination metadata (page, pages, count) alongside the results. Bounded, predictable memory and response size per request.",
+  "language": "ruby",
+  "category": "performance",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "merge",
+  "context": "Optimizing the monthly revenue report, which was timing out once the orders table crossed a few million rows.",
+  "explanation": "The CTE computes completed order totals and counts per month once, instead of repeating the same filtered aggregation inline for every row of the outer query. Combined with the existing index on (status, created_at), this turns a quadratic-ish plan into a single grouped scan instead of two correlated subqueries per row. Safe to merge.",
+  "language": "sql",
+  "category": "performance",
+  "difficulty": 3
+}

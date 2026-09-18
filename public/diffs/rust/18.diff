@@ -1,0 +1,23 @@
+diff --git a/src/utils/normalize.rs b/src/utils/normalize.rs
+index 0000000..1111111 100644
+--- a/src/utils/normalize.rs
++++ b/src/utils/normalize.rs
+@@ -1,7 +1,16 @@
+-pub fn normalize_path(path: &str) -> String {
++use std::borrow::Cow;
++
++pub fn normalize_path(path: &str) -> Cow<'_, str> {
++    if !path.contains('\\') && !path.contains("//") {
++        return Cow::Borrowed(path);
++    }
+     let mut result = path.replace('\\', "/");
+     while result.contains("//") {
+         result = result.replace("//", "/");
+     }
+-    result
++    Cow::Owned(result)
++}
++
++pub fn strip_trailing_slash(path: &str) -> &str {
++    path.strip_suffix('/').unwrap_or(path)
+ }

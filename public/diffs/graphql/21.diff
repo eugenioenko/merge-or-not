@@ -1,0 +1,23 @@
+diff --git a/src/graphql/server.js b/src/graphql/server.js
+index 46b5c2d..fa0d08e 100644
+--- a/src/graphql/server.js
++++ b/src/graphql/server.js
+@@ -1,11 +1,18 @@
+ const { ApolloServer } = require('apollo-server-express');
++const { createPersistedQueryLink } = require('./persistedQueries');
+ const { formatError } = require('./formatError');
+ 
++const persistedQueries = createPersistedQueryLink({
++  allowlistPath: './persisted-queries.json',
++  rejectUnknownQueries: true,
++});
++
+ const server = new ApolloServer({
+   typeDefs,
+   resolvers,
+   formatError,
+   context: buildContext,
++  plugins: [persistedQueries],
+ });
+ 
+ module.exports = { server };

@@ -1,0 +1,33 @@
+diff --git a/src/services/invoice.ts b/src/services/invoice.ts
+index 8f9a0b1..2c3d4e5 100644
+--- a/src/services/invoice.ts
++++ b/src/services/invoice.ts
+@@ -1,21 +1,28 @@
+ declare const brand: unique symbol;
+ 
+ export type PositiveAmount = number & { readonly [brand]: "PositiveAmount" };
+ 
+ export function toPositiveAmount(value: number): PositiveAmount {
+   if (value <= 0) {
+     throw new Error(`Amount must be positive, got ${value}`);
+   }
+   return value as PositiveAmount;
+ }
+ 
+ export interface Invoice {
+   id: string;
+   amount: PositiveAmount;
+ }
+ 
++export function applyDiscount(invoice: Invoice, percentOff: number): Invoice {
++  return {
++    ...invoice,
++    amount: invoice.amount * (1 - percentOff / 100),
++  } as Invoice;
++}
++
+ export function chargeInvoice(invoice: Invoice): void {
+   processCharge(invoice.amount);
+ }
+ 
+ declare function processCharge(amount: PositiveAmount): void;

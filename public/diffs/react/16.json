@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "reject",
+  "context": "SearchSuggestions fetches autocomplete results as the user types. The effect was refactored to use async/await for readability.",
+  "explanation": "The refactor dropped the ignore flag that guarded setSuggestions. Requests can resolve out of order \u2014 a fast response for an earlier, shorter query can arrive after a later query's response \u2014 and without the guard, the stale result overwrites the current one, showing suggestions for a query the user already changed. Fix: keep an ignore/active flag (or an AbortController) set in the cleanup function and check it before calling setSuggestions.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 2
+}

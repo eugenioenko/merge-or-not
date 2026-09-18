@@ -1,0 +1,24 @@
+diff --git a/internal/importer/csv_import.go b/internal/importer/csv_import.go
+index 4b8e2c1..91d7a35 100644
+--- a/internal/importer/csv_import.go
++++ b/internal/importer/csv_import.go
+@@ -1,18 +1,18 @@
+ func ProcessUpload(path string) error {
+ 	f, err := os.Open(path)
+ 	if err != nil {
+ 		return err
+ 	}
++	defer f.Close()
+ 
+ 	data, err := io.ReadAll(f)
+ 	if err != nil {
+ 		return err
+ 	}
+ 
+ 	if err := validate(data); err != nil {
+ 		return err
+ 	}
+ 
+-	f.Close()
+ 	return store(data)
+ }

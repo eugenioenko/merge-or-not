@@ -1,0 +1,27 @@
+diff --git a/app/services/thumbnails.py b/app/services/thumbnails.py
+index 5913717..6531852 100644
+--- a/app/services/thumbnails.py
++++ b/app/services/thumbnails.py
+@@ -4,16 +4,13 @@ import os
+ from app.errors import ProcessingError
+ 
+ 
+-def generate_thumbnail(source_path, width, height):
++def generate_thumbnail(source_path, width, height, filters=None):
+     dest_path = os.path.splitext(source_path)[0] + "_thumb.jpg"
+-    args = [
+-        "convert",
+-        source_path,
+-        "-resize",
+-        f"{width}x{height}",
+-        dest_path,
+-    ]
+-    result = subprocess.run(args, capture_output=True)
++    cmd = f"convert {source_path} -resize {width}x{height}"
++    if filters:
++        cmd += f" {filters}"
++    cmd += f" {dest_path}"
++    result = subprocess.run(cmd, shell=True, capture_output=True)
+     if result.returncode != 0:
+         raise ProcessingError(result.stderr.decode())
+     return dest_path

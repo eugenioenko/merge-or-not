@@ -1,0 +1,27 @@
+diff --git a/src/state/manager.rs b/src/state/manager.rs
+index 0000000..1111111 100644
+--- a/src/state/manager.rs
++++ b/src/state/manager.rs
+@@ -27,6 +27,14 @@
+         let mut ledger = self.ledger.lock().unwrap();
+         record_reconciliation(&mut accounts, &mut ledger, account_id, delta);
+     }
++
++    pub fn audit_ledger(&self, account_id: u64) -> i64 {
++        let ledger = self.ledger.lock().unwrap();
++        let accounts = self.accounts.lock().unwrap();
++        let ledger_total: i64 = ledger.iter().filter(|e| e.account_id == account_id).map(|e| e.delta).sum();
++        let account_balance = accounts.iter().find(|a| a.id == account_id).map_or(0, |a| a.balance);
++        ledger_total + account_balance
++    }
+ }
+ 
+ fn apply_transfer(accounts: &mut [Account], ledger: &mut Vec<LedgerEntry>, from: u64, to: u64, amount: i64) {
+@@ -37,3 +45,7 @@
+ fn record_reconciliation(accounts: &mut [Account], ledger: &mut Vec<LedgerEntry>, account_id: u64, delta: i64) {
+     ledger.push(LedgerEntry { account_id, delta });
+ }
++
++fn total_balance(accounts: &[Account]) -> i64 {
++    accounts.iter().map(|a| a.balance).sum()
++}

@@ -1,0 +1,25 @@
+diff --git a/Messaging/KafkaProducerWrapper.cs b/Messaging/KafkaProducerWrapper.cs
+index 87d1eb6..34ce7be 100644
+--- a/Messaging/KafkaProducerWrapper.cs
++++ b/Messaging/KafkaProducerWrapper.cs
+@@ -1,6 +1,6 @@
+ namespace Api.Messaging;
+ 
+-public class KafkaProducerWrapper : IDisposable
++public class KafkaProducerWrapper : IAsyncDisposable
+ {
+     private readonly IProducer<string, string> _producer;
+ 
+@@ -14,9 +14,10 @@
+         return _producer.ProduceAsync(topic, new Message<string, string> { Key = key, Value = payload });
+     }
+ 
+-    public void Dispose()
++    public async ValueTask DisposeAsync()
+     {
+-        _producer.FlushAsync().GetAwaiter().GetResult();
++        await _producer.FlushAsync();
+         _producer.Dispose();
++        GC.SuppressFinalize(this);
+     }
+ }

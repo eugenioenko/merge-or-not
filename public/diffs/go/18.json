@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "merge",
+  "context": "ProcessUpload opens a file, reads it, validates the contents, then stores it. Previously f.Close() only ran at the very end of the happy path.",
+  "explanation": "Safe to merge. Moving to defer f.Close() immediately after the open succeeds guarantees the file descriptor is released on every exit path, including the early returns from the ReadAll and validate error checks that previously leaked the handle. This is the standard \"acquire, then immediately defer release\" pattern in Go.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

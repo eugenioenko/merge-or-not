@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "merge",
+  "context": "Adds a Polly retry policy to the typed HttpClient used to call the payment gateway, which occasionally returns 503 during deploys.",
+  "explanation": "Safe to merge. HandleTransientHttpError() correctly matches 5xx/408 responses and network-level HttpRequestExceptions, the retry uses exponential backoff with added jitter to avoid synchronized retry storms across instances, and AddPolicyHandler attaches the policy to the typed client's handler pipeline the way IHttpClientFactory expects, so it composes correctly with the rest of the pipeline.",
+  "language": "csharp",
+  "category": "reliability",
+  "difficulty": 3
+}

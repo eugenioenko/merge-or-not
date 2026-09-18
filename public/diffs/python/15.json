@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "Adding a parse_bearer_header helper to the token module and removing the __all__ list, which nobody had updated since the module was written.",
+  "explanation": "Deleting __all__ = [\"issue_token\", \"verify_token\"] turns raw_compare - a plain == comparison meant only as a private scratch helper, not the timing-safe hmac.compare_digest - into part of this module's public, wildcard-importable API. Code elsewhere that does from app.utils.tokens import * now pulls in raw_compare alongside the intended functions, and it's an easy trap for someone to reach for it (autocomplete, wildcard import) when they actually need a constant-time comparison for a signature or token, reintroducing a timing side-channel. Fix: restore __all__ (with parse_bearer_header added to it) so only the vetted functions are exported, or rename raw_compare to _raw_compare.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 3
+}

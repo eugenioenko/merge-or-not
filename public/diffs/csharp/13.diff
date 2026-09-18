@@ -1,0 +1,22 @@
+diff --git a/Controllers/ProfileController.cs b/Controllers/ProfileController.cs
+index db6fd62..f5d6fc3 100644
+--- a/Controllers/ProfileController.cs
++++ b/Controllers/ProfileController.cs
+@@ -13,7 +13,7 @@
+     public async Task<ActionResult> UpdateAsync(UpdateProfileRequest request)
+     {
+         var userId = HttpContext.Current.User.Identity.GetUserId();
+-        await _profileService.UpdateAsync(userId, request);
++        await _profileService.UpdateAsync(userId, request).ConfigureAwait(false);
+         var updatedName = HttpContext.Current.User.Identity.Name;
+         return Json(new { updatedName });
+     }
+@@ -22,7 +22,7 @@
+     public async Task<ActionResult> UploadAvatarAsync(HttpPostedFileBase file)
+     {
+         var userId = HttpContext.Current.User.Identity.GetUserId();
+-        await _profileService.SaveAvatarAsync(userId, file.InputStream);
++        await _profileService.SaveAvatarAsync(userId, file.InputStream).ConfigureAwait(false);
+         var updatedName = HttpContext.Current.User.Identity.Name;
+         return Json(new { updatedName });
+     }

@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "merge",
+  "context": "Swaps the JSON.parse/JSON.stringify deep clone trick for structuredClone and adds a session snapshot helper.",
+  "explanation": "structuredClone is a built-in, engine-level deep clone that correctly handles Dates, Maps, Sets, typed arrays, and circular references, unlike the JSON round-trip which silently drops or mangles them (Dates become strings, undefined/functions vanish, and circular refs throw). It's also faster than serializing to a string and back. Good, safe upgrade.",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 2
+}

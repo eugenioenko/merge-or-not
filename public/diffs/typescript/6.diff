@@ -1,0 +1,22 @@
+diff --git a/src/utils/object.ts b/src/utils/object.ts
+index 4d5e6f7..8a9b0c1 100644
+--- a/src/utils/object.ts
++++ b/src/utils/object.ts
+@@ -1,7 +1,10 @@
+-export function pick(obj: any, keys: string[]): any {
+-  const result: any = {};
+-  for (const key of keys) {
+-    result[key] = obj[key];
+-  }
+-  return result;
+-}
++export function pick<T extends object, K extends keyof T>(
++  obj: T,
++  keys: readonly K[]
++): Pick<T, K> {
++  const result = {} as Pick<T, K>;
++  for (const key of keys) {
++    result[key] = obj[key];
++  }
++  return result;
++}

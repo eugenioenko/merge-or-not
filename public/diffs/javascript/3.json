@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Adds helpers to the currency module for checking whether a cart total has hit a target amount.",
+  "explanation": "hasReachedTarget compares two floating-point numbers with ===, but binary floating-point math means sums like 0.1 + 0.2 rarely equal 0.3 exactly (it's 0.30000000000000004). A cart total computed by adding item prices can miss the target by a fraction of a cent and never trigger, even when the user paid the exact amount. Compare with a small epsilon tolerance instead, or work in integer cents via toCents.",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 2
+}

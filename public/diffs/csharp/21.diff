@@ -1,0 +1,23 @@
+diff --git a/Services/MetricsRegistry.cs b/Services/MetricsRegistry.cs
+index aa0188a..83936bd 100644
+--- a/Services/MetricsRegistry.cs
++++ b/Services/MetricsRegistry.cs
+@@ -2,7 +2,7 @@
+ 
+ public sealed class MetricsRegistry
+ {
+-    private static volatile MetricsRegistry? _instance;
++    private static MetricsRegistry? _instance;
+     private static readonly object _lock = new object();
+ 
+     private readonly ConcurrentDictionary<string, long> _counters = new();
+@@ -27,4 +27,9 @@
+     {
+         _counters.AddOrUpdate(name, 1, (_, v) => v + 1);
+     }
++
++    public IReadOnlyDictionary<string, long> GetSnapshot()
++    {
++        return new Dictionary<string, long>(_counters);
++    }
+ }

@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "merge",
+  "context": "Refactor payment status handling from string comparisons to a discriminated union with an exhaustive switch.",
+  "explanation": "The status field becomes a discriminated union instead of a loose string, and the switch is exhaustive with a never-typed default branch. If a new status is ever added, the compiler will fail at the assertUnreachable call until every case is handled, so there is no more silent fallthrough to a generic message.",
+  "language": "typescript",
+  "category": "correctness",
+  "difficulty": 3
+}

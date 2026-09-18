@@ -1,0 +1,22 @@
+diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
+index c5fd80e..ff0552c 100644
+--- a/.github/workflows/build.yml
++++ b/.github/workflows/build.yml
+@@ -6,7 +6,7 @@ on:
+ 
+ jobs:
+   build:
+-    runs-on: ubuntu-latest
++    runs-on: [self-hosted, linux, x64]
+     steps:
+       - uses: actions/checkout@v4
+       - uses: actions/setup-go@v5
+@@ -18,6 +18,8 @@ jobs:
+           path: ~/go/pkg/mod
+           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+       - run: go vet ./...
++      - name: Run linter
++        run: golangci-lint run ./...
+       - run: go build ./...
+       - run: go test ./... -coverprofile=coverage.out
+       - name: Upload coverage

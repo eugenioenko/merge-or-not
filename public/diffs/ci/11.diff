@@ -1,0 +1,22 @@
+diff --git a/.github/workflows/pr-preview.yml b/.github/workflows/pr-preview.yml
+index a312a6c..5ae0943 100644
+--- a/.github/workflows/pr-preview.yml
++++ b/.github/workflows/pr-preview.yml
+@@ -13,6 +13,17 @@ jobs:
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
++        with:
++          ref: ${{ github.event.pull_request.head.sha }}
++      - uses: actions/setup-node@v4
++        with:
++          node-version: '20'
++      - run: npm ci
++      - run: npm run build
++      - name: Deploy preview
++        env:
++          DEPLOY_TOKEN: ${{ secrets.PREVIEW_DEPLOY_TOKEN }}
++        run: ./scripts/deploy-preview.sh
+       - name: Comment status
+         uses: actions/github-script@v7
+         with:

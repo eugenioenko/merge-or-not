@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "Simplifies the isObject helper used across the config utilities and adds two small helpers built on top of it.",
+  "explanation": "typeof null === 'object' in JavaScript, so dropping the `value !== null` check makes isObject(null) return true. isPlainRecord(null) then calls Object.getPrototypeOf(null), which throws a TypeError instead of returning false. Any caller that used to safely handle null now crashes. Fix: keep the explicit null check (or use value !== null && typeof value === 'object').",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 2
+}

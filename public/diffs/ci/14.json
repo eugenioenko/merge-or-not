@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "reject",
+  "context": "Integration test job runs on a self-hosted runner. A teammate split teardown into two steps and added log collection for easier debugging.",
+  "explanation": "\"Stop containers\" correctly keeps `if: always()`, but the new \"Remove test volumes\" step — the one that actually frees disk and clears stale DB state — has no `if: always()`. When the test step fails (the case you most need cleanup for), this step is skipped, so volumes and data from the failed run persist on the self-hosted runner and can leak into the next job's results. Fix: add `if: always()` to the volume-removal step too.",
+  "language": "ci",
+  "category": "reliability",
+  "difficulty": 2
+}

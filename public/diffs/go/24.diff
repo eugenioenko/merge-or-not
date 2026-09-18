@@ -1,0 +1,39 @@
+diff --git a/internal/handlers/signup.go b/internal/handlers/signup.go
+index 1a6c8e4..9d2f7a0 100644
+--- a/internal/handlers/signup.go
++++ b/internal/handlers/signup.go
+@@ -1,7 +1,8 @@
+ package handlers
+ 
+ import (
+ 	"encoding/json"
+ 	"net/http"
++	"strings"
+ )
+ 
+@@ -9,15 +10,25 @@ func (h *SignupHandler) Signup(w http.ResponseWriter, r *http.Request) {
+ func (h *SignupHandler) Signup(w http.ResponseWriter, r *http.Request) {
+ 	var req SignupRequest
+ 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+ 		http.Error(w, "invalid request body", http.StatusBadRequest)
+ 		return
+ 	}
+ 
++	if !strings.Contains(req.Email, "@") || req.Email == "" {
++		http.Error(w, "a valid email is required", http.StatusBadRequest)
++		return
++	}
++
++	if len(req.Password) < 8 {
++		http.Error(w, "password must be at least 8 characters", http.StatusBadRequest)
++		return
++	}
++
+ 	user, err := h.store.CreateUser(r.Context(), req.Email, req.Password)
+ 	if err != nil {
+ 		http.Error(w, "failed to create user", http.StatusInternalServerError)
+ 		return
+ 	}
+ 
+ 	json.NewEncoder(w).Encode(user)
+ }

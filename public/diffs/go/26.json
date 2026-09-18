@@ -1,0 +1,9 @@
+{
+  "id": 26,
+  "answer": "merge",
+  "context": "defaultClient is the shared http.Client used by every outbound call in APIClient. It previously had no Timeout, so a hung dial or a server that never responds could block a request goroutine forever.",
+  "explanation": "Safe to merge. Adding an overall Timeout bounds the whole request lifecycle, and the custom Transport adds separate dial, TLS handshake, and response-header timeouts so a slow phase can't quietly stall the request either. MaxIdleConnsPerHost keeps connection reuse reasonable for a client that talks to a small number of hosts repeatedly. This is the standard production-ready http.Client setup in place of relying on http.DefaultClient's unbounded behavior.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

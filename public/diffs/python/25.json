@@ -1,0 +1,9 @@
+{
+  "id": 25,
+  "answer": "merge",
+  "context": "Replacing per-call psycopg2.connect() with a ThreadedConnectionPool so requests reuse a bounded set of connections instead of opening a new connection to Postgres every time.",
+  "explanation": "get_connection() keeps the exact call signature and with get_connection() as conn: usage callers already rely on, but now borrows a connection from a bounded pool (DB_POOL_MIN..DB_POOL_MAX) instead of paying a fresh TCP/TLS handshake on every call, which removes real per-request latency and connection-count pressure under load. __exit__ correctly commits on success and rolls back on exception before returning the connection to the pool, so a failed transaction can't leak a dirty connection back for reuse. Backward-compatible and a real improvement.",
+  "language": "python",
+  "category": "performance",
+  "difficulty": 3
+}

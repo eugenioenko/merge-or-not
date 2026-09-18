@@ -1,0 +1,25 @@
+diff --git a/internal/cache/settings.go b/internal/cache/settings.go
+index 6e1a2b7..d92f5c4 100644
+--- a/internal/cache/settings.go
++++ b/internal/cache/settings.go
+@@ -15,4 +15,20 @@ func (s *Settings) Has(key string) bool {
+ func (s *Settings) Has(key string) bool {
+ 	_, ok := s.values[key]
+ 	return ok
+ }
++
++func (s *Settings) Set(key, value string) {
++	s.values[key] = value
++}
++
++func (s *Settings) Delete(key string) {
++	delete(s.values, key)
++}
++
++func (s *Settings) Len() int {
++	return len(s.values)
++}
++
++func (s *Settings) Reset(defaults map[string]string) {
++	s.values = defaults
++}

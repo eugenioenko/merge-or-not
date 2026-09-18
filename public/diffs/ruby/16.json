@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "merge",
+  "context": "Adds retry-with-backoff and dead-lettering to the webhook delivery job.",
+  "explanation": "retry_on DeliveryFailed, wait: :polynomially_longer, attempts: 5 retries transient delivery failures with increasing backoff instead of failing immediately. The block passed to retry_on runs once retries are exhausted, persisting the failure to a DeadLetter record with the job class, arguments, and error message so it can be inspected and replayed later instead of vanishing into the job backend's failed-job list. This is a solid, standard ActiveJob pattern for resilient background delivery.",
+  "language": "ruby",
+  "category": "reliability",
+  "difficulty": 3
+}

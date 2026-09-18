@@ -1,0 +1,9 @@
+{
+  "id": 19,
+  "answer": "merge",
+  "context": "New ErrorBoundary component to wrap risky widgets (like third-party charts) so a render crash shows a fallback instead of blanking the whole app.",
+  "explanation": "Safe to merge. getDerivedStateFromError sets state during the render phase so React can immediately swap in the fallback UI, while componentDidCatch runs as a side effect afterward to log the error \u2014 using both together is the correct, documented pattern. The reset button and optional onError callback are clean, low-risk additions.",
+  "language": "react",
+  "category": "error-handling",
+  "difficulty": 2
+}

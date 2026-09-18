@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "merge",
+  "context": "Adding data integrity constraints to prevent negative payment or refund amounts from ever being written.",
+  "explanation": "Both constraints are added NOT VALID first, which takes only a brief metadata lock and applies immediately to new writes, then VALIDATE CONSTRAINT checks the existing rows in a separate, non-blocking pass. This is the standard zero-downtime way to add a CHECK constraint to a populated table. Safe to merge.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 2
+}

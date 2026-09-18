@@ -1,0 +1,9 @@
+{
+  "id": 27,
+  "answer": "merge",
+  "context": "Adding a WSGI middleware that assigns or forwards an X-Request-ID per request and exposes it via a contextvar so log lines and downstream calls can be correlated back to a single request.",
+  "explanation": "This is a solid tracing setup: it reuses an inbound X-Request-ID header when present, so an id assigned by an upstream proxy is preserved end-to-end, and otherwise mints a fresh UUID; the id is stored in a contextvars.ContextVar, which stays isolated per request even under concurrent async or threaded execution, unlike a plain module-level global; it's reset in a finally block so it can never leak into a later request handled by the same worker; and it's echoed back via the X-Request-ID response header. Wiring it in with app.wsgi_app = RequestIDMiddleware(app.wsgi_app) is the standard Flask pattern and doesn't disturb register_routes.",
+  "language": "python",
+  "category": "observability",
+  "difficulty": 3
+}

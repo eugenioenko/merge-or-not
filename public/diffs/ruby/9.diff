@@ -1,0 +1,21 @@
+diff --git a/app/jobs/payment_sync_job.rb b/app/jobs/payment_sync_job.rb
+index eff2d41..0772cd7 100644
+--- a/app/jobs/payment_sync_job.rb
++++ b/app/jobs/payment_sync_job.rb
+@@ -4,8 +4,15 @@ class PaymentSyncJob < ApplicationJob
+   def perform(payment_id)
+     payment = Payment.find(payment_id)
+     PaymentGateway.sync!(payment)
+-  rescue StandardError => e
++  rescue Exception => e
+     Rails.logger.error("PaymentSyncJob failed for #{payment_id}: #{e.message}")
++    notify_ops(payment_id, e)
+     raise
+   end
++
++  private
++
++  def notify_ops(payment_id, error)
++    OpsMailer.job_failure(job: self.class.name, payment_id: payment_id, error: error.message).deliver_later
++  end
+ end

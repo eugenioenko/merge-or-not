@@ -1,0 +1,29 @@
+diff --git a/src/graphql/gateway/schema.js b/src/graphql/gateway/schema.js
+index ff50687..552de96 100644
+--- a/src/graphql/gateway/schema.js
++++ b/src/graphql/gateway/schema.js
+@@ -1,23 +1,15 @@
+ const { stitchSchemas } = require('@graphql-tools/stitch');
+-const { filterSchema, pruneSchema } = require('@graphql-tools/utils');
+ 
+ const buildGatewaySchema = async () => {
+   const publicUserSchema = await loadRemoteSchema(USER_SERVICE_URL);
+   const publicBillingSchema = await loadRemoteSchema(BILLING_SERVICE_URL);
+   const adminSchema = await loadRemoteSchema(ADMIN_SERVICE_URL);
+ 
+-  const filteredAdminSchema = pruneSchema(
+-    filterSchema({
+-      schema: adminSchema,
+-      rootFieldFilter: (operation, fieldName) => PUBLIC_ADMIN_FIELDS.has(fieldName),
+-    }),
+-  );
+-
+   return stitchSchemas({
+     subschemas: [
+       { schema: publicUserSchema },
+       { schema: publicBillingSchema },
+-      { schema: filteredAdminSchema },
++      { schema: adminSchema },
+     ],
+   });
+ };

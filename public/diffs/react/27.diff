@@ -1,0 +1,42 @@
+diff --git a/src/components/AppErrorBoundary.jsx b/src/components/AppErrorBoundary.jsx
+index 00e8111..c6b1a2e 100644
+--- a/src/components/AppErrorBoundary.jsx
++++ b/src/components/AppErrorBoundary.jsx
+@@ -1,37 +1,33 @@
+ import { Component } from 'react'
+ 
+ export class AppErrorBoundary extends Component {
+   state = { hasError: false, errorId: null }
+-
+-  static getDerivedStateFromError(error) {
+-    return { hasError: true, errorId: error.message }
+-  }
+ 
+   componentDidCatch(error, info) {
+     logErrorToService(error, info)
+   }
+ 
+   handleReload = () => {
+     window.location.reload()
+   }
+ 
+   render() {
+     if (this.state.hasError) {
+       return (
+         <div className="app-error-fallback">
+           <p>Something went wrong. Please refresh.</p>
+           <button onClick={this.handleReload}>Reload</button>
+         </div>
+       )
+     }
+     return this.props.children
+   }
+ }
+ 
+ function logErrorToService(error, info) {
+   fetch('/api/errors', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({ message: error.message, stack: error.stack, info }),
+   })
+ }

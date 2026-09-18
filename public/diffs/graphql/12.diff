@@ -1,0 +1,23 @@
+diff --git a/src/graphql/resolvers/organization.js b/src/graphql/resolvers/organization.js
+index 997f63a..4b4f5a5 100644
+--- a/src/graphql/resolvers/organization.js
++++ b/src/graphql/resolvers/organization.js
+@@ -3,18 +3,13 @@
+ 
+   ancestors: async (org, _args, { loaders }) => {
+     const chain = [];
+-    const visited = new Set([org.id]);
+     let current = org;
+     while (current.parentId) {
+-      if (visited.has(current.parentId)) {
+-        break;
+-      }
+       const parent = await loaders.organizationLoader.load(current.parentId);
+       if (!parent) {
+         break;
+       }
+       chain.push(parent);
+-      visited.add(parent.id);
+       current = parent;
+     }
+     return chain;

@@ -1,0 +1,9 @@
+{
+  "id": 21,
+  "answer": "merge",
+  "context": "Adds a request timeout to the geocoding client so a slow upstream can't hang the caller indefinitely.",
+  "explanation": "This is a solid fix: an AbortController tied to a setTimeout bounds how long the fetch can hang, the timer is cleared in a finally block so it never outlives the request (no leaked timers on the happy path), and the timeout is configurable via a default parameter. A slow or unresponsive geocoding provider can no longer stall requests forever.",
+  "category": "performance",
+  "difficulty": 2,
+  "language": "node"
+}

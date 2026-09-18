@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "merge",
+  "context": "Replaces three unwrap() calls on a payment gateway response with proper error propagation.",
+  "explanation": "The old code unwrapped a fallible network call and two header lookups on a live payment path - a gateway timeout, a declined charge, or a missing/malformed receipt header would all panic and crash the request. The rewrite propagates the gateway error with `?` and turns the two header-lookup failure modes into explicit PaymentError variants, so callers can retry or surface a real error to the customer instead of a 500 from a panic.",
+  "language": "rust",
+  "category": "error-handling",
+  "difficulty": 2
+}

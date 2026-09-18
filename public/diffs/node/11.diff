@@ -1,0 +1,44 @@
+diff --git a/src/config/mergeConfig.js b/src/config/mergeConfig.js
+index 8b92c3b..b0e8db3 100644
+--- a/src/config/mergeConfig.js
++++ b/src/config/mergeConfig.js
+@@ -1,7 +1,19 @@
+ 'use strict';
+ 
+-function mergeConfig(defaults, overrides) {
+-  return Object.assign({}, defaults, overrides);
++function isObject(value) {
++  return value && typeof value === 'object' && !Array.isArray(value);
++}
++
++function mergeConfig(target, source) {
++  for (const key of Object.keys(source)) {
++    if (isObject(source[key])) {
++      target[key] = isObject(target[key]) ? target[key] : {};
++      mergeConfig(target[key], source[key]);
++    } else {
++      target[key] = source[key];
++    }
++  }
++  return target;
+ }
+ 
+ module.exports = { mergeConfig };
+diff --git a/src/routes/settings.js b/src/routes/settings.js
+index 6a30622..2546d23 100644
+--- a/src/routes/settings.js
++++ b/src/routes/settings.js
+@@ -1,11 +1,12 @@
+ const express = require('express');
+ const router = express.Router();
+ const SettingsStore = require('../store/settingsStore');
++const { mergeConfig } = require('../config/mergeConfig');
+ 
+ router.put('/settings', async (req, res) => {
+   const overrides = req.body;
+   const current = await SettingsStore.load(req.org.id);
+-  const merged = Object.assign({}, current, overrides);
++  const merged = mergeConfig(current, overrides);
+   await SettingsStore.save(req.org.id, merged);
+   res.json(merged);
+ });

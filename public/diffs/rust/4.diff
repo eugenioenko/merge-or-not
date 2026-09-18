@@ -1,0 +1,25 @@
+diff --git a/src/ffi/buffer.rs b/src/ffi/buffer.rs
+index 0000000..1111111 100644
+--- a/src/ffi/buffer.rs
++++ b/src/ffi/buffer.rs
+@@ -5,6 +5,9 @@
+     len: usize,
+ }
+ 
++unsafe impl Send for FfiBuffer {}
++unsafe impl Sync for FfiBuffer {}
++
+ impl FfiBuffer {
+     pub fn new(ptr: *mut c_void, len: usize) -> Self {
+         Self { ptr, len }
+@@ -13,6 +16,10 @@
+     pub fn len(&self) -> usize {
+         self.len
+     }
++
++    pub fn as_slice(&self) -> &[u8] {
++        unsafe { std::slice::from_raw_parts(self.ptr as *const u8, self.len) }
++    }
+ }
+ 
+ impl Drop for FfiBuffer {

@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "merge",
+  "context": "useProductDetails fetches product data whenever productId changes. Users can click between products quickly.",
+  "explanation": "Safe to merge. The AbortController cancels the in-flight request when productId changes or the component unmounts, and the AbortError is explicitly ignored so it never sets a stale error. Moving setLoading(false) into finally ensures the loading state clears whether the request succeeds or fails.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 2
+}

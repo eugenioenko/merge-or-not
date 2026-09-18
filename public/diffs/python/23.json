@@ -1,0 +1,9 @@
+{
+  "id": 23,
+  "answer": "merge",
+  "context": "Replacing the hand-rolled dict validation in validate_user_payload with a Pydantic model.",
+  "explanation": "This swaps ad-hoc dict checks for a declarative Pydantic model: EmailStr gives real, RFC-aware email validation (the old code only checked for an \"@\" character), Field(min_length=1) enforces the non-empty display name, and the age validator preserves the exact >= 13 rule the old code had. model_validate raises a structured ValidationError with per-field detail, and model_dump() returns the same shape (email, display_name, age) callers already expect, so this is a drop-in replacement with stronger validation and real type safety.",
+  "language": "python",
+  "category": "correctness",
+  "difficulty": 2
+}

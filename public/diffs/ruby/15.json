@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "merge",
+  "context": "Adds per-user rate limiting to the API base controller.",
+  "explanation": "enforce_rate_limit! keys a Rails.cache.increment counter by user id and a fixed one-minute time bucket, using the cache store's atomic increment rather than a read-then-write pattern (so it's safe under concurrent requests). expires_in resets the bucket automatically each window, and requests over the RATE_LIMIT threshold get a 429 Too Many Requests instead of hitting downstream services uncontrolled. Simple, atomic, and appropriately scoped to authenticated users.",
+  "language": "ruby",
+  "category": "security",
+  "difficulty": 3
+}

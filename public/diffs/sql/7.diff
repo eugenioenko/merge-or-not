@@ -1,0 +1,25 @@
+diff --git a/migrations/0175_add_payment_amount_check.sql b/migrations/0175_add_payment_amount_check.sql
+new file mode 100644
+--- /dev/null
++++ b/migrations/0175_add_payment_amount_check.sql
+@@ -0,0 +1,20 @@
++ALTER TABLE payments
++    ADD CONSTRAINT chk_payment_amount_positive
++    CHECK (amount_cents > 0) NOT VALID;
++
++ALTER TABLE payments
++    VALIDATE CONSTRAINT chk_payment_amount_positive;
++
++ALTER TABLE refunds
++    ADD CONSTRAINT chk_refund_amount_positive
++    CHECK (amount_cents > 0) NOT VALID;
++
++ALTER TABLE refunds
++    VALIDATE CONSTRAINT chk_refund_amount_positive;
++
++ALTER TABLE payments
++    ADD CONSTRAINT chk_payment_amount_not_absurd
++    CHECK (amount_cents < 100000000) NOT VALID;
++
++ALTER TABLE payments
++    VALIDATE CONSTRAINT chk_payment_amount_not_absurd;

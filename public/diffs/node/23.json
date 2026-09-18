@@ -1,0 +1,9 @@
+{
+  "id": 23,
+  "answer": "merge",
+  "context": "Adds a per-request correlation ID that's automatically attached to every log line written during that request.",
+  "explanation": "A clean, well-scoped change: AsyncLocalStorage propagates the request ID through async call chains without threading it through every function signature, the middleware reuses an inbound X-Request-Id header when present (useful behind a gateway) and echoes it back on the response, and pino's mixin hook attaches it to every log line without call-site changes. This makes it far easier to trace a single request's logs across services.",
+  "category": "correctness",
+  "difficulty": 2,
+  "language": "node"
+}

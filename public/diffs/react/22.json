@@ -1,0 +1,9 @@
+{
+  "id": 22,
+  "answer": "merge",
+  "context": "TodoItem toggles a todo's done state via a PATCH request. The checkbox previously stayed disabled and unresponsive until the server replied.",
+  "explanation": "Safe to merge. The checkbox now flips instantly via the optimistic onUpdate call, giving immediate feedback, while the previous value is kept to roll back cleanly if the request fails or returns a non-OK status. Error state is surfaced to the user instead of leaving the UI silently out of sync.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 3
+}

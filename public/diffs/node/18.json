@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "reject",
+  "context": "Raises the request body size limit and adds the new CSV bulk-import endpoint on top of it.",
+  "explanation": "Bumping the JSON/urlencoded body limit to 500mb applies to every route in the app, not just the new import endpoint. Since express buffers the whole body in memory before handing it to a handler, a handful of concurrent large requests to any endpoint (not just /api/imports) can exhaust server memory, an easy denial-of-service. Fix: set a generous limit only on the specific import route (and stream/parse large files instead of buffering the whole body as JSON), and keep a small default limit for the rest of the API.",
+  "category": "security",
+  "difficulty": 2,
+  "language": "node"
+}

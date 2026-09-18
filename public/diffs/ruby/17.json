@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "merge",
+  "context": "Replaces puts calls in OrderProcessor with a tagged, injectable logger.",
+  "explanation": "puts writes straight to stdout with no log level, timestamp, or request context, and is easy to lose in production log aggregation. The new version accepts an injectable logger (defaulting to Rails.logger) and wraps the whole call in @logger.tagged(\"OrderProcessor\", \"order_id=...\") so every line from this service is tagged and traceable back to the specific order, and the logger can be swapped for a test double in specs.",
+  "language": "ruby",
+  "category": "observability",
+  "difficulty": 2
+}

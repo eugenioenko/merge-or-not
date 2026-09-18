@@ -1,0 +1,9 @@
+{
+  "id": 27,
+  "answer": "merge",
+  "context": "`createReview` mutation accepts a rating and a free-text body with no validation beyond the auth check.",
+  "explanation": "Safe to merge. Adding a range check on `rating` (must be an integer 1-5) and a length cap on `body` rejects garbage input at the API boundary instead of letting it reach the database, and trimming whitespace before storage is good hygiene. The existing auth guard is preserved unchanged.",
+  "language": "graphql",
+  "category": "correctness",
+  "difficulty": 2
+}

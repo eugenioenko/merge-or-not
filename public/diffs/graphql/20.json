@@ -1,0 +1,9 @@
+{
+  "id": 20,
+  "answer": "reject",
+  "context": "`Query.product` and `Mutation.updateProductPrice` take a GraphQL `ID!` and look products up by their database primary key, an integer column.",
+  "explanation": "The `parseInt(id, 10)` coercion (and its NaN validation) is removed, so the raw string coming off the GraphQL `ID` scalar is passed straight to Prisma's `where: { id }` where an `Int` is expected. Every lookup and update now either throws a type-mismatch error from the ORM or, depending on the driver's leniency, silently matches nothing — every valid product id fails. Fix: keep parsing the ID to an integer (and validating it) before querying.",
+  "language": "graphql",
+  "category": "correctness",
+  "difficulty": 2
+}

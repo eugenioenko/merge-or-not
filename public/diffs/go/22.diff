@@ -1,0 +1,25 @@
+diff --git a/internal/cache/product_cache.go b/internal/cache/product_cache.go
+index d3f7a29..8c1e4b6 100644
+--- a/internal/cache/product_cache.go
++++ b/internal/cache/product_cache.go
+@@ -1,4 +1,4 @@
+ type ProductCache struct {
+-	mu    sync.Mutex
++	mu    sync.RWMutex
+ 	items map[string]*Product
+ }
+@@ -6,12 +6,12 @@ func (c *ProductCache) Get(id string) (*Product, bool) {
+ func (c *ProductCache) Get(id string) (*Product, bool) {
+-	c.mu.Lock()
+-	defer c.mu.Unlock()
++	c.mu.RLock()
++	defer c.mu.RUnlock()
+ 	p, ok := c.items[id]
+ 	return p, ok
+ }
+ 
+ func (c *ProductCache) Set(id string, p *Product) {
+ 	c.mu.Lock()
+ 	defer c.mu.Unlock()
+ 	c.items[id] = p
+ }

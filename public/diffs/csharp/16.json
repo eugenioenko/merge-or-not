@@ -1,0 +1,9 @@
+{
+  "id": 16,
+  "answer": "merge",
+  "context": "Replaces interpolated log messages with structured message templates and a logging scope carrying the order id.",
+  "explanation": "Safe to merge. Named placeholders like {OrderId} let Serilog capture OrderId and OrderTotal as indexed, queryable properties on the log event instead of baking them into an opaque string, and the template is only formatted if the log level is enabled, avoiding wasted interpolation. BeginScope attaches OrderId to every log entry emitted inside the scope, including ones from other methods called during processing, which makes tracing a single order through the logs far easier.",
+  "language": "csharp",
+  "category": "observability",
+  "difficulty": 2
+}

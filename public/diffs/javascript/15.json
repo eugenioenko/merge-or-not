@@ -1,0 +1,9 @@
+{
+  "id": 15,
+  "answer": "reject",
+  "context": "Adds a countEmailMatches helper and a validateEmailList batch validator, adding the g flag to the shared EMAIL_PATTERN regex so it can also be used with String.match for counting.",
+  "explanation": "Adding the global flag to a regex that's reused across calls to .test() makes it stateful: with /g, .test() advances the regex's lastIndex on a match and resumes searching from there on the next call. validateEmailList calls isValidEmail repeatedly on the same shared EMAIL_PATTERN, so alternating valid/invalid results start appearing depending on call order and previous lastIndex position, even for emails that are individually valid. Use a fresh regex per call, drop the g flag from the test pattern, or reset lastIndex = 0 before every use.",
+  "language": "javascript",
+  "category": "correctness",
+  "difficulty": 4
+}

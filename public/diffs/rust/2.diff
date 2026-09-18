@@ -1,0 +1,20 @@
+diff --git a/src/services/cache.rs b/src/services/cache.rs
+index 0000000..1111111 100644
+--- a/src/services/cache.rs
++++ b/src/services/cache.rs
+@@ -11,12 +11,14 @@
+ 
+ impl Cache {
+     pub async fn get_or_fetch(&self, key: &str) -> anyhow::Result<String> {
+-        if let Some(value) = self.entries.lock().await.get(key) {
++        let mut guard = self.entries.lock().await;
++        if let Some(value) = guard.get(key) {
+             self.hits.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+             return Ok(value.clone());
+         }
+         self.misses.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+         let value = self.pool.fetch_value(key).await?;
++        guard.put(key.to_string(), value.clone());
+         Ok(value)
+     }
+ 

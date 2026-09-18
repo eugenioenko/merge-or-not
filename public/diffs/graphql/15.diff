@@ -1,0 +1,35 @@
+diff --git a/src/graphql/resolvers/user.js b/src/graphql/resolvers/user.js
+index 111a139..6ce829d 100644
+--- a/src/graphql/resolvers/user.js
++++ b/src/graphql/resolvers/user.js
+@@ -1,28 +1,7 @@
+ const Query = {
+-  me: (_parent, _args, { currentUser }) => {
+-    if (!currentUser) {
+-      return null;
+-    }
+-    return {
+-      id: currentUser.id,
+-      email: currentUser.email,
+-      displayName: currentUser.displayName,
+-      createdAt: currentUser.createdAt,
+-    };
+-  },
++  me: (_parent, _args, { currentUser }) => currentUser,
+ 
+-  user: async (_parent, { id }, { db }) => {
+-    const record = await db.user.findUnique({ where: { id } });
+-    if (!record) {
+-      return null;
+-    }
+-    return {
+-      id: record.id,
+-      email: record.email,
+-      displayName: record.displayName,
+-      createdAt: record.createdAt,
+-    };
+-  },
++  user: (_parent, { id }, { db }) => db.user.findUnique({ where: { id } }),
+ };
+ 
+ module.exports = { Query };

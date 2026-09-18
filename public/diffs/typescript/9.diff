@@ -1,0 +1,32 @@
+diff --git a/src/services/user-profile.ts b/src/services/user-profile.ts
+index 7a8b9c0..1d2e3f4 100644
+--- a/src/services/user-profile.ts
++++ b/src/services/user-profile.ts
+@@ -1,13 +1,21 @@
+ export interface UserProfile {
+   id: string;
+   displayName: string;
+   avatarUrl: string | null;
+ }
+ 
+-export function getAvatarUrl(profile: UserProfile | undefined): string {
+-  return profile!.avatarUrl!;
+-}
++const DEFAULT_AVATAR_URL = "/assets/default-avatar.png";
++
++export function getAvatarUrl(profile: UserProfile | undefined): string {
++  if (!profile || !profile.avatarUrl) {
++    return DEFAULT_AVATAR_URL;
++  }
++  return profile.avatarUrl;
++}
+ 
+-export function greet(profile: UserProfile | undefined): string {
+-  return `Hello, ${profile!.displayName}`;
+-}
++export function greet(profile: UserProfile | undefined): string {
++  if (!profile) {
++    return "Hello, guest";
++  }
++  return `Hello, ${profile.displayName}`;
++}

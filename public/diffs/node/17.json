@@ -1,0 +1,9 @@
+{
+  "id": 17,
+  "answer": "reject",
+  "context": "Cleans up the archive extractor that unpacks user-uploaded zip files into a per-tenant directory.",
+  "explanation": "The check that keeps each entry's resolved path inside destDir was removed (the entry-count cap stayed, so the diff looks like a small, safe cleanup). A crafted zip entry named ../../etc/cron.d/evil or an absolute path can now be written outside the intended extraction directory (the classic 'zip slip' attack), letting an attacker overwrite arbitrary files on the host. Fix: always resolve each entry against destDir and reject any entry whose relative path starts with .. or is absolute before writing it.",
+  "category": "security",
+  "difficulty": 3,
+  "language": "node"
+}

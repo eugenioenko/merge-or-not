@@ -1,0 +1,9 @@
+{
+  "id": 18,
+  "answer": "reject",
+  "context": "Simplifying evaluate_discount_formula so merchandisers can write richer discount formulas, like conditional expressions, without extending the AST whitelist.",
+  "explanation": "Replacing the whitelist-based AST evaluator with eval() lets a formula string execute arbitrary Python. Passing {\"__builtins__\": {}} blocks the obvious __import__/open calls, but this sandbox is well known to be escapable via attribute chains reachable from ordinary objects (e.g. ().__class__.__base__.__subclasses__()) to reach os.system and run arbitrary commands - merchandiser-authored formulas become remote code execution. Fix: keep evaluating formulas through a restricted AST walker that only allows a fixed set of node types and known variable names, and never call eval()/exec() on user-supplied text.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 4
+}

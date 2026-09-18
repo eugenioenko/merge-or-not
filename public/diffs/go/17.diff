@@ -1,0 +1,27 @@
+diff --git a/internal/handlers/profile.go b/internal/handlers/profile.go
+index 7a2c3d9..e5f01b6 100644
+--- a/internal/handlers/profile.go
++++ b/internal/handlers/profile.go
+@@ -6,3 +6,22 @@ func NewProfileHandler(store ProfileStore) *ProfileHandler {
+ func NewProfileHandler(store ProfileStore) *ProfileHandler {
+ 	return &ProfileHandler{store: store}
+ }
++
++func (h *ProfileHandler) UpdateProfile(w http.ResponseWriter, r *http.Request) {
++	var req UpdateProfileRequest
++	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
++		http.Error(w, "invalid request body", http.StatusBadRequest)
++	}
++
++	if req.Email == "" {
++		http.Error(w, "email is required", http.StatusBadRequest)
++	}
++
++	user, err := h.store.UpdateProfile(r.Context(), req)
++	if err != nil {
++		http.Error(w, "failed to update profile", http.StatusInternalServerError)
++		return
++	}
++
++	json.NewEncoder(w).Encode(user)
++}

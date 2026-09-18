@@ -1,0 +1,26 @@
+diff --git a/Extensions/ServiceCollectionExtensions.cs b/Extensions/ServiceCollectionExtensions.cs
+index 69221e8..92eba0e 100644
+--- a/Extensions/ServiceCollectionExtensions.cs
++++ b/Extensions/ServiceCollectionExtensions.cs
+@@ -8,8 +8,20 @@
+         {
+             client.BaseAddress = new Uri(configuration["PaymentGateway:BaseUrl"]!);
+             client.Timeout = TimeSpan.FromSeconds(10);
+-        });
++        })
++        .AddPolicyHandler(GetRetryPolicy());
+ 
+         return services;
+     }
++
++    private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
++    {
++        return HttpPolicyExtensions
++            .HandleTransientHttpError()
++            .WaitAndRetryAsync(
++                retryCount: 3,
++                sleepDurationProvider: attempt =>
++                    TimeSpan.FromSeconds(Math.Pow(2, attempt)) +
++                    TimeSpan.FromMilliseconds(Random.Shared.Next(0, 250)));
++    }
+ }

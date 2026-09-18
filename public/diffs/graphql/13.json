@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "`placeOrder` mutation creates an order, decrements inventory for each item, records order items, and authorizes a payment.",
+  "explanation": "The whole operation is pulled out of `db.$transaction` and run as a sequence of independent awaits. If inventory decrements succeed but the payment creation throws (card declined, network blip, etc.), the order is left half-created: stock is already deducted but there's no payment and possibly no order-item rows. Fix: keep the entire multi-step write inside a single transaction so it either fully commits or fully rolls back.",
+  "language": "graphql",
+  "category": "correctness",
+  "difficulty": 3
+}

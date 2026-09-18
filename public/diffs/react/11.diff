@@ -1,0 +1,27 @@
+diff --git a/src/hooks/useProductDetails.js b/src/hooks/useProductDetails.js
+index 9ad43b8..7bdaa80 100644
+--- a/src/hooks/useProductDetails.js
++++ b/src/hooks/useProductDetails.js
+@@ -6,15 +6,19 @@
+   const [loading, setLoading] = useState(true)
+ 
+   useEffect(() => {
++    const controller = new AbortController()
+     setLoading(true)
+     setError(null)
+-    fetch(`/api/products/${productId}`)
++    fetch(`/api/products/${productId}`, { signal: controller.signal })
+       .then((res) => res.json())
+       .then((data) => {
+         setProduct(data)
+-        setLoading(false)
+       })
+-      .catch((err) => setError(err))
++      .catch((err) => {
++        if (err.name !== 'AbortError') setError(err)
++      })
++      .finally(() => setLoading(false))
++    return () => controller.abort()
+   }, [productId])
+ 
+   return { product, error, loading }

@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "merge",
+  "context": "Replaces the hand-rolled Display/Error impl with thiserror and adds a conversion from sqlx errors.",
+  "explanation": "#[derive(Error)] generates the same Display output from the #[error(...)] attributes and keeps std::error::Error for free, removing boilerplate without changing behavior. The new From<sqlx::Error> lets call sites use `?` directly on sqlx results instead of manual .map_err() calls, and correctly maps the common 'row not found' case to a domain-specific NotFound variant. Clean, idiomatic error handling.",
+  "language": "rust",
+  "category": "error-handling",
+  "difficulty": 2
+}

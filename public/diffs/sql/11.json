@@ -1,0 +1,9 @@
+{
+  "id": 11,
+  "answer": "reject",
+  "context": "Simplifying the user profile lookup used by the public mobile API.",
+  "explanation": "SELECT * couples the API response directly to the table schema. Adding, renaming, or reordering any column on users now silently changes the API payload, including leaking columns like password_hash, failed_login_count, or internal admin flags that were deliberately left out of the original column list. Should be rejected.",
+  "language": "sql",
+  "category": "maintainability",
+  "difficulty": 2
+}

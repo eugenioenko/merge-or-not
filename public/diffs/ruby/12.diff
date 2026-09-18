@@ -1,0 +1,25 @@
+diff --git a/app/controllers/inventory_items_controller.rb b/app/controllers/inventory_items_controller.rb
+index 73514b5..43ff928 100644
+--- a/app/controllers/inventory_items_controller.rb
++++ b/app/controllers/inventory_items_controller.rb
+@@ -8,6 +8,9 @@ class InventoryItemsController < ApplicationController
+     else
+       render json: { errors: @item.errors }, status: :unprocessable_entity
+     end
++  rescue ActiveRecord::StaleObjectError
++    render json: { error: "This item was updated by someone else. Please reload and try again." },
++           status: :conflict
+   end
+ 
+   private
+diff --git a/db/migrate/20240115120000_add_lock_version_to_inventory_items.rb b/db/migrate/20240115120000_add_lock_version_to_inventory_items.rb
+new file mode 100644
+index 0000000..59156c0
+--- /dev/null
++++ b/db/migrate/20240115120000_add_lock_version_to_inventory_items.rb
+@@ -0,0 +1,5 @@
++class AddLockVersionToInventoryItems < ActiveRecord::Migration[7.1]
++  def change
++    add_column :inventory_items, :lock_version, :integer, default: 0, null: false
++  end
++end

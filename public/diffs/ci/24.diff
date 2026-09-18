@@ -1,0 +1,24 @@
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index 5464b17..f01061f 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -6,6 +6,8 @@ on:
+ 
+ permissions:
+   contents: write
++  id-token: write
++  attestations: write
+ 
+ jobs:
+   release:
+@@ -16,6 +18,10 @@ jobs:
+         with:
+           go-version: '1.22'
+       - run: go build -o dist/app ./cmd/app
++      - name: Attest build provenance
++        uses: actions/attest-build-provenance@v1
++        with:
++          subject-path: dist/app
+       - name: Create release
+         uses: softprops/action-gh-release@v2
+         with:

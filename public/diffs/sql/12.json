@@ -1,0 +1,9 @@
+{
+  "id": 12,
+  "answer": "reject",
+  "context": "Cleanup script to revoke expired sessions and clear stale password reset tokens, run nightly by cron.",
+  "explanation": "The WHERE clause on the sessions UPDATE was dropped, so this now revokes every session in the table on every run, not just the expired ones. Every logged-in user would be force logged out nightly, even though the password_reset_tokens cleanup right below it still correctly scopes to expired rows. Should be rejected.",
+  "language": "sql",
+  "category": "correctness",
+  "difficulty": 1
+}

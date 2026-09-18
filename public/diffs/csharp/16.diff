@@ -1,0 +1,21 @@
+diff --git a/Services/OrderProcessor.cs b/Services/OrderProcessor.cs
+index 627c142..c929641 100644
+--- a/Services/OrderProcessor.cs
++++ b/Services/OrderProcessor.cs
+@@ -13,9 +13,14 @@
+ 
+     public async Task ProcessAsync(int orderId)
+     {
+-        _logger.LogInformation($"Processing order {orderId}");
++        using var scope = _logger.BeginScope(new Dictionary<string, object>
++        {
++            ["OrderId"] = orderId
++        });
++
++        _logger.LogInformation("Processing order {OrderId}", orderId);
+         var order = await _orderRepo.GetByIdAsync(orderId);
+         await _orderRepo.MarkProcessedAsync(order.Id);
+-        _logger.LogInformation($"Order {orderId} processed, total was {order.Total}");
++        _logger.LogInformation("Order {OrderId} processed with total {OrderTotal}", orderId, order.Total);
+     }
+ }

@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "answer": "reject",
+  "context": "Add push notifications as a new notification channel.",
+  "explanation": "The union gains a \"push\" variant and a sendPush declaration, but the switch in dispatch has no case for it and no default - push notifications compile fine yet silently vanish at runtime. Without a default that calls an exhaustiveness helper, TypeScript won't flag the missing case.",
+  "language": "typescript",
+  "category": "correctness",
+  "difficulty": 3
+}

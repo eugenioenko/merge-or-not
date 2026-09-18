@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "answer": "reject",
+  "context": "UserAvatar shows a user's picture with a hover tooltip, falling back to initials on image load error. It renders a placeholder when no user is provided.",
+  "explanation": "The early return for the null-user case was moved above the useState and useMemo calls. When user toggles between null and a real value across renders, React calls a different number of hooks on each render, violating the Rules of Hooks \u2014 this throws \"Rendered fewer hooks than expected\" or silently corrupts hook state. Fix: keep all hook calls before any conditional return.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 2
+}

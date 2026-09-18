@@ -1,0 +1,20 @@
+diff --git a/src/routes/upload.js b/src/routes/upload.js
+index 75b2aff..6ca123e 100644
+--- a/src/routes/upload.js
++++ b/src/routes/upload.js
+@@ -7,15 +7,6 @@
+   const dest = path.join(__dirname, '../../uploads', `${req.params.id}.bin`);
+   const writeStream = fs.createWriteStream(dest);
+ 
+-  writeStream.on('error', (err) => {
+-    res.status(500).json({ error: 'Upload failed' });
+-  });
+-
+-  req.on('error', (err) => {
+-    writeStream.destroy();
+-    res.status(400).json({ error: 'Bad request' });
+-  });
+-
+   req.pipe(writeStream);
+ 
+   writeStream.on('finish', () => {
