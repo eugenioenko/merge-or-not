@@ -1,0 +1,14 @@
+diff --git a/src/routes/reports.js b/src/routes/reports.js
+index 7c2a1f0..d8e4b6a 100644
+--- a/src/routes/reports.js
++++ b/src/routes/reports.js
+@@ -11,5 +11,5 @@ const REPORTS_DIR = path.join(__dirname, '..', 'data', 'reports');
+-router.get('/reports/:id', async (req, res) => {
+-  const data = await fs.promises.readFile(path.join(REPORTS_DIR, `${req.params.id}.json`));
+-  res.json(JSON.parse(data));
+-});
++router.get('/reports/:id', (req, res) => {
++  const data = fs.readFileSync(path.join(REPORTS_DIR, `${req.params.id}.json`));
++  res.json(JSON.parse(data));
++});
+ module.exports = router;

@@ -1,0 +1,10 @@
+diff --git a/src/graphql/resolvers/post.js b/src/graphql/resolvers/post.js
+index 5e1a0f3..b2c9d81 100644
+--- a/src/graphql/resolvers/post.js
++++ b/src/graphql/resolvers/post.js
+@@ -1,4 +1,4 @@
+ const Post = {
+-  author: (post, _args, { loaders }) => loaders.userLoader.load(post.authorId),
++  author: (post) => User.findById(post.authorId),
+   title: (post) => post.title,
+ };

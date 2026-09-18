@@ -1,0 +1,25 @@
+diff --git a/internal/handlers/order.go b/internal/handlers/order.go
+index 4f3c9d2..a91e7c1 100644
+--- a/internal/handlers/order.go
++++ b/internal/handlers/order.go
+@@ -8,3 +8,20 @@ func NewOrderHandler(db *sql.DB) *OrderHandler {
+ func NewOrderHandler(db *sql.DB) *OrderHandler {
+ 	return &OrderHandler{db: db}
+ }
++
++func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
++	session, ok := auth.FromContext(r.Context())
++	if !ok {
++		http.Error(w, "unauthorized", http.StatusUnauthorized)
++		return
++	}
++
++	orderID := chi.URLParam(r, "id")
++	order, err := h.db.FindOrderByID(r.Context(), orderID)
++	if err != nil {
++		http.Error(w, "order not found", http.StatusNotFound)
++		return
++	}
++
++	json.NewEncoder(w).Encode(order)
++}

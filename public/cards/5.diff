@@ -1,0 +1,14 @@
+diff --git a/app/routes/orders.py b/app/routes/orders.py
+index 9d4e2a1..1f6b7c3 100644
+--- a/app/routes/orders.py
++++ b/app/routes/orders.py
+@@ -8,8 +8,4 @@ from app.models import Order
+ @app.route("/orders", methods=["POST"])
+ def create_order():
+-    idempotency_key = request.headers.get("Idempotency-Key")
+-    existing = Order.query.filter_by(idempotency_key=idempotency_key).first()
+-    if existing:
+-        return jsonify(existing.to_dict()), 200
+-    order = Order.create(**request.json, idempotency_key=idempotency_key)
++    order = Order.create(**request.json)
+     return jsonify(order.to_dict()), 201

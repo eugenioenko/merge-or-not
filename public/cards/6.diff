@@ -1,0 +1,15 @@
+diff --git a/Services/DiscountService.cs b/Services/DiscountService.cs
+index e1a2b3c..f4d5e6a 100644
+--- a/Services/DiscountService.cs
++++ b/Services/DiscountService.cs
+@@ -10,5 +10,10 @@ public class DiscountService
+     public decimal ApplyDiscount(decimal price, decimal percent)
+     {
++        if (percent < 0 || percent > 100)
++        {
++            throw new ArgumentOutOfRangeException(nameof(percent), "Percent must be between 0 and 100.");
++        }
++
+         return price - (price * percent / 100);
+     }
+ }
