@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "CommentBox renders user-submitted comments. Comment bodies may contain rich text formatting from the editor.",
+  "explanation": "Removing the DOMPurify sanitize() call before dangerouslySetInnerHTML injects raw user HTML into the page — any <script>, onerror handler, or event attribute in a comment executes as XSS in every viewer's browser. Fix: always sanitize untrusted HTML through DOMPurify (or similar) before passing it to dangerouslySetInnerHTML.",
+  "language": "react",
+  "category": "security",
+  "difficulty": 1
+}

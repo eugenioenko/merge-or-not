@@ -1,0 +1,29 @@
+diff --git a/internal/importer/csv.go b/internal/importer/csv.go
+index 5c0e2d1..a8f3b07 100644
+--- a/internal/importer/csv.go
++++ b/internal/importer/csv.go
+@@ -10,3 +10,24 @@ func NewCSVImporter(dir string) *CSVImporter {
+ 	return &CSVImporter{dir: dir}
+ }
+ 
++func (imp *CSVImporter) ImportAll() error {
++	files, err := os.ReadDir(imp.dir)
++	if err != nil {
++		return fmt.Errorf("reading dir: %w", err)
++	}
++	for _, entry := range files {
++		if filepath.Ext(entry.Name()) != ".csv" {
++			continue
++		}
++		f, err := os.Open(filepath.Join(imp.dir, entry.Name()))
++		if err != nil {
++			return fmt.Errorf("opening %s: %w", entry.Name(), err)
++		}
++		defer f.Close()
++		err = imp.process(f)
++		if err != nil {
++			return fmt.Errorf("processing %s: %w", entry.Name(), err)
++		}
++	}
++	return nil
++}

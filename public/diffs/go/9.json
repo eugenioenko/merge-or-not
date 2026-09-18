@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "reject",
+  "context": "Worker pool that runs a slice of tasks concurrently and collects errors. Used at startup to initialize subsystems in parallel.",
+  "explanation": "wg.Add(1) is called inside the goroutine instead of before launching it — the main goroutine can reach wg.Wait() before any child has called Add, causing Wait to return immediately with work still in flight. Fix: move wg.Add(1) before the go statement so the WaitGroup count is incremented before the goroutine is scheduled.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 3
+}

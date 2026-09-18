@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "Refactoring the notification service to simplify the default channels parameter.",
+  "explanation": "Using a mutable list as a default argument means every call shares the same list object. If any caller mutates it (e.g. channels.append(\"sms\")), the default is permanently changed for all future calls. Fix: keep the None sentinel and create a fresh list inside the function body.",
+  "language": "python",
+  "category": "correctness",
+  "difficulty": 2
+}

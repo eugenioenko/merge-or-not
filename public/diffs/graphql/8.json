@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "reject",
+  "context": "Query resolver fetches a single post by ID. The API is publicly accessible to logged-in users.",
+  "explanation": "The new error handling throws the raw database error message and full stack trace back to the client. This leaks internal implementation details (table names, ORM version, connection strings) that help attackers. Fix: log the full error server-side and return a generic user-facing message like the original code did.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 3
+}

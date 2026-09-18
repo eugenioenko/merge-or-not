@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "reject",
+  "context": "Test workflow for a Node.js API that uses Postgres, Stripe, and Redis. A teammate added environment variables for the test runner.",
+  "explanation": "Two problems: (1) Real secret values (Stripe test key, JWT secret) are hardcoded in the workflow file, which is committed to the repo — anyone with read access sees them. Use `${{ secrets.STRIPE_SECRET_KEY }}` instead. (2) The debug step runs `env | sort` on failure, which dumps every environment variable (including secrets) into the public workflow logs. Fix: use the secrets context for sensitive values and remove the env dump.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 2
+}

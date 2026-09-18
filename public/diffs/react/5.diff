@@ -1,0 +1,17 @@
+diff --git a/src/components/CommentBox.jsx b/src/components/CommentBox.jsx
+index 2c8e1a5..f4d7b12 100644
+--- a/src/components/CommentBox.jsx
++++ b/src/components/CommentBox.jsx
+@@ -1,10 +1,9 @@
+-import { sanitize } from 'dompurify';
+ import { useState } from 'react';
+ 
+ export function CommentBox({ comment }) {
+   return (
+     <div className="comment">
+-      <div dangerouslySetInnerHTML={{ __html: sanitize(comment.body) }} />
++      <div dangerouslySetInnerHTML={{ __html: comment.body }} />
+       <span className="comment-author">{comment.author}</span>
+     </div>
+   );
+ }

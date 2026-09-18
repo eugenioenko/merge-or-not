@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "Endpoint serves pre-generated report files that can be several MB. The Node process is single-threaded and handles many concurrent requests.",
+  "explanation": "fs.readFileSync blocks the event loop for the entire read, stalling every other in-flight request on the process while a multi-MB file loads. Fix: keep the handler async and use fs.promises.readFile (or stream the file) so other requests keep being served.",
+  "language": "node",
+  "category": "performance",
+  "difficulty": 3
+}

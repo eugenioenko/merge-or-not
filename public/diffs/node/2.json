@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "Refactors the user search endpoint to use the shared db module instead of a local Pool instance.",
+  "explanation": "The parameterized query ($1 placeholder) was replaced with direct string interpolation into the SQL — a textbook SQL injection. An attacker can supply a name like `%' OR 1=1 --` to dump every user. Fix: use parameterized queries (`db.query('...WHERE name LIKE $1', ['%' + name + '%'])`).",
+  "language": "node",
+  "category": "security",
+  "difficulty": 2
+}

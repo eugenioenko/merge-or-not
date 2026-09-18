@@ -1,0 +1,29 @@
+diff --git a/internal/worker/pool.go b/internal/worker/pool.go
+index 4b2e1d3..c9f8a06 100644
+--- a/internal/worker/pool.go
++++ b/internal/worker/pool.go
+@@ -11,3 +11,23 @@ func NewPool(size int) *Pool {
+ 	return &Pool{size: size}
+ }
+ 
++func (p *Pool) Run(tasks []func() error) error {
++	var wg sync.WaitGroup
++	errs := make(chan error, len(tasks))
++
++	for _, task := range tasks {
++		go func() {
++			wg.Add(1)
++			defer wg.Done()
++			if err := task(); err != nil {
++				errs <- err
++			}
++		}()
++	}
++
++	wg.Wait()
++	close(errs)
++	for err := range errs {
++		return err
++	}
++	return nil
++}

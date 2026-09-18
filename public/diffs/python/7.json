@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "reject",
+  "context": "Simplifying the stock reservation endpoint by removing the explicit transaction and row lock.",
+  "explanation": "Removing select_for_update() and transaction.atomic() creates a race condition: two concurrent requests can both read stock=1, both pass the check, and both decrement — overselling the last item (or driving stock negative). Fix: keep the atomic transaction with select_for_update() so the row is locked between the read and the write.",
+  "language": "python",
+  "category": "correctness",
+  "difficulty": 4
+}

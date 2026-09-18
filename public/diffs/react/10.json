@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "merge",
+  "context": "FileUpload wraps a file input with loading and error states. The parent passes an onUpload callback that sends the file to the server.",
+  "explanation": "Safe to merge. The refactor stabilizes the handler with useCallback, surfaces upload errors in the UI instead of swallowing them to console.error, wraps the file in FormData for proper multipart upload, and correctly disables the input during upload. All improvements are sound.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 2
+}

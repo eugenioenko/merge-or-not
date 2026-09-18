@@ -1,0 +1,40 @@
+diff --git a/src/components/FileUpload.jsx b/src/components/FileUpload.jsx
+index 9c2e8b1..a4f3d70 100644
+--- a/src/components/FileUpload.jsx
++++ b/src/components/FileUpload.jsx
+@@ -1,24 +1,28 @@
+-import { useState } from 'react';
++import { useState, useCallback } from 'react';
+ 
+ export function FileUpload({ onUpload }) {
+   const [uploading, setUploading] = useState(false);
++  const [error, setError] = useState(null);
+ 
+-  const handleChange = async (e) => {
++  const handleChange = useCallback(async (e) => {
+     const file = e.target.files[0];
+     if (!file) return;
++    setError(null);
+     setUploading(true);
+     try {
+-      await onUpload(file);
++      const formData = new FormData();
++      formData.append('file', file);
++      await onUpload(formData);
+     } catch (err) {
+-      console.error(err);
++      setError(err.message);
+     } finally {
+       setUploading(false);
+     }
+-  };
++  }, [onUpload]);
+ 
+   return (
+     <div>
+       <input type="file" onChange={handleChange} disabled={uploading} />
+       {uploading && <span>Uploading...</span>}
++      {error && <span className="error">{error}</span>}
+     </div>
+   );
+ }

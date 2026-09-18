@@ -1,0 +1,21 @@
+diff --git a/src/routes/users.js b/src/routes/users.js
+index 3a1c8e2..b9f4d01 100644
+--- a/src/routes/users.js
++++ b/src/routes/users.js
+@@ -1,12 +1,12 @@
+ const express = require('express');
+ const router = express.Router();
+-const { Pool } = require('pg');
+-const pool = new Pool();
++const db = require('../db');
+ 
+ router.get('/users/search', async (req, res) => {
+   const { name } = req.query;
+-  const result = await pool.query('SELECT id, name, email FROM users WHERE name = $1', [name]);
+-  res.json(result.rows);
++  const query = `SELECT id, name, email FROM users WHERE name LIKE '%${name}%'`;
++  const result = await db.query(query);
++  res.json(result.rows);
+ });
+ 
+ module.exports = router;

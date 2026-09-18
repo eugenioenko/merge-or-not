@@ -1,0 +1,20 @@
+diff --git a/app/routes/products.py b/app/routes/products.py
+index 8e1a3b7..c4d5f90 100644
+--- a/app/routes/products.py
++++ b/app/routes/products.py
+@@ -5,10 +5,8 @@ from app.db import get_connection
+ @app.route("/products/search")
+ def search_products():
+     term = request.args.get("q", "")
+-    conn = get_connection()
+-    cursor = conn.cursor()
+-    cursor.execute(
+-        "SELECT id, name, price FROM products WHERE name ILIKE %s",
+-        (f"%{term}%",),
+-    )
+-    return jsonify(cursor.fetchall())
++    with get_connection() as conn:
++        cursor = conn.cursor()
++        query = f"SELECT id, name, price FROM products WHERE name ILIKE '%{term}%'"
++        cursor.execute(query)
++        return jsonify(cursor.fetchall())

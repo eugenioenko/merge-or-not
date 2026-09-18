@@ -1,0 +1,23 @@
+diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
+index 6b0a31c..e2f9d8a 100644
+--- a/.github/workflows/build.yml
++++ b/.github/workflows/build.yml
+@@ -4,16 +4,16 @@ on:
+     branches: [main]
+
+ jobs:
+   build:
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+       - run: npm ci
+       - run: npm run build
+       - name: Upload artifact
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@main
+         with:
+           name: dist
+           path: ./dist

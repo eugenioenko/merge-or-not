@@ -1,0 +1,23 @@
+diff --git a/src/components/ProductPage.jsx b/src/components/ProductPage.jsx
+index 4a7e2c3..b8f1d50 100644
+--- a/src/components/ProductPage.jsx
++++ b/src/components/ProductPage.jsx
+@@ -4,14 +4,15 @@ import { fetchProduct } from '../api/products';
+ export function ProductPage({ productId }) {
+   const [product, setProduct] = useState(null);
+ 
+   useEffect(() => {
+-    fetchProduct(productId).then(setProduct);
+-  }, [productId]);
++    fetchProduct(productId).then(setProduct);
++  }, [productId, product]);
+ 
+   if (!product) return <Spinner />;
+   return (
+     <div>
+       <h1>{product.name}</h1>
+       <p>{product.description}</p>
++      <span>${product.price}</span>
+     </div>
+   );
+ }

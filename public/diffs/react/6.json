@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "reject",
+  "context": "TodoList manages an array of todo items in state. Items can be added and toggled between done/not-done.",
+  "explanation": "Both addTodo and toggleTodo mutate the existing state array (push, direct property assignment) and pass the same reference to setTodos. React sees the same object reference and skips the re-render — the UI never updates. Fix: create new arrays and objects via spread or map so React detects a state change.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 2
+}

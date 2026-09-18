@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "Background workers consume jobs from a channel and publish results asynchronously. The service runs for hours in production.",
+  "explanation": "The goroutine spawned by go p.publish(result, ch) is never awaited and ch is never read — if publish blocks on sending to ch, the goroutine leaks. Over hours of operation, leaked goroutines accumulate and exhaust memory. Fix: either await the goroutine via <-ch, or drop ch entirely and let publish run fire-and-forget without a blocking channel send.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 3
+}

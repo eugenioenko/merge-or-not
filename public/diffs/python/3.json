@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Refactoring product search to use a context manager for the DB connection. The `term` parameter comes from the query string.",
+  "explanation": "The search term is interpolated directly into the SQL string with an f-string, enabling SQL injection — an attacker can close the quote and inject arbitrary SQL. The old code used a parameterized query (%s placeholder) which was safe. Fix: use cursor.execute(\"...ILIKE %s\", (f\"%{term}%\",)) with a parameter placeholder instead of string formatting.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 2
+}

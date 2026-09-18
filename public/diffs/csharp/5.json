@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "merge",
+  "context": "Fixes resource management in the user lookup method. SqlConnection implements IDisposable.",
+  "explanation": "Safe to merge. Adding the using declaration ensures the SqlConnection is disposed when the method exits, preventing connection pool exhaustion under load. The query logic is unchanged.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 2
+}

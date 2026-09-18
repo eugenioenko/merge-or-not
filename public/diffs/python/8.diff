@@ -1,0 +1,22 @@
+diff --git a/app/services/export.py b/app/services/export.py
+index 3b2c4a8..e7d1f09 100644
+--- a/app/services/export.py
++++ b/app/services/export.py
+@@ -4,10 +4,9 @@ from app.models import Report
+
+
+ def export_report(report_id, dest_dir):
+     report = Report.get_or_404(report_id)
+     filename = os.path.join(dest_dir, f"{report.slug}.csv")
+-    f = open(filename, "w", newline="")
+-    writer = csv.writer(f)
+-    writer.writerow(["id", "title", "value"])
+-    for row in report.rows:
+-        writer.writerow([row.id, row.title, row.value])
+-    f.close()
++    with open(filename, "w", newline="") as f:
++        writer = csv.writer(f)
++        writer.writerow(["id", "title", "value"])
++        for row in report.rows:
++            writer.writerow([row.id, row.title, row.value])
+     return filename

@@ -1,0 +1,28 @@
+diff --git a/src/graphql/resolvers/mutation.js b/src/graphql/resolvers/mutation.js
+index 3b4c5d6..a7e8f90 100644
+--- a/src/graphql/resolvers/mutation.js
++++ b/src/graphql/resolvers/mutation.js
+@@ -1,14 +1,21 @@
+ const Mutation = {
+   createComment: async (_parent, { input }, { db, currentUser }) => {
+     if (!currentUser) {
+       throw new AuthenticationError('Must be logged in');
+     }
++    const { postId, body } = input;
++    if (!body || body.trim().length === 0) {
++      throw new UserInputError('Comment body cannot be empty');
++    }
++    if (body.length > 5000) {
++      throw new UserInputError('Comment body too long');
++    }
+     return db.comment.create({
+       data: {
+-        body: input.body,
+-        postId: input.postId,
++        body: body.trim(),
++        postId,
+         authorId: currentUser.id,
+       },
+     });
+   },
+ };

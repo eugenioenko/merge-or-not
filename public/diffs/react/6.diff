@@ -1,0 +1,21 @@
+diff --git a/src/components/TodoList.jsx b/src/components/TodoList.jsx
+index 1a9c4e7..d3b5f10 100644
+--- a/src/components/TodoList.jsx
++++ b/src/components/TodoList.jsx
+@@ -4,10 +4,9 @@ export function TodoList() {
+   const [todos, setTodos] = useState([]);
+ 
+   const addTodo = (text) => {
+-    setTodos((prev) => [...prev, { id: crypto.randomUUID(), text, done: false }]);
++    todos.push({ id: crypto.randomUUID(), text, done: false });
++    setTodos(todos);
+   };
+ 
+   const toggleTodo = (id) => {
+-    setTodos((prev) =>
+-      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
+-    );
++    const todo = todos.find((t) => t.id === id);
++    todo.done = !todo.done;
++    setTodos(todos);
+   };

@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "reject",
+  "context": "ProductPage fetches product details whenever the product ID changes and renders the result.",
+  "explanation": "Adding product to the dependency array creates an infinite loop: the effect fetches data, setProduct updates product, the changed product re-triggers the effect, which fetches again, forever. Fix: remove product from the dependency array — only productId should trigger a re-fetch.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 2
+}

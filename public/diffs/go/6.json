@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "reject",
+  "context": "Batch importer reads every CSV file in a directory and processes each one sequentially. The directory may contain hundreds of files.",
+  "explanation": "defer f.Close() inside the loop does not run until ImportAll returns — all file descriptors stay open simultaneously, potentially hitting the OS open-file limit and causing failures on large directories. Fix: extract the per-file logic into a helper function so the defer runs after each file, or close the file explicitly before the next iteration.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "SearchBox debounces the search input before calling onSearch. `query` is component state updated on every keystroke.",
+  "explanation": "Removing query and onSearch from the dependency array makes the effect close over the query value from the very first render — every debounced call fires with that stale value instead of the latest input. Fix: keep [query, onSearch] in the dependency array so the effect always sees the current query.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 2
+}

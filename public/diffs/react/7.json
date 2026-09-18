@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "reject",
+  "context": "ChatMessages opens a WebSocket to stream real-time messages for the active chat room. Users switch rooms frequently.",
+  "explanation": "The cleanup function that calls ws.close() was removed. When roomId changes, the effect runs again and opens a new WebSocket without closing the previous one — each room switch leaks an open connection, and stale sockets keep pushing messages from old rooms into the current view. Fix: restore return () => ws.close() so every connection is cleaned up when the room changes or the component unmounts.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 2
+}

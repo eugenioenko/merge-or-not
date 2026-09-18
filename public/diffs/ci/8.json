@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "merge",
+  "context": "CI workflow for a cross-platform npm library. The team wants to verify compatibility across Node versions and operating systems.",
+  "explanation": "Safe to merge. Replaces a single-platform test run with a matrix strategy covering three OSes and three Node versions with fail-fast disabled, so one failure does not cancel other in-progress jobs. The build step was correctly removed from the test job (it belongs in a separate build job). This is a standard, well-structured CI matrix.",
+  "language": "ci",
+  "category": "correctness",
+  "difficulty": 1
+}

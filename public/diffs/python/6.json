@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "reject",
+  "context": "Simplifying the payment processing error handling to reduce nesting.",
+  "explanation": "The bare except: pass silences every exception (network errors, invalid data, gateway timeouts) and then unconditionally marks the payment as \"paid\" — even when the charge actually failed or never reached the gateway. A declined card now creates a \"paid\" Payment and confirms the order. Fix: keep the specific except clause, record the correct status, and re-raise or return an error.",
+  "language": "python",
+  "category": "error-handling",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "reject",
+  "context": "Dashboard fetches stats on mount and shows a loading indicator. In development with StrictMode, the component mounts twice. Users sometimes navigate away before data loads.",
+  "explanation": "Removing the cancellation flag means if the user navigates away before fetchStats resolves, the .then callback calls setStats on an unmounted component — a no-op in React 18 but a real bug with any cleanup logic or follow-up renders. In StrictMode double-mount, the first (discarded) mount also applies stale data. Fix: keep the cancelled flag and check it before calling setStats.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 3
+}

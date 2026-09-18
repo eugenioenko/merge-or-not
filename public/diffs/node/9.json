@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "merge",
+  "context": "Reworks the transaction CSV export to stream rows instead of buffering the full result set in memory.",
+  "explanation": "Safe to merge. Replacing the buffer-everything approach with a database cursor piped through a Transform stream means the server holds only a small window of rows in memory at a time, letting it export tables of any size without risking an out-of-memory crash.",
+  "language": "node",
+  "category": "performance",
+  "difficulty": 3
+}

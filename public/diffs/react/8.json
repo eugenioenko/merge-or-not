@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "merge",
+  "context": "ThemeProvider supplies the current theme and a toggle function to the component tree via context. Many deeply nested components consume this context.",
+  "explanation": "Safe to merge. Wrapping the context value in useMemo prevents creating a new object on every render, which would force every context consumer to re-render even when the theme has not changed. The extracted useTheme hook is a clean convenience that reduces boilerplate in consumers.",
+  "language": "react",
+  "category": "performance",
+  "difficulty": 3
+}

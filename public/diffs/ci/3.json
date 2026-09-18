@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Build workflow produces artifacts for downstream deploy jobs. A teammate updated the upload step.",
+  "explanation": "Pinning actions/upload-artifact to `@main` instead of a version tag or SHA means every run pulls whatever is on the action's main branch at that moment — a compromised or force-pushed commit in that repo runs inside your workflow with full repo access. Fix: pin to a release tag (@v4) or, better, a full commit SHA.",
+  "language": "ci",
+  "category": "supply-chain",
+  "difficulty": 2
+}

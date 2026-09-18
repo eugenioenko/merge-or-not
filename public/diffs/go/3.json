@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "DisplayBalance is called in an HTTP handler to render the user's account balance as a dollar string. GetBalance queries the database.",
+  "explanation": "DisplayBalance discards the error from GetBalance with _ — if the query fails (user not found, DB timeout), balance is silently zero and the user sees \"$0.00\" instead of an error. Fix: check the error and propagate it so the caller can return an appropriate HTTP error instead of a misleading zero balance.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

@@ -1,0 +1,18 @@
+diff --git a/src/graphql/resolvers/user.js b/src/graphql/resolvers/user.js
+index 2d3a1b4..e5f6c78 100644
+--- a/src/graphql/resolvers/user.js
++++ b/src/graphql/resolvers/user.js
+@@ -1,10 +1,9 @@
+ const User = {
+   email: (user, _args, { currentUser }) => {
+-    if (currentUser && currentUser.id === user.id) {
+-      return user.email;
+-    }
+-    return null;
++    return user.email;
+   },
++  hashedPassword: (user) => user.hashedPassword,
++  ssn: (user) => user.ssn,
+   displayName: (user) => user.displayName,
+   posts: (user, _args, { loaders }) => loaders.postsByAuthorLoader.load(user.id),
+ };

@@ -1,0 +1,22 @@
+diff --git a/src/graphql/resolvers/query.js b/src/graphql/resolvers/query.js
+index 4e5f6a7..b8c9d01 100644
+--- a/src/graphql/resolvers/query.js
++++ b/src/graphql/resolvers/query.js
+@@ -1,12 +1,14 @@
+ const Query = {
+-  post: async (_parent, { id }, { db }) => {
++  post: async (_parent, { id }, { db, currentUser }) => {
++    if (!currentUser) throw new AuthenticationError('Must be logged in');
+     try {
+       const post = await db.post.findUnique({ where: { id } });
+       if (!post) return null;
+       return post;
+     } catch (error) {
+-      logger.error('Failed to fetch post', { postId: id, error: error.message });
+-      throw new Error('Unable to load post. Please try again.');
++      throw new Error(
++        `Database query failed: ${error.message} — stack: ${error.stack}`
++      );
+     }
+   },
+ };

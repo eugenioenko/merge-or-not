@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "merge",
+  "context": "IP-based rate limiter used as HTTP middleware. Previously the visitors map had no concurrency protection and panicked under load.",
+  "explanation": "Safe to merge. Adding sync.Mutex and locking around the map access in Allow() fixes the concurrent map panic. The lock scope is minimal (just the map read/write), the defer ensures unlock on all paths, and the constructor properly initializes the map. This is the correct fix for the race condition.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 2
+}

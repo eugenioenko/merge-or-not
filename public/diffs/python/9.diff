@@ -1,0 +1,24 @@
+diff --git a/app/services/invitations.py b/app/services/invitations.py
+index 7c5d2a1..e8b3f04 100644
+--- a/app/services/invitations.py
++++ b/app/services/invitations.py
+@@ -1,10 +1,13 @@
+-import uuid
++import secrets
+ from app.models import Invitation
+ from app.mail import send_email
+
+
+ def create_invitation(team, email):
+-    token = str(uuid.uuid4())
+-    invite = Invitation.create(team_id=team.id, email=email, token=token)
++    token = secrets.token_urlsafe(32)
++    invite = Invitation.create(
++        team_id=team.id, email=email, token=token
++    )
+     send_email(
+-        email, "You're invited", f"/join?token={token}",
++        email, "You're invited",
++        f"/teams/{team.slug}/join?token={token}",
+     )
+     return invite

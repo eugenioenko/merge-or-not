@@ -1,0 +1,18 @@
+diff --git a/app/routes/users.py b/app/routes/users.py
+index 4b3e1d7..a9c2f80 100644
+--- a/app/routes/users.py
++++ b/app/routes/users.py
+@@ -5,9 +5,7 @@ from app.auth import login_required, current_user
+ @app.route("/users/me", methods=["PATCH"])
+ @login_required
+ def update_profile():
+-    allowed = {"display_name", "bio", "avatar_url"}
+-    data = {k: v for k, v in request.json.items() if k in allowed}
+-    for key, value in data.items():
+-        setattr(current_user, key, value)
+-    current_user.save()
+-    return jsonify(current_user.to_dict())
++    for key, value in request.json.items():
++        setattr(current_user, key, value)
++    current_user.save()
++    return jsonify(current_user.to_dict())

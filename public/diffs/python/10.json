@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "reject",
+  "context": "Simplifying the user profile update endpoint by removing the field allowlist.",
+  "explanation": "Removing the allowlist lets the caller set ANY attribute on the user model via the JSON body — including is_admin, password_hash, email_verified, or role. This is a mass-assignment vulnerability. Fix: keep the explicit allowlist of permitted fields and filter the input before calling setattr.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 3
+}

@@ -1,0 +1,30 @@
+diff --git a/src/components/Dashboard.jsx b/src/components/Dashboard.jsx
+index 7e4c2a1..b3f9d20 100644
+--- a/src/components/Dashboard.jsx
++++ b/src/components/Dashboard.jsx
+@@ -3,18 +3,20 @@ import { fetchStats } from '../api/stats';
+ 
+ export function Dashboard() {
+   const [stats, setStats] = useState(null);
+-  const [loading, setLoading] = useState(true);
+ 
+   useEffect(() => {
+-    let cancelled = false;
+-    fetchStats().then((data) => {
+-      if (!cancelled) {
+-        setStats(data);
+-        setLoading(false);
+-      }
+-    });
+-    return () => { cancelled = true; };
++    async function load() {
++      const data = await fetchStats();
++      setStats(data);
++    }
++    load();
+   }, []);
+ 
+-  if (loading) return <p>Loading...</p>;
++  if (!stats) return <p>Loading...</p>;
+   return <StatsGrid data={stats} />;
+ }

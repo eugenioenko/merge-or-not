@@ -1,0 +1,20 @@
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index 3d4e5f6..a7b8c9d 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -6,6 +6,7 @@ on:
+ jobs:
+   publish:
+     runs-on: ubuntu-latest
++    permissions: write-all
+     steps:
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
+@@ -14,6 +15,7 @@ jobs:
+           registry-url: 'https://registry.npmjs.org'
+       - run: npm ci
+       - run: npm run build
++      - run: npm version patch
+       - run: npm publish
+         env:
+           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

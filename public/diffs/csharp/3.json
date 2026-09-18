@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Updates the notification service method signature. This method is called from a controller action after placing an order.",
+  "explanation": "async void swallows exceptions — if SendAsync throws, the exception crashes the process instead of propagating to the caller, and the caller has no way to await completion or catch failures. Fix: keep the return type as async Task so callers can await it and handle errors.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 2
+}

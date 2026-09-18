@@ -1,0 +1,21 @@
+diff --git a/internal/service/account.go b/internal/service/account.go
+index 1d4c8b3..e5f9a02 100644
+--- a/internal/service/account.go
++++ b/internal/service/account.go
+@@ -15,3 +15,16 @@ func NewAccountService(db *sql.DB) *AccountService {
+ 	return &AccountService{db: db}
+ }
+ 
++func (s *AccountService) GetBalance(ctx context.Context, userID string) (int64, error) {
++	row := s.db.QueryRowContext(ctx,
++		"SELECT balance FROM accounts WHERE user_id = $1", userID)
++
++	var balance int64
++	err := row.Scan(&balance)
++	return balance, err
++}
++
++func (s *AccountService) DisplayBalance(ctx context.Context, userID string) string {
++	balance, _ := s.GetBalance(ctx, userID)
++	return fmt.Sprintf("$%d.%02d", balance/100, balance%100)
++}

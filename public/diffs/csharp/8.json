@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "reject",
+  "context": "Replaces the explicit null check with null-conditional access for cleaner code. `_userRepo.GetById` returns null when no user matches.",
+  "explanation": "Removing the null guard and using ?. on Profile does not protect the next line — user.Email still dereferences user directly and throws NullReferenceException when user is null. Fix: keep the early-return null check, or apply ?. consistently and handle the null case before accessing user.Email.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 2
+}

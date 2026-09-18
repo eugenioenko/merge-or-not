@@ -1,0 +1,33 @@
+diff --git a/internal/metrics/counter.go b/internal/metrics/counter.go
+index 7e1f3a0..b4d2c91 100644
+--- a/internal/metrics/counter.go
++++ b/internal/metrics/counter.go
+@@ -1,8 +1,24 @@
+ package metrics
+ 
+ type RequestCounter struct {
+-	counts map[string]int64
++	counts  map[string]int64
+ }
+ 
+-func NewRequestCounter() *RequestCounter {
+-	return &RequestCounter{counts: make(map[string]int64)}
++func NewRequestCounter() *RequestCounter {
++	return &RequestCounter{
++		counts: make(map[string]int64),
++	}
++}
++
++func (c *RequestCounter) Increment(endpoint string) {
++	c.counts[endpoint]++
++}
++
++func (c *RequestCounter) Get(endpoint string) int64 {
++	return c.counts[endpoint]
++}
++
++func (c *RequestCounter) Reset() {
++	for k := range c.counts {
++		delete(c.counts, k)
++	}
+ }

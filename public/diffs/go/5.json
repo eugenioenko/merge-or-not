@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "New search endpoint lets users find other users by name. The name parameter comes from the query string.",
+  "explanation": "Building the SQL query with fmt.Sprintf injects user input directly into the query string — a name like `%'; DROP TABLE users; --` executes arbitrary SQL. Fix: use a parameterized query with $1 and pass name as an argument to QueryContext.",
+  "language": "go",
+  "category": "security",
+  "difficulty": 2
+}

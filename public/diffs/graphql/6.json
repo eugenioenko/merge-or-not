@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "merge",
+  "context": "Mutation for posting a comment on a post. Input includes `postId` and `body`.",
+  "explanation": "Safe to merge. Adding validation that the comment body is non-empty and capped at 5000 characters prevents blank comments and excessively large payloads. Trimming whitespace is good hygiene. The auth check was already present.",
+  "language": "graphql",
+  "category": "correctness",
+  "difficulty": 2
+}

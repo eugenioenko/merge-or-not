@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "reject",
+  "context": "Adds a CancellationToken parameter so callers can cancel long-running order lookups. The endpoint has a 30-second timeout.",
+  "explanation": "The CancellationToken is accepted but never passed to any of the four downstream async calls — cancellation has no effect and the database queries keep running after the caller times out. Fix: pass ct to every awaited async method (e.g. GetByIdAsync(orderId, ct)).",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 3
+}

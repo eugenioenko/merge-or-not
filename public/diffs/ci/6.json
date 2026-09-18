@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "reject",
+  "context": "Docker build-and-push workflow for the production API image. Multiple Kubernetes clusters pull from this tag.",
+  "explanation": "Changing the tag from the unique commit SHA to `latest` means every push overwrites the same tag. Kubernetes nodes that already cached a previous `latest` may run stale code, rollbacks become impossible (no unique image to roll back to), and two concurrent pushes race to overwrite the same tag. Fix: tag with `${{ github.sha }}` or a semver release tag so every image is uniquely addressable.",
+  "language": "ci",
+  "category": "correctness",
+  "difficulty": 2
+}

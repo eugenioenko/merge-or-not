@@ -1,0 +1,18 @@
+diff --git a/Repositories/ProductRepository.cs b/Repositories/ProductRepository.cs
+index a1b2c3d..d4e5f6a 100644
+--- a/Repositories/ProductRepository.cs
++++ b/Repositories/ProductRepository.cs
+@@ -8,10 +8,9 @@ public class ProductRepository
+ 
+     public async Task<List<Product>> SearchAsync(string keyword)
+     {
+-        var parameters = new { Keyword = "%" + keyword + "%" };
+-        var sql = "SELECT * FROM Products WHERE Name LIKE @Keyword";
+-        using var connection = new SqlConnection(_connectionString);
+-        var results = await connection.QueryAsync<Product>(sql, parameters);
++        using var connection = new SqlConnection(_connectionString);
++        var sql = $"SELECT * FROM Products WHERE Name LIKE '%{keyword}%'";
++        var results = await connection.QueryAsync<Product>(sql);
+         return results.ToList();
+     }
+ }

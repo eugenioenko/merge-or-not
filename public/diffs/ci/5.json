@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "Release workflow publishes an npm package when a new tag is pushed.",
+  "explanation": "`permissions: write-all` grants the GITHUB_TOKEN every possible permission (packages, deployments, security events, etc.) when the job only needs enough to publish to npm. This violates the principle of least privilege — a compromised step can modify repo contents, create releases, or access other sensitive APIs. Fix: scope permissions to only what is needed, e.g. `contents: read` and `id-token: write`.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 3
+}

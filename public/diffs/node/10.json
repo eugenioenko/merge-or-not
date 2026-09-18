@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "reject",
+  "context": "Cleans up the CSV importer that reads a file and bulk-inserts its rows. `db.batchInsert` is callback-based and can fail on constraint violations.",
+  "explanation": "Two bugs: (1) the `db.batchInsert` callback argument was dropped, so insertion errors are silently swallowed and `callback` is called with a success count even when the insert failed; (2) the stream `error` event handler was removed, so a read failure (missing file, permission denied) emits an unhandled error and crashes the process. Fix: restore the callback on `batchInsert` and the `error` handler on the stream.",
+  "language": "node",
+  "category": "error-handling",
+  "difficulty": 2
+}

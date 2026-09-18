@@ -1,0 +1,27 @@
+diff --git a/src/graphql/middleware/depthLimit.js b/src/graphql/middleware/depthLimit.js
+index 1a2b3c4..d5e6f78 100644
+--- a/src/graphql/middleware/depthLimit.js
++++ b/src/graphql/middleware/depthLimit.js
+@@ -1,11 +1,15 @@
+-const depthLimit = require('graphql-depth-limit');
+-const costAnalysis = require('graphql-cost-analysis');
++const { createComplexityLimitRule } = require('graphql-validation-complexity');
+ 
+-const validationRules = [
+-  depthLimit(5),
+-  costAnalysis({ maximumCost: 1000 }),
+-];
++const MAX_DEPTH = 10;
++const MAX_COMPLEXITY = 2000;
++
++const complexityRule = createComplexityLimitRule(MAX_COMPLEXITY, {
++  scalarCost: 1,
++  objectCost: 5,
++  listFactor: 10,
++});
+ 
+ module.exports = {
+-  validationRules,
++  maxDepth: MAX_DEPTH,
++  validationRules: [complexityRule],
+ };

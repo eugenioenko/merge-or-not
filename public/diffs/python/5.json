@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "Cleaning up the password-reset flow and adding a token expiration time.",
+  "explanation": "random.choices() uses the Mersenne Twister PRNG, which is predictable — an attacker who observes a few tokens can predict future ones. The old code used random.SystemRandom() which reads from /dev/urandom and is cryptographically secure. Fix: use secrets.token_urlsafe() or restore random.SystemRandom() for security-sensitive token generation.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "merge",
+  "context": "Money is used as a dictionary key and in equality comparisons throughout the billing module. The class is sealed.",
+  "explanation": "Safe to merge. The IEquatable<Money> implementation is correct: Equals checks both Amount and Currency, GetHashCode uses the same fields via HashCode.Combine, the operators delegate to the static object.Equals for null safety, and the class is sealed so no derived types can break the contract.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 3
+}

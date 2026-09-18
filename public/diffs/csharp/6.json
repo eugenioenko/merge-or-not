@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "reject",
+  "context": "Adds an in-memory cache to avoid repeated database lookups. ConfigService is registered as transient — a new instance per request — but serves concurrent web requests.",
+  "explanation": "The static Dictionary is shared across all threads but is not thread-safe — concurrent reads and writes corrupt its internal state, causing lost updates, infinite loops, or KeyNotFoundException. Fix: use ConcurrentDictionary<string, string> or protect access with a lock.",
+  "language": "csharp",
+  "category": "concurrency",
+  "difficulty": 3
+}

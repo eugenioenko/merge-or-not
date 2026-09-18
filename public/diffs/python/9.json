@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "merge",
+  "context": "Switching the team invitation token from UUID to a cryptographic token and updating the invite link format.",
+  "explanation": "Safe to merge. secrets.token_urlsafe(32) produces a cryptographically strong, unguessable token — an improvement over uuid4() which, while random, is not designed for security-sensitive use and has less entropy. The updated invite URL includes the team slug for better routing. Both changes are clean improvements.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 3
+}

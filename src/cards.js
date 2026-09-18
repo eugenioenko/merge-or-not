@@ -1,58 +1,15 @@
-export const CARDS = {
-  1: {
-    id: 1,
-    answer: 'reject',
-    context: 'New endpoint to fetch a single order by ID. `session` is the authenticated user from the request context; the returned order has a `UserID` field.',
-    explanation: 'No ownership check — any logged-in user can read any other user\'s order just by changing the ID in the URL (IDOR). Fix: after loading the order, compare order.UserID against session.UserID and return 403 on mismatch before encoding the response.',
-    language: 'go',
-    category: 'auth',
-    difficulty: 3,
-  },
-  2: {
-    id: 2,
-    answer: 'reject',
-    context: 'Endpoint serves pre-generated report files that can be several MB. The Node process is single-threaded and handles many concurrent requests.',
-    explanation: 'fs.readFileSync blocks the event loop for the entire read, stalling every other in-flight request on the process while a multi-MB file loads. Fix: keep the handler async and use fs.promises.readFile (or stream the file) so other requests keep being served.',
-    language: 'node',
-    category: 'performance',
-    difficulty: 3,
-  },
-  3: {
-    id: 3,
-    answer: 'reject',
-    context: 'SearchBox debounces the search input before calling onSearch. `query` is component state updated on every keystroke.',
-    explanation: 'Removing query and onSearch from the dependency array makes the effect close over the query value from the very first render — every debounced call fires with that stale value instead of the latest input. Fix: keep [query, onSearch] in the dependency array so the effect always sees the current query.',
-    language: 'react',
-    category: 'correctness',
-    difficulty: 2,
-  },
-  4: {
-    id: 4,
-    answer: 'reject',
-    context: 'Resolves the `author` field for every Post returned in a list query, such as a feed of 50 posts. `loaders.userLoader` batches and dedupes User lookups within a single request.',
-    explanation: 'Dropping the DataLoader means each Post.author resolver fires its own query — a feed of 50 posts issues 50 separate User lookups (N+1) instead of one batched query. Fix: keep using loaders.userLoader.load(post.authorId) so all author lookups in a request batch into a single query.',
-    language: 'graphql',
-    category: 'performance',
-    difficulty: 3,
-  },
-  5: {
-    id: 5,
-    answer: 'reject',
-    context: 'The mobile client retries POST /orders automatically on timeout, resending the same payload with the same Idempotency-Key header.',
-    explanation: 'Removing the idempotency-key lookup means a retried request creates a second Order instead of returning the original one — a flaky network now produces duplicate orders (and duplicate charges). Fix: keep checking for an existing order with the same idempotency_key and return it (200) instead of creating a new one.',
-    language: 'python',
-    category: 'correctness',
-    difficulty: 3,
-  },
-  6: {
-    id: 6,
-    answer: 'merge',
-    context: 'Computes the discounted price shown at checkout. `percent` comes from an admin-configured promotion.',
-    explanation: 'Safe to merge. Guarding against a negative or over-100 percent value stops a bad promotion config from silently producing a nonsensical (or negative) price — it fails loudly instead. The arithmetic itself is unchanged and the added bounds check is correct.',
-    language: 'csharp',
-    category: 'correctness',
-    difficulty: 2,
-  },
-};
+export { CARDS, CARD_COUNT, LANG_COUNTS, LANGUAGES } from 'virtual:cards'
 
-export const CARD_COUNT = Object.keys(CARDS).length;
+export const LANGUAGE_LABELS = {
+  react: 'React',
+  vue: 'Vue',
+  angular: 'Angular',
+  go: 'Go',
+  node: 'Node.js',
+  python: 'Python',
+  csharp: 'C#',
+  graphql: 'GraphQL',
+  rest: 'REST',
+  auth: 'Auth',
+  ci: 'CI/CD',
+}

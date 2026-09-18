@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "Public query lists all users with cursor-based pagination. The `first` argument controls page size, capped at 100.",
+  "explanation": "Removing the `first` argument and setting `take: undefined` allows clients to fetch the entire users table in a single query — no pagination limit. This lets any anonymous client dump every row and opens the door to denial-of-service via memory exhaustion. Fix: keep the `first` parameter with a sensible default and a hard cap (e.g. Math.min(first, 100)).",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 2
+}

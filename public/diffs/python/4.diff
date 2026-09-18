@@ -1,0 +1,28 @@
+diff --git a/app/routes/imports.py b/app/routes/imports.py
+index 1c7e2d3..a8b4f56 100644
+--- a/app/routes/imports.py
++++ b/app/routes/imports.py
+@@ -1,12 +1,14 @@
+-import json
++import pickle
+ from flask import request, jsonify
+ from app import app
++from app.models import Dataset
+
+
+ @app.route("/datasets/import", methods=["POST"])
+ def import_dataset():
+     uploaded = request.files["file"]
+-    data = json.load(uploaded)
+-    if not isinstance(data, list):
+-        return jsonify({"error": "expected a JSON array"}), 400
+-    for row in data:
+-        Dataset.create(**row)
+-    return jsonify({"imported": len(data)}), 201
++    try:
++        data = pickle.load(uploaded)
++    except Exception:
++        return jsonify({"error": "invalid file format"}), 400
++    for item in data:
++        Dataset.create(**item)
++    return jsonify({"imported": len(data)}), 201

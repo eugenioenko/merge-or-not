@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "Production deploy workflow. The team wants deployments triggered automatically when PRs target main.",
+  "explanation": "The trigger was changed from push (fires after merge to main) to pull_request (fires when a PR is opened or updated). This deploys unreviewed, unmerged code to production every time someone pushes to a PR branch. Fix: keep the trigger as `push: branches: [main]` so only merged code reaches production.",
+  "language": "ci",
+  "category": "correctness",
+  "difficulty": 2
+}

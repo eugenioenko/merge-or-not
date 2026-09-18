@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "reject",
+  "context": "Mutation transfers credits from the logged-in user to another user. Both users have a numeric `balance` field.",
+  "explanation": "Removing the positivity check on `amount` lets a caller pass a negative number, which decrements the recipient and increments the sender — stealing credits. Removing the balance check allows the sender to go negative, creating credits out of thin air. Fix: keep both validations so amount is positive and the sender has sufficient funds.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "reject",
+  "context": "RequestCounter tracks per-endpoint hit counts. A single instance is shared across all HTTP handler goroutines via middleware.",
+  "explanation": "The counts map is read and written from concurrent goroutines with no synchronization — map operations in Go are not safe for concurrent use and will cause a fatal \"concurrent map read and map write\" panic at runtime. Fix: protect the map with a sync.Mutex or sync.RWMutex, or use sync.Map.",
+  "language": "go",
+  "category": "concurrency",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "reject",
+  "context": "Widens the parameter type from List to IEnumerable and adds summary statistics. Callers include a LINQ-to-SQL query that is passed directly without materializing.",
+  "explanation": "IEnumerable may be a deferred query — each call to Sum, Count, Average, and Max re-executes it from scratch, hitting the database four times instead of once. Fix: materialize with .ToList() first (var list = transactions.ToList()) and compute the aggregates against the list.",
+  "language": "csharp",
+  "category": "performance",
+  "difficulty": 3
+}

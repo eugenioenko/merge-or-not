@@ -1,0 +1,19 @@
+diff --git a/Services/ReportGenerator.cs b/Services/ReportGenerator.cs
+index a2b3c4d..e5f6a7b 100644
+--- a/Services/ReportGenerator.cs
++++ b/Services/ReportGenerator.cs
+@@ -8,8 +8,10 @@ public class ReportGenerator
+ 
+-    public Report Generate(List<Transaction> transactions)
++    public Report Generate(IEnumerable<Transaction> transactions)
+     {
+-        var total = transactions.Sum(t => t.Amount);
+-        var count = transactions.Count;
+-        return new Report(total, count);
++        var total = transactions.Sum(t => t.Amount);
++        var count = transactions.Count();
++        var avg = transactions.Average(t => t.Amount);
++        var max = transactions.Max(t => t.Amount);
++        return new Report(total, count, avg, max);
+     }
+ }

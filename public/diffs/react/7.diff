@@ -1,0 +1,29 @@
+diff --git a/src/components/ChatMessages.jsx b/src/components/ChatMessages.jsx
+index 3d8a1f2..e5c9b40 100644
+--- a/src/components/ChatMessages.jsx
++++ b/src/components/ChatMessages.jsx
+@@ -1,16 +1,19 @@
+ import { useState, useEffect, useRef } from 'react';
+ 
+ export function ChatMessages({ roomId }) {
+   const [messages, setMessages] = useState([]);
+-  const wsRef = useRef(null);
+ 
+   useEffect(() => {
+-    const ws = new WebSocket(`wss://api.example.com/rooms/${roomId}`);
+-    wsRef.current = ws;
++    const ws = new WebSocket(`wss://api.example.com/rooms/${roomId}`);
+     ws.onmessage = (e) => {
+       setMessages((prev) => [...prev, JSON.parse(e.data)]);
+     };
+-    return () => ws.close();
+   }, [roomId]);
+ 
+-  return <MessageList messages={messages} />;
++  return (
++    <div>
++      <MessageList messages={messages} />
++      <span>{messages.length} messages</span>
++    </div>
++  );
+ }

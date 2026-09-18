@@ -1,0 +1,32 @@
+diff --git a/.github/workflows/deploy.yml b/.github/workflows/deploy.yml
+index 7c8d9e0..f1a2b3c 100644
+--- a/.github/workflows/deploy.yml
++++ b/.github/workflows/deploy.yml
+@@ -3,11 +3,15 @@ on:
+   push:
+     branches: [main]
+
++concurrency:
++  group: deploy-${{ github.ref }}
++  cancel-in-progress: false
++
+ jobs:
+   deploy:
+     runs-on: ubuntu-latest
+     environment: production
++    permissions:
++      contents: read
++      id-token: write
+     steps:
+       - uses: actions/checkout@v4
+-      - run: npm ci && npm run build
+-      - run: aws s3 sync dist/ s3://$BUCKET --delete
+-        env:
+-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
++      - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
++        with:
++          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
++          aws-region: us-east-1
++      - run: npm ci && npm run build
++      - run: aws s3 sync dist/ s3://$BUCKET --delete

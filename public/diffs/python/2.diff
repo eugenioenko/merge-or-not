@@ -1,0 +1,19 @@
+diff --git a/app/services/notifications.py b/app/services/notifications.py
+index 4a2c1e8..7b3f9d2 100644
+--- a/app/services/notifications.py
++++ b/app/services/notifications.py
+@@ -1,8 +1,8 @@
+ from app.models import Notification
+ from app.mail import send_email
+
+
+-def notify_users(user_ids, message, channels=None):
+-    if channels is None:
+-        channels = ["email", "in_app"]
++def notify_users(user_ids, message, channels=["email", "in_app"]):
+     for uid in user_ids:
+         for channel in channels:
+-            Notification.create(user_id=uid, message=message, channel=channel)
++            Notification.create(
++                user_id=uid, message=message, channel=channel
++            )

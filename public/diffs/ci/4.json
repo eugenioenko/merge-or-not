@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "merge",
+  "context": "CI workflow runs tests and uploads coverage. The team is tightening security posture after a supply-chain audit.",
+  "explanation": "Safe to merge. Adds a top-level permissions block restricting GITHUB_TOKEN to read-only, and replaces the curl-piped-to-bash codecov uploader with the official codecov-action pinned to a full SHA. Both changes follow supply-chain security best practices with no functional downside.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 3
+}

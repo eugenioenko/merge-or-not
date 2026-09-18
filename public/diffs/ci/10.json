@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "reject",
+  "context": "CI workflow with test and lint jobs. A teammate added npm caching and made lint depend on test.",
+  "explanation": "Adding `needs: test` makes the lint job wait for the entire test suite to finish before starting. Lint and test are independent checks — running them in parallel gives faster feedback. The rest of the changes (npm caching, simplified eslint command) are fine, but serializing independent jobs unnecessarily slows the pipeline. Fix: remove the `needs: test` line so both jobs run concurrently.",
+  "language": "ci",
+  "category": "performance",
+  "difficulty": 2
+}

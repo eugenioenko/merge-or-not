@@ -1,0 +1,25 @@
+diff --git a/src/services/priceWatcher.js b/src/services/priceWatcher.js
+index 5a0e1c2..c4f8d3a 100644
+--- a/src/services/priceWatcher.js
++++ b/src/services/priceWatcher.js
+@@ -1,18 +1,16 @@
+ const EventEmitter = require('events');
+ const feed = require('../lib/priceFeed');
+ 
+ class PriceWatcher {
+   constructor() {
+     this.emitter = new EventEmitter();
+   }
+ 
+   subscribe(symbol, callback) {
+-    const handler = (data) => {
++    feed.on('tick', (data) => {
+       if (data.symbol === symbol) callback(data);
+-    };
+-    feed.on('tick', handler);
+-    return () => feed.removeListener('tick', handler);
++    });
+   }
+ }
+ 
+ module.exports = PriceWatcher;

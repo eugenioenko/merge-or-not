@@ -1,0 +1,27 @@
+diff --git a/src/services/importer.js b/src/services/importer.js
+index 7c4e2f0..d9a3b18 100644
+--- a/src/services/importer.js
++++ b/src/services/importer.js
+@@ -1,19 +1,16 @@
+ const fs = require('fs');
+ const csvParser = require('csv-parser');
+ const db = require('../db');
+ 
+ function importCSV(filePath, callback) {
+   const rows = [];
+   fs.createReadStream(filePath)
+     .pipe(csvParser())
+-    .on('data', (row) => rows.push(row))
++    .on('data', (row) => { rows.push(row); })
+     .on('end', () => {
+-      db.batchInsert('imports', rows, (err) => {
+-        if (err) return callback(err);
+-        callback(null, rows.length);
+-      });
++      db.batchInsert('imports', rows);
++      callback(null, rows.length);
+     })
+-    .on('error', (err) => callback(err));
+ }
+ 
+ module.exports = { importCSV };

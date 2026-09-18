@@ -1,0 +1,28 @@
+diff --git a/src/middleware/validateBody.js b/src/middleware/validateBody.js
+index 9f3e7c0..d1a4b82 100644
+--- a/src/middleware/validateBody.js
++++ b/src/middleware/validateBody.js
+@@ -1,8 +1,21 @@
+ function validateCreateUser(req, res, next) {
+-  if (!req.body.email || !req.body.name) {
++  const { email, name, age } = req.body;
++
++  if (!email || typeof email !== 'string' || !email.includes('@')) {
++    return res.status(400).json({ error: 'A valid email is required' });
++  }
++
++  if (!name || typeof name !== 'string' || name.trim().length === 0) {
+     return res.status(400).json({ error: 'Missing required fields' });
+   }
+-  next();
++
++  if (age !== undefined && (!Number.isInteger(age) || age < 0 || age > 150)) {
++    return res.status(400).json({ error: 'Invalid age' });
++  }
++
++  req.body.name = name.trim();
++  req.body.email = email.trim().toLowerCase();
++  next();
+ }
+ 
+ module.exports = { validateCreateUser };

@@ -1,0 +1,19 @@
+diff --git a/Services/OrderService.cs b/Services/OrderService.cs
+index f6a7b8c..c9d0e1f 100644
+--- a/Services/OrderService.cs
++++ b/Services/OrderService.cs
+@@ -10,8 +10,10 @@ public class OrderService
+ 
+-    public async Task<OrderSummary> GetSummaryAsync(int orderId)
++    public async Task<OrderSummary> GetSummaryAsync(int orderId, CancellationToken ct)
+     {
+-        var order = await _orderRepo.GetByIdAsync(orderId);
+-        var items = await _itemRepo.GetByOrderIdAsync(orderId);
+-        return new OrderSummary(order, items);
++        var order = await _orderRepo.GetByIdAsync(orderId);
++        var items = await _itemRepo.GetByOrderIdAsync(orderId);
++        var customer = await _customerRepo.GetByIdAsync(order.CustomerId);
++        var address = await _addressRepo.GetDefaultAsync(customer.Id);
++        return new OrderSummary(order, items, customer, address);
+     }
+ }

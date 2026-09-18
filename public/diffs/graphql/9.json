@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "answer": "reject",
+  "context": "Root Query type in the GraphQL schema. The API serves a public-facing web app and a mobile client.",
+  "explanation": "Replacing PostConnection with a raw [Post!]! list removes cursor-based pagination, and adding allUsers/allComments/allPosts as unbounded list queries lets any client dump entire tables. This causes massive over-fetching, high memory usage, and potential denial of service. Fix: keep connection types with pagination and avoid blanket \"all\" queries.",
+  "language": "graphql",
+  "category": "performance",
+  "difficulty": 2
+}

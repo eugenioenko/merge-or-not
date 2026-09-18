@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "Resolves the `author` field for every Post returned in a list query, such as a feed of 50 posts. `loaders.userLoader` batches and dedupes User lookups within a single request.",
+  "explanation": "Dropping the DataLoader means each Post.author resolver fires its own query — a feed of 50 posts issues 50 separate User lookups (N+1) instead of one batched query. Fix: keep using loaders.userLoader.load(post.authorId) so all author lookups in a request batch into a single query.",
+  "language": "graphql",
+  "category": "performance",
+  "difficulty": 3
+}

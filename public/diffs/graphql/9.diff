@@ -1,0 +1,15 @@
+diff --git a/src/graphql/schema/query.graphql b/src/graphql/schema/query.graphql
+index 9a0b1c2..d3e4f56 100644
+--- a/src/graphql/schema/query.graphql
++++ b/src/graphql/schema/query.graphql
+@@ -1,5 +1,9 @@
+ type Query {
+   me: User
+   post(id: ID!): Post
+-  posts(first: Int, after: ID): PostConnection!
++  posts(first: Int, after: ID): [Post!]!
++  allUsers: [User!]!
++  allComments: [Comment!]!
++  allPosts: [Post!]!
++  node(id: ID!): Node
+ }

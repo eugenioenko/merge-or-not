@@ -1,0 +1,30 @@
+diff --git a/src/components/ThemeProvider.jsx b/src/components/ThemeProvider.jsx
+index 6b2c8a0..f9d1e73 100644
+--- a/src/components/ThemeProvider.jsx
++++ b/src/components/ThemeProvider.jsx
+@@ -1,14 +1,22 @@
+-import { createContext, useState } from 'react';
++import { createContext, useState, useContext, useMemo } from 'react';
+ 
+ const ThemeContext = createContext('light');
+ 
+ export function ThemeProvider({ children }) {
+   const [theme, setTheme] = useState('light');
+ 
+-  const toggle = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
++  const value = useMemo(() => ({
++    theme,
++    toggle: () => setTheme((t) => (t === 'light' ? 'dark' : 'light')),
++  }), [theme]);
+ 
+   return (
+-    <ThemeContext.Provider value={{ theme, toggle }}>
++    <ThemeContext.Provider value={value}>
+       {children}
+     </ThemeContext.Provider>
+   );
+ }
++
++export function useTheme() {
++  return useContext(ThemeContext);
++}

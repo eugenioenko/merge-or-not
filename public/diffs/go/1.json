@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "New endpoint to fetch a single order by ID. `session` is the authenticated user from the request context; the returned order has a `UserID` field.",
+  "explanation": "No ownership check — any logged-in user can read any other user's order just by changing the ID in the URL (IDOR). Fix: after loading the order, compare order.UserID against session.UserID and return 403 on mismatch before encoding the response.",
+  "language": "go",
+  "category": "auth",
+  "difficulty": 3
+}

@@ -1,0 +1,27 @@
+diff --git a/internal/worker/processor.go b/internal/worker/processor.go
+index 8a2d1f0..c3b7e4a 100644
+--- a/internal/worker/processor.go
++++ b/internal/worker/processor.go
+@@ -12,3 +12,22 @@ type Processor struct {
+ 	queue  chan Job
+ 	logger *slog.Logger
+ }
++
++func (p *Processor) Start() {
++	for i := 0; i < p.workers; i++ {
++		go p.consume()
++	}
++}
++
++func (p *Processor) consume() {
++	for job := range p.queue {
++		result, err := p.handle(job)
++		if err != nil {
++			p.logger.Error("job failed", "id", job.ID, "err", err)
++			continue
++		}
++		ch := make(chan struct{})
++		go p.publish(result, ch)
++		p.logger.Info("job dispatched", "id", job.ID)
++	}
++}

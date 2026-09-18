@@ -1,0 +1,25 @@
+diff --git a/internal/repo/user.go b/internal/repo/user.go
+index 3a8e1c4..d9f2b05 100644
+--- a/internal/repo/user.go
++++ b/internal/repo/user.go
+@@ -18,3 +18,17 @@ func (r *UserRepo) GetByID(ctx context.Context, id string) (*User, error) {
+ 	}
+ 	return &u, nil
+ }
++
++func (r *UserRepo) Search(ctx context.Context, name string) ([]User, error) {
++	query := fmt.Sprintf(
++		"SELECT id, name, email FROM users WHERE name LIKE '%%%s%%'", name)
++	rows, err := r.db.QueryContext(ctx, query)
++	if err != nil {
++		return nil, err
++	}
++	defer rows.Close()
++	var users []User
++	for rows.Next() {
++		var u User
++		rows.Scan(&u.ID, &u.Name, &u.Email)
++		users = append(users, u)
++	}
++	return users, rows.Err()
++}

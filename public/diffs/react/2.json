@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "UserList renders a list of users with a remove button. Users can be removed and reordered via drag-and-drop.",
+  "explanation": "Using array index as the key on a reorderable, removable list causes React to reuse DOM nodes incorrectly after mutations — removed items show stale content and drag-and-drop visually corrupts the list. Fix: keep key={user.id} so each item tracks its identity across reorders.",
+  "language": "react",
+  "category": "correctness",
+  "difficulty": 2
+}

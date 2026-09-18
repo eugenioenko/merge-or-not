@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "The mobile client retries POST /orders automatically on timeout, resending the same payload with the same Idempotency-Key header.",
+  "explanation": "Removing the idempotency-key lookup means a retried request creates a second Order instead of returning the original one — a flaky network now produces duplicate orders (and duplicate charges). Fix: keep checking for an existing order with the same idempotency_key and return it (200) instead of creating a new one.",
+  "language": "python",
+  "category": "correctness",
+  "difficulty": 3
+}

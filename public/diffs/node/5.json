@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "Subscribers receive real-time price ticks from a shared EventEmitter-based feed. Each user session calls `subscribe()` when they open a watchlist.",
+  "explanation": "Removing the stored handler reference and the returned cleanup function means `removeListener` can never be called. Every subscribe adds a new anonymous listener to the long-lived feed emitter — after enough sessions, Node warns about a memory leak and the process slows to a crawl. Fix: keep a reference to the handler and return a teardown function that calls `feed.removeListener`.",
+  "language": "node",
+  "category": "performance",
+  "difficulty": 4
+}

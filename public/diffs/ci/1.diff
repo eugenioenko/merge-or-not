@@ -1,0 +1,22 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 8a3d1e2..b5f7c90 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -1,7 +1,7 @@
+ name: CI
+ on:
+   pull_request:
+-    types: [opened, synchronize]
++    types: [opened, synchronize, reopened]
+
+ jobs:
+   lint:
+@@ -9,6 +9,8 @@ jobs:
+     steps:
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
++        with:
++          node-version: '20'
+       - run: npm ci
+-      - run: npm run lint
++      - run: echo "PR title is ${{ github.event.pull_request.title }}" && npm run lint

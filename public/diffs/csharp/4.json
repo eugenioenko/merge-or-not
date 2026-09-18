@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "reject",
+  "context": "Simplifies the report endpoint by removing async/await. The app runs on ASP.NET Core with the default synchronization context.",
+  "explanation": "Calling .Result on an async method inside an ASP.NET request can deadlock — the synchronous block waits for the task while the thread pool thread it needs is blocked waiting. Under load this starves the thread pool and hangs requests. Fix: keep the method async and use await.",
+  "language": "csharp",
+  "category": "concurrency",
+  "difficulty": 4
+}

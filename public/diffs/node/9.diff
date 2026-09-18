@@ -1,0 +1,28 @@
+diff --git a/src/routes/exports.js b/src/routes/exports.js
+index 2f1a8c0..e5d9b12 100644
+--- a/src/routes/exports.js
++++ b/src/routes/exports.js
+@@ -1,12 +1,18 @@
+ const express = require('express');
+ const router = express.Router();
+-const db = require('../db');
++const { pipeline } = require('stream/promises');
++const { Transform } = require('stream');
++const db = require('../db');
+ 
+ router.get('/exports/transactions', async (req, res) => {
+-  const rows = await db.query('SELECT * FROM transactions WHERE org_id = $1', [req.org.id]);
+-  const csv = rows.map(r => `${r.id},${r.amount},${r.date}`).join('\n');
+-  res.setHeader('Content-Type', 'text/csv');
+-  res.send(csv);
++  const cursor = db.queryCursor('SELECT * FROM transactions WHERE org_id = $1', [req.org.id]);
++  res.setHeader('Content-Type', 'text/csv');
++  res.setHeader('Transfer-Encoding', 'chunked');
++  const toCSV = new Transform({
++    objectMode: true,
++    transform(row, enc, cb) { cb(null, `${row.id},${row.amount},${row.date}\n`); },
++  });
++  await pipeline(cursor, toCSV, res);
+ });
+ 
+ module.exports = router;

@@ -1,4 +1,4 @@
-import { CARD_COUNT } from '../cards.js'
+import { CARDS, LANGUAGES, LANG_COUNTS } from '../cards.js'
 
 const KEYS = {
   seenCards: 'seenCards',
@@ -26,10 +26,10 @@ export function getSeenCards() {
   return readJSON(KEYS.seenCards, [])
 }
 
-export function markSeen(id) {
+export function markSeen(key) {
   const seen = getSeenCards()
-  if (!seen.includes(id)) {
-    writeJSON(KEYS.seenCards, [...seen, id])
+  if (!seen.includes(key)) {
+    writeJSON(KEYS.seenCards, [...seen, key])
   }
 }
 
@@ -57,30 +57,44 @@ export function setBestStreak(value) {
   writeJSON(KEYS.bestStreak, value)
 }
 
-export function pickNextCardId() {
-  const allIds = Array.from({ length: CARD_COUNT }, (_, i) => i + 1)
+function allCardKeys(language) {
+  if (language) {
+    const count = LANG_COUNTS[language] || 0
+    return Array.from({ length: count }, (_, i) => `${language}/${i + 1}`)
+  }
+  const keys = []
+  for (const lang of LANGUAGES) {
+    const count = LANG_COUNTS[lang] || 0
+    for (let i = 1; i <= count; i++) {
+      keys.push(`${lang}/${i}`)
+    }
+  }
+  return keys
+}
+
+export function pickNextCardKey(language) {
+  const all = allCardKeys(language)
   const seen = getSeenCards()
-  let unseen = allIds.filter((id) => !seen.includes(id))
+  let unseen = all.filter((k) => !seen.includes(k))
 
   if (unseen.length === 0) {
     writeJSON(KEYS.seenCards, [])
-    unseen = allIds
+    unseen = all
   }
 
   return unseen[Math.floor(Math.random() * unseen.length)]
 }
 
-export function getCardIdFromUrl() {
+export function getCardKeyFromUrl() {
   const raw = window.location.hash.replace('#', '')
   if (!raw) return null
-  const id = Number(raw)
-  if (!Number.isInteger(id) || id < 1 || id > CARD_COUNT) return null
-  return id
+  if (!CARDS[raw]) return null
+  return raw
 }
 
-export function buildShareUrl(id) {
+export function buildShareUrl(key) {
   const url = new URL(window.location.href)
   url.search = ''
-  url.hash = '#' + id
+  url.hash = '#' + key
   return url.toString()
 }

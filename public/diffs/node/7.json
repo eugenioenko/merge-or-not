@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "reject",
+  "context": "Simplifies the wallet transfer function. Two users can initiate transfers from the same wallet concurrently.",
+  "explanation": "Removing the transaction and `FOR UPDATE` row lock creates a race condition: two concurrent transfers can both read the same balance, both pass the check, and both debit — overdrawing the wallet. Fix: wrap the read-check-write in a serializable transaction with `SELECT ... FOR UPDATE` to lock the row.",
+  "language": "node",
+  "category": "correctness",
+  "difficulty": 4
+}

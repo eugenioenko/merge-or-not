@@ -1,0 +1,27 @@
+diff --git a/Services/ConfigService.cs b/Services/ConfigService.cs
+index e5f6a7b..b8c9d0e 100644
+--- a/Services/ConfigService.cs
++++ b/Services/ConfigService.cs
+@@ -3,12 +3,21 @@ public class ConfigService
+     private readonly IConfigRepository _repo;
+ 
++    private static readonly Dictionary<string, string> _cache = new();
++
+     public ConfigService(IConfigRepository repo)
+     {
+         _repo = repo;
+     }
+ 
+     public async Task<string> GetValueAsync(string key)
+     {
+-        return await _repo.GetAsync(key);
++        if (_cache.TryGetValue(key, out var cached))
++        {
++            return cached;
++        }
++
++        var value = await _repo.GetAsync(key);
++        _cache[key] = value;
++        return value;
+     }
+ }

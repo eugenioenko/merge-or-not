@@ -1,0 +1,23 @@
+diff --git a/internal/cache/store.go b/internal/cache/store.go
+index 2a3f1c0..b7e4d12 100644
+--- a/internal/cache/store.go
++++ b/internal/cache/store.go
+@@ -14,3 +14,19 @@ func NewStore(client *redis.Client, ttl time.Duration) *Store {
+ 	return &Store{client: client, ttl: ttl}
+ }
+ 
++func (s *Store) GetOrSet(ctx context.Context, key string, fn func() ([]byte, error)) ([]byte, error) {
++	val, err := s.client.Get(ctx, key).Bytes()
++	if err == nil {
++		return val, nil
++	}
++
++	data, err := fn()
++	if err != nil {
++		return nil, err
++	}
++
++	s.client.Set(ctx, key, data, s.ttl)
++
++	return data, nil
++}

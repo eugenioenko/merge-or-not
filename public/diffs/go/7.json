@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "merge",
+  "context": "PlaceOrder creates an order inside a database transaction. Previously, the Commit error was silently ignored.",
+  "explanation": "Safe to merge. The change wraps every error with fmt.Errorf and %w for better diagnostics, and — critically — now checks the error from tx.Commit() instead of discarding it. A failed commit previously returned a \"successful\" order that was never persisted. The deferred Rollback is harmless after a successful Commit.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 2
+}

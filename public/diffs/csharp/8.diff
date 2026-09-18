@@ -1,0 +1,18 @@
+diff --git a/Controllers/ProfileController.cs b/Controllers/ProfileController.cs
+index a7b8c9d..d0e1f2a 100644
+--- a/Controllers/ProfileController.cs
++++ b/Controllers/ProfileController.cs
+@@ -15,12 +15,8 @@ public class ProfileController : Controller
+ 
+     public IActionResult Details(int userId)
+     {
+         var user = _userRepo.GetById(userId);
+-        if (user == null)
+-        {
+-            return NotFound();
+-        }
+-        var displayName = user.Profile.DisplayName;
++        var displayName = user?.Profile?.DisplayName ?? "Unknown";
+         var email = user.Email;
+         return View(new ProfileViewModel(displayName, email));
+     }

@@ -1,0 +1,26 @@
+diff --git a/src/hooks/useWindowSize.js b/src/hooks/useWindowSize.js
+index 5a1b8c4..e7d3a19 100644
+--- a/src/hooks/useWindowSize.js
++++ b/src/hooks/useWindowSize.js
+@@ -1,17 +1,14 @@
+-import { useState, useEffect, useCallback } from 'react';
++import { useState, useEffect } from 'react';
+ 
+ export function useWindowSize() {
+   const [size, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+ 
+-  const handleResize = useCallback(() => {
+-    setSize({ width: window.innerWidth, height: window.innerHeight });
+-  }, []);
+-
+   useEffect(() => {
++    const handleResize = () => {
++      setSize({ width: window.innerWidth, height: window.innerHeight });
++    };
+     window.addEventListener('resize', handleResize);
+-    return () => window.removeEventListener('resize', handleResize);
+-  }, [handleResize]);
++  }, []);
+ 
+   return size;
+ }

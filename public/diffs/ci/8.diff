@@ -1,0 +1,24 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9a0b1c2..d3e4f5a 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -5,14 +5,18 @@ on:
+
+ jobs:
+   test:
+-    runs-on: ubuntu-latest
++    strategy:
++      fail-fast: false
++      matrix:
++        os: [ubuntu-latest, macos-latest, windows-latest]
++        node: ['18', '20', '22']
++    runs-on: ${{ matrix.os }}
+     steps:
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
+         with:
+-          node-version: '20'
++          node-version: ${{ matrix.node }}
+       - run: npm ci
+       - run: npm test
+-      - run: npm run build

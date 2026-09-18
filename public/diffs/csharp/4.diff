@@ -1,0 +1,15 @@
+diff --git a/Controllers/ReportController.cs b/Controllers/ReportController.cs
+index c3d4e5f..f6a7b8c 100644
+--- a/Controllers/ReportController.cs
++++ b/Controllers/ReportController.cs
+@@ -10,8 +10,8 @@ public class ReportController : ControllerBase
+ 
+     [HttpGet("{id}/summary")]
+-    public async Task<IActionResult> GetSummary(int id)
++    public IActionResult GetSummary(int id)
+     {
+-        var summary = await _reportService.GetSummaryAsync(id);
++        var summary = _reportService.GetSummaryAsync(id).Result;
+         return Ok(summary);
+     }
+ }

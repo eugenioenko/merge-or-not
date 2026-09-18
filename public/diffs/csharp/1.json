@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "merge",
+  "context": "Computes the discounted price shown at checkout. `percent` comes from an admin-configured promotion.",
+  "explanation": "Safe to merge. Guarding against a negative or over-100 percent value stops a bad promotion config from silently producing a nonsensical (or negative) price — it fails loudly instead. The arithmetic itself is unchanged and the added bounds check is correct.",
+  "language": "csharp",
+  "category": "correctness",
+  "difficulty": 2
+}

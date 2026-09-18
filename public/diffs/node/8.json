@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "reject",
+  "context": "Refactors the Express error-handling middleware. This is the final catch-all middleware registered on the app.",
+  "explanation": "Removing the logger means 500-class errors vanish silently — the client gets a generic message but the server has no record of what went wrong. In production, unlogged errors are invisible and undebuggable. Fix: keep logging the error details (method, url, message, stack) for every non-client error.",
+  "language": "node",
+  "category": "error-handling",
+  "difficulty": 3
+}

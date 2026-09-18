@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "answer": "reject",
+  "context": "Refactors the product search query to simplify the SQL. `keyword` comes directly from the query string.",
+  "explanation": "SQL injection — the keyword is interpolated directly into the SQL string instead of using a parameterized query. An attacker can submit a crafted keyword to read, modify, or delete arbitrary data. Fix: keep using parameterized queries (@Keyword) so Dapper escapes the input.",
+  "language": "csharp",
+  "category": "security",
+  "difficulty": 3
+}

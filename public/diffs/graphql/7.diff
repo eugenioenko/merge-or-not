@@ -1,0 +1,22 @@
+diff --git a/src/graphql/resolvers/mutation.js b/src/graphql/resolvers/mutation.js
+index 7c8d9e0..1a2b3c4 100644
+--- a/src/graphql/resolvers/mutation.js
++++ b/src/graphql/resolvers/mutation.js
+@@ -2,15 +2,11 @@
+ const Mutation = {
+   transferCredits: async (_parent, { toUserId, amount }, { db, currentUser }) => {
+     if (!currentUser) throw new AuthenticationError('Must be logged in');
+-    if (amount <= 0) throw new UserInputError('Amount must be positive');
+ 
+     const sender = await db.user.findUnique({ where: { id: currentUser.id } });
+-    if (sender.balance < amount) {
+-      throw new UserInputError('Insufficient balance');
+-    }
+ 
+-    await db.user.update({ where: { id: currentUser.id }, data: { balance: { decrement: amount } } });
+-    await db.user.update({ where: { id: toUserId }, data: { balance: { increment: amount } } });
++    await db.user.update({ where: { id: currentUser.id }, data: { balance: { decrement: amount } } });
++    await db.user.update({ where: { id: toUserId }, data: { balance: { increment: amount } } });
+ 
+     return { success: true };
+   },

@@ -1,0 +1,9 @@
+{
+  "id": 5,
+  "answer": "reject",
+  "context": "User type resolver controls which fields are visible through the API. The schema exposes fields from the database model.",
+  "explanation": "This removes the permission check on email (any user can now see any other user's email) and exposes hashedPassword and SSN — catastrophic data leakage of credentials and PII through the public API. Fix: keep the ownership guard on email and never expose hashedPassword or SSN in the GraphQL schema at all.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 1
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Diff, Hunk, parseDiff, tokenize } from 'react-diff-view'
+import { LANGUAGE_LABELS } from '../cards.js'
 import refractor from 'refractor/core.js'
 import jsx from 'refractor/lang/jsx.js'
 import typescript from 'refractor/lang/typescript.js'
@@ -10,23 +11,12 @@ import python from 'refractor/lang/python.js'
 import csharp from 'refractor/lang/csharp.js'
 import graphql from 'refractor/lang/graphql.js'
 import json from 'refractor/lang/json.js'
+import yaml from 'refractor/lang/yaml.js'
 
-for (const lang of [jsx, typescript, markup, go, javascript, python, csharp, graphql, json]) {
+for (const lang of [jsx, typescript, markup, go, javascript, python, csharp, graphql, json, yaml]) {
   refractor.register(lang)
 }
 
-const LANGUAGE_LABELS = {
-  react: 'React',
-  vue: 'Vue',
-  angular: 'Angular',
-  go: 'Go',
-  node: 'Node.js',
-  python: 'Python',
-  csharp: 'C#',
-  graphql: 'GraphQL',
-  rest: 'REST',
-  auth: 'Auth',
-}
 
 const LANGUAGE_COLORS = {
   react: '#61dafb',
@@ -39,6 +29,7 @@ const LANGUAGE_COLORS = {
   graphql: '#e10098',
   rest: '#f5a623',
   auth: '#f5a623',
+  ci: '#2088ff',
 }
 
 const REFRACTOR_ALIASES = {
@@ -52,6 +43,7 @@ const REFRACTOR_ALIASES = {
   graphql: 'graphql',
   rest: 'json',
   auth: 'javascript',
+  ci: 'yaml',
 }
 
 export default function DiffCard({ id, context, language }) {
@@ -63,7 +55,7 @@ export default function DiffCard({ id, context, language }) {
     setDiffText(null)
     setError(null)
 
-    fetch(`${import.meta.env.BASE_URL}diffs/${id}.diff`)
+    fetch(`${import.meta.env.BASE_URL}diffs/${language}/${id}.diff`)
       .then((res) => {
         if (!res.ok) throw new Error(`Failed to load card ${id}`)
         return res.text()
@@ -78,7 +70,7 @@ export default function DiffCard({ id, context, language }) {
     return () => {
       cancelled = true
     }
-  }, [id])
+  }, [id, language])
 
   const files = diffText ? parseDiff(diffText) : []
   const refractorLanguage = REFRACTOR_ALIASES[language] || 'javascript'
@@ -91,7 +83,7 @@ export default function DiffCard({ id, context, language }) {
         <div className="flex items-start gap-3 border-b border-[var(--border)] px-4 py-3">
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-[var(--text-primary)]">Review this change</span>
+              <span className="text-base font-semibold text-[var(--text-primary)]">Review this change</span>
               <span
                 className="inline-flex items-center gap-1.5 rounded-full border px-2 py-px text-xs font-medium"
                 style={{ color: langColor, borderColor: langColor + '44' }}
@@ -101,7 +93,7 @@ export default function DiffCard({ id, context, language }) {
               </span>
             </div>
             {context ? (
-              <p className="mt-1.5 text-xs leading-relaxed text-[var(--text-secondary)]">{context}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-[var(--text-primary)]">{context}</p>
             ) : null}
           </div>
         </div>

@@ -1,0 +1,13 @@
+diff --git a/Services/NotificationService.cs b/Services/NotificationService.cs
+index b2c3d4e..e5f6a7b 100644
+--- a/Services/NotificationService.cs
++++ b/Services/NotificationService.cs
+@@ -6,7 +6,7 @@ public class NotificationService
+     private readonly IEmailClient _emailClient;
+     private readonly ILogger<NotificationService> _logger;
+ 
+-    public async Task SendOrderConfirmationAsync(Order order)
++    public async void SendOrderConfirmationAsync(Order order)
+     {
+         var body = RenderTemplate("OrderConfirmation", order);
+         await _emailClient.SendAsync(order.CustomerEmail, "Your order is confirmed", body);

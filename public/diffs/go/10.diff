@@ -1,0 +1,37 @@
+diff --git a/internal/ratelimit/limiter.go b/internal/ratelimit/limiter.go
+index 5c3e1d0..a9f7b23 100644
+--- a/internal/ratelimit/limiter.go
++++ b/internal/ratelimit/limiter.go
+@@ -3,7 +3,8 @@ package ratelimit
+ import (
+ 	"net/http"
++	"sync"
+ 	"time"
+ )
+
+ type visitor struct {
+@@ -11,9 +12,20 @@ type visitor struct {
+ }
+
+ type Limiter struct {
++	mu       sync.Mutex
+ 	visitors map[string]*visitor
+ 	limit    int
+ 	window   time.Duration
+ }
+
+-func (l *Limiter) Allow(ip string) bool {
++func NewLimiter(limit int, window time.Duration) *Limiter {
++	return &Limiter{
++		visitors: make(map[string]*visitor),
++		limit:    limit,
++		window:   window,
++	}
++}
++
++func (l *Limiter) Allow(ip string) bool {
++	l.mu.Lock()
++	defer l.mu.Unlock()
+ 	v, exists := l.visitors[ip]
+ 	now := time.Now()
+ 	if !exists || now.Sub(v.lastSeen) > l.window {

@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "reject",
+  "context": "Switching the dataset import endpoint from JSON to a binary format for faster bulk uploads. The file is uploaded by external users.",
+  "explanation": "pickle.load on an untrusted file allows arbitrary code execution — a crafted pickle payload can run any Python code on the server (e.g. os.system(\"rm -rf /\")). Fix: keep using json.load or another safe deserialization format. If binary performance is needed, use a safe format like MessagePack or Protocol Buffers.",
+  "language": "python",
+  "category": "security",
+  "difficulty": 3
+}

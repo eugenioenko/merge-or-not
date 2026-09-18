@@ -1,0 +1,20 @@
+diff --git a/src/graphql/resolvers/comment.js b/src/graphql/resolvers/comment.js
+index 6a1b2c3..f8d9e01 100644
+--- a/src/graphql/resolvers/comment.js
++++ b/src/graphql/resolvers/comment.js
+@@ -1,7 +1,13 @@
+ const Comment = {
+-  author: (comment) => User.findById(comment.authorId),
++  author: (comment, _args, { loaders }) => {
++    return loaders.userLoader.load(comment.authorId);
++  },
++  post: (comment, _args, { loaders }) => {
++    return loaders.postLoader.load(comment.postId);
++  },
+ };
+ 
+ const Query = {
+-  comments: (_parent, { postId }, { db }) => db.comment.findMany({ where: { postId } }),
++  comments: (_parent, { postId }, { db }) =>
++    db.comment.findMany({ where: { postId }, orderBy: { createdAt: 'asc' } }),
+ };

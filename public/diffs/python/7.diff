@@ -1,0 +1,20 @@
+diff --git a/app/views/inventory.py b/app/views/inventory.py
+index 6a1e3c7..b2d4f80 100644
+--- a/app/views/inventory.py
++++ b/app/views/inventory.py
+@@ -6,9 +6,8 @@ from app.models import Product
+
+ @require_http_methods(["POST"])
+ def reserve_stock(request, product_id):
+-    with transaction.atomic():
+-        product = Product.objects.select_for_update().get(pk=product_id)
+-        if product.stock < 1:
+-            return JsonResponse({"error": "out of stock"}, status=409)
+-        product.stock -= 1
+-        product.save()
++    product = Product.objects.get(pk=product_id)
++    if product.stock < 1:
++        return JsonResponse({"error": "out of stock"}, status=409)
++    product.stock -= 1
++    product.save()
+     return JsonResponse({"remaining": product.stock})

@@ -1,0 +1,17 @@
+diff --git a/src/components/UserList.jsx b/src/components/UserList.jsx
+index 8d2a4c7..c1f3e90 100644
+--- a/src/components/UserList.jsx
++++ b/src/components/UserList.jsx
+@@ -6,12 +6,12 @@ export function UserList({ users, onRemove }) {
+   return (
+     <ul>
+       {users.map((user, index) => (
+-        <li key={user.id}>
++        <li key={index}>
+           <span>{user.name}</span>
+           <button onClick={() => onRemove(user.id)}>Remove</button>
+         </li>
+       ))}
+     </ul>
+   );
+ }

@@ -1,0 +1,9 @@
+{
+  "id": 6,
+  "answer": "merge",
+  "context": "Tightens the create-user validation middleware. The endpoint previously only checked for field presence.",
+  "explanation": "Safe to merge. The new checks verify types, validate email format, enforce sane age bounds, and normalize whitespace/casing — all pure input validation with no logic bugs. The original loose check was insufficient for production use.",
+  "language": "node",
+  "category": "correctness",
+  "difficulty": 2
+}

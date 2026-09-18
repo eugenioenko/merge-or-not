@@ -1,0 +1,26 @@
+diff --git a/src/services/wallet.js b/src/services/wallet.js
+index 1e2c4f0..7b3d9a1 100644
+--- a/src/services/wallet.js
++++ b/src/services/wallet.js
+@@ -1,17 +1,10 @@
+ const db = require('../db');
+ 
+ async function transfer(fromId, toId, amount) {
+-  const tx = await db.beginTransaction();
+-  try {
+-    const sender = await tx.query('SELECT balance FROM wallets WHERE id = $1 FOR UPDATE', [fromId]);
+-    if (sender.rows[0].balance < amount) throw new Error('Insufficient funds');
+-    await tx.query('UPDATE wallets SET balance = balance - $1 WHERE id = $2', [amount, fromId]);
+-    await tx.query('UPDATE wallets SET balance = balance + $1 WHERE id = $2', [amount, toId]);
+-    await tx.commit();
+-  } catch (err) {
+-    await tx.rollback();
+-    throw err;
+-  }
++  const sender = await db.query('SELECT balance FROM wallets WHERE id = $1', [fromId]);
++  if (sender.rows[0].balance < amount) throw new Error('Insufficient funds');
++  await db.query('UPDATE wallets SET balance = balance - $1 WHERE id = $2', [amount, fromId]);
++  await db.query('UPDATE wallets SET balance = balance + $1 WHERE id = $2', [amount, toId]);
+ }
+ 
+ module.exports = { transfer };

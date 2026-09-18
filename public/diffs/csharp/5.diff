@@ -1,0 +1,13 @@
+diff --git a/Services/UserService.cs b/Services/UserService.cs
+index d4e5f6a..a7b8c9d 100644
+--- a/Services/UserService.cs
++++ b/Services/UserService.cs
+@@ -14,7 +14,7 @@ public class UserService
+ 
+     public async Task<User> GetByIdAsync(int id)
+     {
+-        var connection = new SqlConnection(_connectionString);
++        using var connection = new SqlConnection(_connectionString);
+         var user = await connection.QuerySingleOrDefaultAsync<User>(
+             "SELECT * FROM Users WHERE Id = @Id", new { Id = id });
+         return user;

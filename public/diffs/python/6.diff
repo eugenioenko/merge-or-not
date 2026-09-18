@@ -1,0 +1,23 @@
+diff --git a/app/services/payments.py b/app/services/payments.py
+index 5c3a1e8..d7b2f41 100644
+--- a/app/services/payments.py
++++ b/app/services/payments.py
+@@ -3,12 +3,11 @@ from app.models import Payment, Order
+
+
+ def process_payment(order_id, payment_data):
+     order = Order.get_or_404(order_id)
+     try:
+         result = payment_gateway.charge(
+             amount=order.total,
+             card_token=payment_data["card_token"],
+         )
+-        Payment.create(order_id=order.id, status="paid", ref=result.ref)
+-        order.update(status="confirmed")
+-    except payment_gateway.CardDeclined as e:
+-        Payment.create(order_id=order.id, status="declined")
+-        raise
++    except:
++        pass
++    Payment.create(order_id=order.id, status="paid", ref=result.ref)
++    order.update(status="confirmed")

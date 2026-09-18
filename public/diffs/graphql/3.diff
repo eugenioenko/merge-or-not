@@ -1,0 +1,19 @@
+diff --git a/src/graphql/resolvers/mutation.js b/src/graphql/resolvers/mutation.js
+index 1c4e8a3..9b5d2f1 100644
+--- a/src/graphql/resolvers/mutation.js
++++ b/src/graphql/resolvers/mutation.js
+@@ -3,13 +3,6 @@
+ const Mutation = {
+   deletePost: async (_parent, { id }, { db, currentUser }) => {
+-    if (!currentUser) {
+-      throw new AuthenticationError('Must be logged in');
+-    }
+-    const post = await db.post.findUnique({ where: { id } });
+-    if (post.authorId !== currentUser.id) {
+-      throw new ForbiddenError('Not your post');
+-    }
+-    await db.post.delete({ where: { id } });
++    await db.post.delete({ where: { id } });
+     return { success: true };
+   },
+ };

@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "merge",
+  "context": "Refactoring the CSV report export to use a context manager for file handling.",
+  "explanation": "Safe to merge. Wrapping the file in a with statement guarantees it is closed even if writer.writerow() raises an exception midway through. The old code used a bare open/close pair which would leak the file handle on any error between open() and close(). The logic is otherwise identical.",
+  "language": "python",
+  "category": "correctness",
+  "difficulty": 2
+}

@@ -1,0 +1,18 @@
+diff --git a/src/graphql/resolvers/user.js b/src/graphql/resolvers/user.js
+index 8a3f1c2..d4e7b90 100644
+--- a/src/graphql/resolvers/user.js
++++ b/src/graphql/resolvers/user.js
+@@ -1,10 +1,8 @@
+ const Query = {
+-  users: async (_parent, { first = 20, after }, { db }) => {
+-    const limit = Math.min(first, 100);
+-    return db.user.findMany({
+-      take: limit,
++  users: async (_parent, _args, { db }) => {
++    return db.user.findMany({
++      take: undefined,
+       cursor: after ? { id: after } : undefined,
+-      orderBy: { createdAt: 'desc' },
+     });
+   },
+ };

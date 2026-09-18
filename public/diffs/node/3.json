@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Simplifies the file download controller. Filenames come from a URL parameter like `/files/:filename`.",
+  "explanation": "Removing `path.basename()` lets an attacker pass `../../etc/passwd` as the filename and traverse out of the uploads directory to read arbitrary files on the server. Fix: always sanitize with `path.basename(req.params.filename)` before joining with the uploads directory.",
+  "language": "node",
+  "category": "security",
+  "difficulty": 3
+}

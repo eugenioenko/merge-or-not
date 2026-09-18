@@ -1,0 +1,9 @@
+{
+  "id": 8,
+  "answer": "reject",
+  "context": "Cache-aside helper: returns cached data on hit, otherwise calls fn() to compute the value and stores it. Used on hot API paths.",
+  "explanation": "The error from s.client.Get is not compared against redis.Nil — any Redis error (connection timeout, serialization failure) silently falls through to the expensive fn() call, defeating the cache and hammering the backend on every Redis hiccup. Fix: check if err == redis.Nil before falling through; return other errors immediately.",
+  "language": "go",
+  "category": "correctness",
+  "difficulty": 3
+}

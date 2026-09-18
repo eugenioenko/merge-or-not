@@ -1,0 +1,27 @@
+diff --git a/.github/workflows/deploy.yml b/.github/workflows/deploy.yml
+index 2c4e91a..f6a8b30 100644
+--- a/.github/workflows/deploy.yml
++++ b/.github/workflows/deploy.yml
+@@ -1,15 +1,18 @@
+ name: Deploy to Production
+ on:
+-  push:
+-    branches: [main]
++  pull_request:
++    branches: [main]
+
+ jobs:
+   deploy:
+     runs-on: ubuntu-latest
++    environment: production
+     steps:
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+       - run: npm ci
+       - run: npm run build
+-      - run: npx serverless deploy --stage prod
++      - run: |
++          npx serverless deploy --stage prod
++          echo "Deployed successfully"

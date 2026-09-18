@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "merge",
+  "context": "Comment resolvers for a threaded comment list under a post. Comments are fetched in bulk per post.",
+  "explanation": "Safe to merge. Switching the author resolver from a direct database call to a DataLoader eliminates the N+1 problem when loading many comments, and adding a postLoader batches the post lookup too. The query ordering change (createdAt asc) is a sensible default for chronological display.",
+  "language": "graphql",
+  "category": "performance",
+  "difficulty": 2
+}

@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Custom hook tracks the browser window dimensions and returns { width, height }. Components use it to conditionally render mobile vs desktop layouts.",
+  "explanation": "The cleanup return was removed — the resize event listener is never unsubscribed, so every call to useWindowSize leaks a listener. On unmount and re-mount cycles (e.g. navigating away and back) listeners stack up, firing stale setSize calls on unmounted components. Fix: restore the return () => window.removeEventListener(\"resize\", handleResize) inside the effect.",
+  "language": "react",
+  "category": "hooks",
+  "difficulty": 2
+}

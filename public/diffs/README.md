@@ -1,100 +1,107 @@
-# Authoring cards
+# Authoring Cards
 
-Each card is a raw unified diff plus a metadata entry. The two are linked by numeric ID.
+Each card is two files in a language folder: `{n}.diff` and `{n}.json`. The Vite build auto-discovers all cards — no index or count to maintain.
 
-## Files
-
-- Diffs live here as `{id}.diff` — `1.diff`, `2.diff`, `3.diff`, and so on, sequential, one per card.
-- Each `{id}.diff` must have a matching entry `CARDS[id]` in `src/cards.js`, and `CARD_COUNT` in that file must equal the highest ID in use.
-- A `.diff` file holds **raw unified diff text** — literally the output of `git diff`. No JSON wrapping, no escaping, no markdown fences.
-
-## Writing the diff itself
-
-The easiest way to get a valid, realistic diff:
-
-1. Create two real files on disk (or two versions of the same file) that show the change you want to test.
-2. Run `git diff` (or `git diff --no-index old.js new.js`) and paste the raw output into `{id}.diff`.
-
-Keep it short — ideally a single hunk, roughly 5–40 lines. It needs to be readable on a phone screen without scrolling forever. If the real change is bigger, trim it down to the smallest diff that still contains the full flaw (or the full reasoning, for a merge card).
-
-Requirements for a valid diff file:
-
-- A standard `diff --git a/... b/...` header, `--- a/...` / `+++ b/...` lines, and at least one valid `@@ -start,count +start,count @@` hunk header. The line counts in the hunk header must match the number of context/removed and context/added lines that follow it.
-- Line prefixes inside the hunk: `+` for an added line, `-` for a removed line, a single leading space for an unchanged context line. Every line in the hunk body needs one of these three prefixes.
-- Include a little surrounding context (a few unchanged lines before/after the change) so the diff reads fairly — enough to see where the change sits, not just the bare `+`/`-` lines.
-
-## The flaw (or the fix) must be visible in the diff
-
-For a **reject** card, the bug must be spottable from the lines actually shown in the diff — don't rely on some other file the player can't see. If the reasoning depends on surrounding context (e.g. "this handler runs on every request" or "the caller already validated X"), put that in the `context` field of the metadata, not in a file that isn't rendered.
-
-For a **merge** card, the diff should be a genuinely clean, correct change — not a trick. The explanation should confirm why it's safe, not merely absence of an obvious bug.
-
-## Metadata (`src/cards.js`)
-
-```js
-export const CARDS = {
-  1: {
-    id: 1,
-    answer: 'reject',            // 'merge' | 'reject'
-    context: 'Returns an order by ID. User is authenticated.',
-    explanation: 'No ownership check — any logged-in user can read any order (IDOR). Fix: verify order.UserID === session.UserID before returning.',
-    language: 'go',              // 'react' | 'vue' | 'angular' | 'go' | 'node' | 'python' | 'csharp' | 'graphql' | 'rest' | 'auth'
-    category: 'auth',            // free-form tag, e.g. 'auth', 'performance', 'correctness'
-    difficulty: 3,               // 1 (easy) to 5 (hard)
-  },
-  // ...
-};
-
-export const CARD_COUNT = 6; // bump this whenever a new card is added
+```
+public/diffs/
+  go/
+    1.diff    1.json
+    2.diff    2.json
+  react/
+    1.diff    1.json
+    ...
 ```
 
-- `context`: one short, muted line shown above the diff. Give only what's needed to judge the change fairly — who's calling it, what runs before/after, scale, etc.
-- `explanation`: shown after the player answers, for **every** card regardless of outcome. For a `reject` card, name the specific flaw and the fix. For a `merge` card, say why the change is safe/correct — the game should sometimes reward "Merge," not just "Reject."
+URL format: `#go/3`, `#react/1`
 
-## Annotated example
+## Adding a Card
 
-`public/cards/1.diff`:
+1. Pick the language folder (or create a new one).
+2. Name your files with the next available number: if `go/` has 1–10, add `11.diff` and `11.json`.
+3. That's it — the build picks it up automatically.
 
-```diff
-diff --git a/internal/handlers/order.go b/internal/handlers/order.go
-index 4f3c9d2..a91e7c1 100644
---- a/internal/handlers/order.go
-+++ b/internal/handlers/order.go
-@@ -8,3 +8,20 @@ func NewOrderHandler(db *sql.DB) *OrderHandler {
- func NewOrderHandler(db *sql.DB) *OrderHandler {
- 	return &OrderHandler{db: db}
- }
-+
-+func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
-+	session, ok := auth.FromContext(r.Context())
-+	if !ok {
-+		http.Error(w, "unauthorized", http.StatusUnauthorized)
-+		return
-+	}
-+
-+	orderID := chi.URLParam(r, "id")
-+	order, err := h.db.FindOrderByID(r.Context(), orderID)
-+	if err != nil {
-+		http.Error(w, "order not found", http.StatusNotFound)
-+		return
-+	}
-+
-+	json.NewEncoder(w).Encode(order)
-+}
+## What Makes a Good Card
+
+A good card teaches a pattern the player will recognize forever after. The best cards are built around bugs and anti-patterns that show up constantly in real codebases — the kind of thing where once you've been burned once, you spot it immediately in every future PR.
+
+### The diff should feel real
+
+- Write it like an actual PR — multiple added lines, realistic variable names, plausible file paths. Not a toy snippet, but a change someone would actually submit.
+- 10–40 lines is the sweet spot. Enough context to read naturally, short enough to review in one screen.
+- Include surrounding unchanged lines so the player sees where the change lives.
+
+### The flaw should teach a transferable lesson
+
+Good reject cards are built around patterns like:
+- **Missing authorization/ownership checks** (IDOR, privilege escalation)
+- **Blocking the event loop** (sync I/O in async contexts)
+- **Stale closures / incorrect dependency arrays** in React hooks
+- **N+1 queries** hidden behind clean-looking resolver code
+- **Lost idempotency** when retry logic is stripped
+- **Race conditions** in concurrent code
+- **SQL injection** through string concatenation
+- **Unchecked error returns** that silently swallow failures
+
+The flaw should be the kind of thing a senior engineer catches in review — subtle enough to miss on a quick scan, obvious once pointed out. Avoid obscure language trivia.
+
+### The answer should click
+
+After revealing, the player should think "of course" — not "I guess." The explanation names the specific bug, why it matters in production, and the one-line fix.
+
+### Merge cards must be genuinely correct
+
+About 1 in 4 cards should be merge. These are clean, correct changes — not tricks. The explanation confirms why it's safe. This keeps players honest; always-reject is not a winning strategy.
+
+### Fair play
+
+The bug must be visible in the diff itself. Don't require knowledge of code not shown. If the reasoning depends on context the player can't see (scale, caller behavior, threading model), put that in the `context` field.
+
+## The Diff File (`{n}.diff`)
+
+Raw unified diff — the output of `git diff`. No JSON, no markdown fences.
+
+Requirements:
+- Standard `diff --git a/... b/...` header, `--- a/...` / `+++ b/...` lines, and `@@ hunk headers` with correct line counts.
+- Line prefixes: `+` added, `-` removed, single leading space for context.
+- Empty context lines need a single leading space character, not a truly blank line.
+
+Easiest way to create one:
+```sh
+git diff --no-index before.ext after.ext > {n}.diff
 ```
 
-Matching `src/cards.js` entry:
+## The Metadata File (`{n}.json`)
 
-```js
-1: {
-  id: 1,
-  answer: 'reject',
-  context: 'New endpoint to fetch a single order by ID. `session` is the authenticated user from the request context; the returned order has a `UserID` field.',
-  explanation: 'No ownership check — any logged-in user can read any other user\'s order just by changing the ID in the URL (IDOR). Fix: after loading the order, compare order.UserID against session.UserID and return 403 on mismatch before encoding the response.',
-  language: 'go',
-  category: 'auth',
-  difficulty: 3,
-},
+```json
+{
+  "id": 1,
+  "answer": "reject",
+  "context": "One line of context shown above the diff.",
+  "explanation": "Shown after answering. Name the flaw, consequence, and fix.",
+  "language": "go",
+  "category": "auth",
+  "difficulty": 3
+}
 ```
 
-The flaw (missing ownership check) is fully visible in the `+` lines — no outside knowledge required beyond what `context` states.
+- `id`: matches the file number.
+- `answer`: `"merge"` or `"reject"`.
+- `context`: shown above the diff. Give just enough to judge the change fairly. Don't give away the answer.
+- `explanation`: shown after answering. For reject: name the flaw, real-world consequence, and fix. For merge: confirm why it's safe.
+- `language`: must match the folder name. Determines syntax highlighting and the label badge.
+- `category`: free-form tag (e.g. `auth`, `performance`, `correctness`, `security`, `concurrency`).
+- `difficulty`: 1 (obvious once you know the pattern) to 5 (requires deep domain knowledge).
+
+## Supported Languages
+
+| Folder    | Label   | Syntax highlighting |
+|-----------|---------|-------------------|
+| `go`      | Go      | go                |
+| `node`    | Node.js | javascript        |
+| `react`   | React   | jsx               |
+| `python`  | Python  | python            |
+| `csharp`  | C#      | csharp            |
+| `graphql` | GraphQL | graphql           |
+| `ci`      | CI/CD   | yaml              |
+
+To add a new language: create the folder, add cards, and register the refractor language in `DiffCard.jsx` + add the label in `src/cards.js`.

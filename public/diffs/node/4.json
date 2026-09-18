@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "answer": "reject",
+  "context": "Cleans up the order confirmation email sender. `emailClient.send()` returns a Promise and can throw on network failures.",
+  "explanation": "Dropping `await` and the try/catch means the returned Promise floats — if the email service is down, the rejection is unhandled (crashing the process in Node 15+), and the caller has no way to know the send failed. Fix: keep `await` and propagate or log the error.",
+  "language": "node",
+  "category": "error-handling",
+  "difficulty": 2
+}

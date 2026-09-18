@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { CARDS } from './cards.js'
+import { CARDS, LANGUAGES } from './cards.js'
 import {
   getBestStreak,
-  getCardIdFromUrl,
+  getCardKeyFromUrl,
   getScore,
   getStreak,
   markSeen,
-  pickNextCardId,
+  pickNextCardKey,
   setBestStreak,
   setScore,
   setStreak,
@@ -17,17 +17,18 @@ import ActionButtons from './components/ActionButtons.jsx'
 import Reveal from './components/Reveal.jsx'
 
 export default function App() {
-  const [cardId, setCardId] = useState(() => getCardIdFromUrl() || pickNextCardId())
+  const [language, setLanguage] = useState(null)
+  const [cardKey, setCardKey] = useState(() => getCardKeyFromUrl() || pickNextCardKey())
   const [choice, setChoice] = useState(null)
   const [score, setScoreState] = useState(() => getScore())
   const [streak, setStreakState] = useState(() => getStreak())
 
   useEffect(() => {
-    markSeen(cardId)
-    window.location.hash = '#' + cardId
-  }, [cardId])
+    markSeen(cardKey)
+    window.location.hash = '#' + cardKey
+  }, [cardKey])
 
-  const card = CARDS[cardId]
+  const card = CARDS[cardKey]
   const answered = choice !== null
   const correct = answered && choice === card.answer
 
@@ -50,23 +51,28 @@ export default function App() {
   }
 
   function handleNext() {
-    const nextId = pickNextCardId()
-    window.location.hash = '#' + nextId
-
+    const next = pickNextCardKey(language)
     setChoice(null)
-    setCardId(nextId)
+    setCardKey(next)
+  }
+
+  function handleLanguageChange(lang) {
+    setLanguage(lang)
+    const next = pickNextCardKey(lang)
+    setChoice(null)
+    setCardKey(next)
   }
 
   return (
     <div className="min-h-screen pb-8">
-      <TopBar score={score} streak={streak} />
+      <TopBar score={score} streak={streak} language={language} languages={LANGUAGES} onLanguageChange={handleLanguageChange} />
 
       <main className="pt-6">
         <DiffCard id={card.id} context={card.context} language={card.language} />
         <ActionButtons disabled={answered} onChoose={handleChoose} />
 
         {answered ? (
-          <Reveal id={card.id} correct={correct} explanation={card.explanation} onNext={handleNext} />
+          <Reveal cardKey={cardKey} correct={correct} explanation={card.explanation} onNext={handleNext} />
         ) : null}
       </main>
     </div>

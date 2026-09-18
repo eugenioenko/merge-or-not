@@ -1,0 +1,9 @@
+{
+  "id": 10,
+  "answer": "merge",
+  "context": "Validation middleware that limits query depth and complexity to prevent abusive queries. The server is public-facing.",
+  "explanation": "Safe to merge. Replacing the two separate libraries with graphql-validation-complexity consolidates depth and cost limiting into one rule with explicit scalar, object, and list cost factors. The limits (depth 10, complexity 2000) are reasonable, and the list factor of 10 correctly penalizes deeply nested list expansions.",
+  "language": "graphql",
+  "category": "security",
+  "difficulty": 4
+}

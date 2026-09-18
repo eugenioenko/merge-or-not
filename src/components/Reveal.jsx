@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { buildShareUrl } from '../lib/cards.js'
 
-export default function Reveal({ id, correct, explanation, onNext }) {
+export default function Reveal({ cardKey, correct, explanation, onNext }) {
   const [copied, setCopied] = useState(false)
 
   async function handleShare() {
-    const url = buildShareUrl(id)
+    const url = buildShareUrl(cardKey)
     const text = `Can you call this diff — Merge or Reject? ${url}`
 
     if (navigator.share) {

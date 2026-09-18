@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "answer": "reject",
+  "context": "Mutation lets a user delete one of their own posts. `currentUser` is the authenticated user from context.",
+  "explanation": "Removing the authentication check and the ownership check means any unauthenticated caller can delete any post by ID. Fix: keep both guards — verify the user is logged in and that the post belongs to them before deleting.",
+  "language": "graphql",
+  "category": "auth",
+  "difficulty": 1
+}

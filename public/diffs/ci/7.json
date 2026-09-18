@@ -1,0 +1,9 @@
+{
+  "id": 7,
+  "answer": "merge",
+  "context": "Deploy workflow pushes a static site to S3 on merge to main. The team is migrating from long-lived IAM keys to OIDC.",
+  "explanation": "Safe to merge. Adds a concurrency group to prevent parallel deploys from stomping each other, scopes permissions to the minimum needed, and replaces static AWS access keys with OIDC-based role assumption (pinned to a SHA). All three changes are security and reliability improvements with no functional regressions.",
+  "language": "ci",
+  "category": "security",
+  "difficulty": 4
+}
