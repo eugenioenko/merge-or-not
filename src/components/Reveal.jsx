@@ -27,7 +27,7 @@ export default function Reveal({ id, correct, explanation, onNext }) {
   return (
     <div className="mx-auto w-full max-w-[1200px] px-5 pb-6">
       <div
-        className={`rounded-xs border p-4 ${
+        className={`rounded-sm border p-4 ${
           correct
             ? 'border-[var(--correct-border)] bg-[var(--correct-bg)]'
             : 'border-[var(--wrong-border)] bg-[var(--wrong-bg)]'
@@ -53,14 +53,14 @@ export default function Reveal({ id, correct, explanation, onNext }) {
           <button
             type="button"
             onClick={onNext}
-            className="rounded-xs border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-1.5 text-xs font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-secondary)] active:scale-[0.98]"
+            className="rounded-sm border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-1.5 text-xs font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-secondary)] active:scale-[0.98]"
           >
             Next
           </button>
           <button
             type="button"
             onClick={handleShare}
-            className="rounded-xs border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-1.5 text-xs font-semibold text-[var(--text-secondary)] transition hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)] active:scale-[0.98]"
+            className="rounded-sm border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-1.5 text-xs font-semibold text-[var(--text-secondary)] transition hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)] active:scale-[0.98]"
           >
             {copied ? 'Copied!' : 'Share'}
           </button>

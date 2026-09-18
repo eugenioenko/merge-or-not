@@ -63,7 +63,7 @@ export default function DiffCard({ id, context, language }) {
     setDiffText(null)
     setError(null)
 
-    fetch(`${import.meta.env.BASE_URL}cards/${id}.diff`)
+    fetch(`${import.meta.env.BASE_URL}diffs/${id}.diff`)
       .then((res) => {
         if (!res.ok) throw new Error(`Failed to load card ${id}`)
         return res.text()
@@ -87,7 +87,7 @@ export default function DiffCard({ id, context, language }) {
 
   return (
     <div className="mx-auto w-full max-w-[1200px] px-5">
-      <div className="overflow-hidden rounded-xs border border-[var(--border)] bg-[var(--bg-primary)]">
+      <div className="overflow-hidden rounded-sm border border-[var(--border)] bg-[var(--bg-primary)]">
         <div className="flex items-start gap-3 border-b border-[var(--border)] px-4 py-3">
           <div className="flex-1">
             <div className="flex items-center gap-2">

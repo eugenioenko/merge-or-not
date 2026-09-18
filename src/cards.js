@@ -55,4 +55,4 @@ export const CARDS = {
   },
 };
 
-export const CARD_COUNT = 6;
+export const CARD_COUNT = Object.keys(CARDS).length;

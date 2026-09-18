@@ -5,7 +5,7 @@ export default function ActionButtons({ disabled, onChoose }) {
         type="button"
         disabled={disabled}
         onClick={() => onChoose('reject')}
-        className="flex-1 rounded-xs border border-[var(--border)] bg-[var(--bg-primary)] py-3 text-sm font-semibold text-[var(--accent-red)] transition hover:bg-red-50 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex-1 rounded-sm border border-[var(--border)] bg-[var(--bg-primary)] py-3 text-sm font-semibold text-[var(--accent-red)] transition hover:bg-red-50 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
       >
         Reject
       </button>
@@ -13,7 +13,7 @@ export default function ActionButtons({ disabled, onChoose }) {
         type="button"
         disabled={disabled}
         onClick={() => onChoose('merge')}
-        className="flex-1 rounded-xs border border-[var(--accent-green)] bg-[var(--accent-green)] py-3 text-sm font-semibold text-white transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex-1 rounded-sm border border-[var(--accent-green)] bg-[var(--accent-green)] py-3 text-sm font-semibold text-white transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
       >
         Merge
       </button>
